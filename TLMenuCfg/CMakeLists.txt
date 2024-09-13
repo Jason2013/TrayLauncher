@@ -1,6 +1,3 @@
-set_source_files_properties(main.cpp PROPERTIES FOLDER "Source Files")
-set_source_files_properties(main.h PROPERTIES FOLDER "Header Files")
-
 set(PROJ_NAME TLMenuCfg)
 
 set(SOURCE_FILES 
