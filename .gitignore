@@ -1,2 +1,6 @@
-.hg 
-.hgtags 
+.hg
+.hgtags
+build
+VisualStudio/.vs
+VisualStudio/Debug
+VisualStudio/x64/Debug
