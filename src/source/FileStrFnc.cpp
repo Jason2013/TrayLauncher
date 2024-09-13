@@ -281,14 +281,14 @@ bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr, HWND hwnd, b
 	sei.lpVerb = pOpr;
 	sei.lpFile = strCmd.c_str();
 	if (IsPathExe(strCmd)) {
-//		// À©Õ¹ \"  - > \"\"\"
-//		TSTRING::size_type pos = strParam.find('\"');
-//		while (pos != strParam.npos) {
-//			strParam.insert(strParam.begin() + pos, '\"');
-//			strParam.insert(strParam.begin() + pos, '\"');
-//			pos += 3;
-//			pos = strParam.find('\"', pos);
-//		}
+		// À©Õ¹ \"  - > \"\"\"
+		TSTRING::size_type pos = strParam.find('\"');
+		while (pos != strParam.npos) {
+			strParam.insert(strParam.begin() + pos, '\"');
+			strParam.insert(strParam.begin() + pos, '\"');
+			pos += 3;
+			pos = strParam.find('\"', pos);
+		}
 		sei.lpParameters = strParam.c_str();
 	}
 	else

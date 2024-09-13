@@ -248,7 +248,7 @@ ICONTYPE CMenuWithIcon::GetShortCutIcon(LPCTSTR lpszLinkFile, bool bIcon32)
 
 
 //! 添加子菜单，strPath 用于获取图标
-bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & strName, const tString & strPath, EICONGETTYPE needIcon)
+bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & strName, const tString & strIconPath, EICONGETTYPE needIcon)
 {
 	assert(strName.length());
 	AddToMap(MenuNameMap(),hSubMenu, strName);
@@ -257,18 +257,18 @@ bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & 
 	if (needIcon) {
 		if ( ! IsDynamicMenu(hSubMenu) ) {
 			//静态目录或文件中的强制目录，必须加入图标
-			MenuIcon(hSubMenu,GetIcon(strPath,needIcon));
+			MenuIcon(hSubMenu,GetIcon(strIconPath,needIcon));
 		}
 		else {
 			SHFILEINFO sfi = {0};
-			if (!SHGetFileInfo(strPath.c_str(),
+			if (!SHGetFileInfo(strIconPath.c_str(),
 					FILE_ATTRIBUTE_NORMAL,
 					&sfi,
 					sizeof(SHFILEINFO),
 					SHGFI_SYSICONINDEX | SHGFI_SMALLICON)) {
 
 				//在系统中找不到，加入我的记录。//note: it seems this never happen
-				MenuIcon(hSubMenu, GetIcon(strPath,needIcon));
+				MenuIcon(hSubMenu, GetIcon(strIconPath,needIcon));
 			}
 		}
 	}
@@ -578,7 +578,7 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 				DestroyMenu(hSubMenu);
 			}
 			else {
-				AddSubMenu(hMenu,hSubMenu,pMenu->Item(index)->Name().c_str(), pMenu->Item(index)->Path());
+				AddSubMenu(hMenu,hSubMenu,pMenu->Item(index)->Name().c_str(), pMenu->Item(index)->Icon());
 				if (GetMenuItemCount(hSubMenu) <= 0) {
 					assert (GetSubMenu(hMenu,GetMenuItemCount(hMenu)-1) == hSubMenu);
 					EnableMenuItem(hMenu,GetMenuItemCount(hMenu)-1,MF_BYPOSITION | MF_GRAYED);
@@ -597,15 +597,13 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 
 			// 常规菜单项
 			const tString & strPath = pMenu->Item(index)->Path();
-			const tString strSep(_T("|||"));
 
 			if (!strPath.empty() &&
 				*(strPath.rbegin())=='*') {// 匹配通配符
 				nItems += MultiAddMenuItem(hMenu,strPath,pMenu->Item(index)->Name());
 			}
 			else {
-				tString::size_type sepPos = strPath.find(strSep) ;
-				tString strIcon = tString::npos == sepPos? _T("") : ns_file_str_ops::StripSpaces ( strPath.substr(sepPos + strSep.length()) );
+				tString strIcon = pMenu->Item(index)->Icon();
 				if (!strIcon.empty()) {
 					if ('\"' == strIcon[0]) {
 						tString::size_type pos = strIcon.find('\"', 1);
@@ -614,11 +612,8 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 					}
 				}
 				nItems += AddMenuItem( hMenu,
-					pMenu->Item(index)->Name().empty() ? _T("< ??? >") : pMenu->Item(index)->Name() ,
-					sepPos == tString::npos ? strPath : ns_file_str_ops::StripSpaces( strPath.substr(0,sepPos ) ),
-					FILEFOLDERICON,
-					strIcon
-					);//统计菜单项总数
+						pMenu->Item(index)->Name().empty() ? _T("< ??? >") : pMenu->Item(index)->Name() ,
+						strPath, FILEFOLDERICON, strIcon);//统计菜单项总数
 			}
 		}
 		else if ( ! (pMenu->Item(index)->Name().empty()) ) {

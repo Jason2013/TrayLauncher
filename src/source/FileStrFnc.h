@@ -2,6 +2,7 @@
 #define LCH_FILE_STR_FNC_H
 
 #include <stdheaders.h>
+#include <windows.h>
 // an collection of funtions for file and string/wstring
 
 

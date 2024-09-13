@@ -19,6 +19,7 @@
 #include <wx/cshelp.h>
 #include <Shlwapi.h>
 #include <deque>
+#include "FileStrFnc.h"
 
 //(*InternalHeaders(TLMenuCfgDialog)
 #include <wx/artprov.h>
@@ -403,19 +404,8 @@ void GetMenuStrings(const CItem &mi, TSTRING &strName, TSTRING &strPath, TSTRING
 {
 	TSTRING strSep(_T("|||"));
 	strName = mi.Name();
-	strPath = (mi.Path());
-	TSTRING::size_type sepPos = strPath.find(strSep);
-
-	if (TSTRING::npos != sepPos)
-	{
-		strIcon = ns_file_str_ops::StripSpaces( strPath.substr(sepPos + strSep.length()) );
-		strPath = ns_file_str_ops::StripSpaces( strPath.substr(0, sepPos) );
-
-		if (!strIcon.empty() && '\"' == strIcon[0]) {
-			TSTRING::size_type pos = strIcon.find('\"', 1);
-			strIcon = strIcon.substr(1, pos == TSTRING::npos ? pos : pos - 1);
-		}
-	}
+	strPath = mi.Path();
+	strIcon = mi.Ex();
 }
 
 const wxString ExpandEnvString(const wxString & path)
@@ -866,6 +856,7 @@ void TLMenuCfgDialog::OnInit(wxInitDialogEvent& event)
 			m_indexUnknown = m_iconlist.Add(icon);
 		}
 	}
+
 
 	m_menuData.Load(m_fileName);
 

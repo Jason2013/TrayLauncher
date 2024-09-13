@@ -57,5 +57,6 @@
 
 	 DECLARE_DEF_LANG_ID(STR_Invalid_NameOrFilter,			_T("Invalide input: '<', '>' and '=' are not allowed!") )
 	 DECLARE_DEF_LANG_ID(STR_Err_Del_Only_Child,			_T("Can't delete the only child!") )
+	 DECLARE_DEF_LANG_ID(STR_ASK_UPDATE_MENU_FILE_TO_XML,	_T("Update command file to xml format?") )
 // end
 

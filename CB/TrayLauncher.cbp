@@ -93,12 +93,17 @@
 		<Unit filename="..\src\source\appstrings.h" />
 		<Unit filename="..\src\source\language.cpp" />
 		<Unit filename="..\src\source\language.h" />
+		<Unit filename="..\src\source\pugixml\pugiconfig.hpp" />
+		<Unit filename="..\src\source\pugixml\pugixml.cpp" />
+		<Unit filename="..\src\source\pugixml\pugixml.hpp" />
 		<Unit filename="..\src\source\rc\TrayLauncher.exe.Manifest" />
 		<Unit filename="..\src\source\stdafx.cpp" />
 		<Unit filename="..\src\source\stdafx.h">
 			<Option compile="1" />
 			<Option weight="0" />
 		</Unit>
+		<Unit filename="..\src\source\xmlmenudata.cpp" />
+		<Unit filename="..\src\source\xmlmenudata.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

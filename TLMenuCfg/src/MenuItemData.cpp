@@ -1,3 +1,4 @@
+#include "wx_pch.h"
 #include "MenuItemData.h"
 
 MenuItemData::MenuItemData(const wxString & name, const wxString & target, const wxString & icon):

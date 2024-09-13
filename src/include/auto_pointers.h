@@ -1,11 +1,12 @@
 //! some smart handle.
 //! \author : lichao
-//! \date : 
+//! \date :
 // 2007-09-27 created
 
 #ifndef SIMPLE_AUTO_POINTER_H
 #define SIMPLE_AUTO_POINTER_H
 #include "auto_handle.h"
+#include <windows.h>
 using namespace wukong;
 
 
@@ -51,7 +52,7 @@ typedef auto_handle<HDC, MemDcDestroyer, 0> MemDC_Handle, MemDC_H;
 class WindowDestroyer {public : static void Free(HWND &hwnd) {DestroyWindow(hwnd); hwnd = NULL;}  };
 typedef auto_handle<HWND, WindowDestroyer, 0> AutoHwnd;
 
-//! HOOK 
+//! HOOK
 class HookDestroyer {public : static void Free(HHOOK hhk) {UnhookWindowsHookEx(hhk);}   };
 typedef auto_handle<HHOOK, HookDestroyer, 0, false> AutoHook;
 

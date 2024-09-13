@@ -10,6 +10,9 @@ src 文件夹是全部的代码和资源。
 使用VC2008应该也是可以的，需要手动建立工程的进行设置。
 目前的工程就是从VC2005-VC2008-VC2010这样一路升级转换过来的。
 
+菜单命令编辑器使用了wxWidgets库(www.wxwidgets.org)。
+Xml格式处理使用pugixml库(pugixml.org)。
+
 版本库说明：
 	我几年前刚刚开始开发Traylauncher的时候，还不熟悉版本控制和SVN(subversion)。
 	因此早期的代码是没有版本控制的。

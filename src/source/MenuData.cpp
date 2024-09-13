@@ -1,5 +1,7 @@
 
 #include "MenuData.h"
+#include "xmlmenudata.h"
+
 using namespace ns_file_str_ops;
 
 CItem::CItem( Prm strName, Prm strPath, Prm strEx):m_str(3){
@@ -36,6 +38,8 @@ void CMenuData::Clear() {
 	m_sub.clear();
 }
 
+
+
 bool CMenuData::AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx) {
 	if ( pos >= 0 && pos <= m_sub.size() ) {
 		CItem * p = new CItem(strName, strPath, strEx);
@@ -65,21 +69,35 @@ bool CMenuData::Remove(Ui pos) {
 }
 
 bool CMenuData::SaveAs(CRTS strFileName, TCHAR pad, int nPad, int step) const {
-	wukong::file_ptr outfile(strFileName.c_str(), _T("wb"));
 	bool r(false);
-	if (outfile.Get()) {
-		_fputtc(0xfeff, outfile.Get());
-		r = OutPut(outfile, pad, nPad, step);
+	if (IsStrEndWith(strFileName, _T(".xml"), false)) {
+		XmlMenuData xmd;
+		//todo  add encoding= "utf-8";
+		MenuDataToXml(*this, xmd);
+		r = xmd.SaveFile(strFileName);
+	} else {
+		wukong::file_ptr outfile(strFileName.c_str(), _T("wb"));
+		if (outfile.Get()) {
+			_fputtc(0xfeff, outfile.Get());
+			r = OutPut(outfile, pad, nPad, step);
+		}
 	}
 	return r;
 }
 
 int CMenuData::Load(CRTS strFileName) {
-	wukong::file_ptr file(strFileName.c_str(), _T("rb"));
 	int r(0);
-	if (file.Get() && _fgettc(file.Get()) == 0xfeff){
-		Clear();
-		r = LoadFile(file.Get());
+
+	if (IsStrEndWith(strFileName, _T(".xml"), false)) {
+		XmlMenuData xmd;
+		xmd.LoadFile(strFileName);
+		r = XmlToMenuData(xmd, *this);
+	} else {
+		wukong::file_ptr file(strFileName.c_str(), _T("rb"));
+		if (file.Get() && _fgettc(file.Get()) == 0xfeff){
+			Clear();
+			r = LoadFile(file.Get());
+		}
 	}
 	return r;
 }
@@ -106,7 +124,27 @@ bool CMenuData::OutPut(FILE * pFile, TCHAR pad, int nPad, int step) const {
 	return true;
 }
 
+namespace {
 
+void SepPathAndIcon(TSTRING &strPath, TSTRING &strIcon)
+{
+	TSTRING strSep(_T("|||"));
+	const TSTRING & strPathAndIcon = strPath;
+	TSTRING::size_type sepPos = strPathAndIcon.find(strSep);
+
+	if (TSTRING::npos != sepPos)
+	{
+		strIcon = ns_file_str_ops::StripSpaces( strPathAndIcon.substr(sepPos + strSep.length()) );
+		strPath = ns_file_str_ops::StripSpaces( strPathAndIcon.substr(0, sepPos) );
+
+		if (!strIcon.empty() && '\"' == strIcon[0]) {
+			TSTRING::size_type pos = strIcon.find('\"', 1);
+			strIcon = strIcon.substr(1, pos == TSTRING::npos ? pos : pos - 1);
+		}
+	}
+}
+
+}
 int CMenuData::LoadFile(FILE *pFile) {
 
 	assert(pFile);
@@ -146,7 +184,11 @@ int CMenuData::LoadFile(FILE *pFile) {
 				return nItems;
 				//break;
 			default:
-				nItems += AddItem(Count(), strName, strPath);
+				{
+					TSTRING strIcon;
+					SepPathAndIcon(strPath, strIcon);
+					nItems += AddItem(Count(), strName, strPath, strIcon);
+				}
 				break;
 		}
 	}

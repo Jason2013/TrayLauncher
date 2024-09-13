@@ -71,7 +71,7 @@ private:
 	//typedef std::map<TSTRING, MENUTYPE> StrMenuMap;
 	typedef std::map<TSTRING, TSTRING> StrStrMap;
 
-	bool AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & strName, const tString & strPath, EICONGETTYPE needIcon = FILEFOLDERICON);
+	bool AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & strName, const tString & strIconPath, EICONGETTYPE needIcon = FILEFOLDERICON);
 	int AddMenuItem(MENUTYPE hMenu, const tString & strName, const tString & inStrPath, EICONGETTYPE needIcon = FILEFOLDERICON, const tString & strIcon = _T(""));
 	int MultiAddMenuItem(MENUTYPE hMenu, const tString & inStrPath,const tString & strName);
 	int DoBuildDynamic(MENUTYPE hMenu);

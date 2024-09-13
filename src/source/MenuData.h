@@ -35,7 +35,7 @@ public:
 	Prm Icon(Prm strEx) { return Get(2) = strEx; }
 
 private:
-	bool OutPut(FILE * pFile, wchar_t pad = '\t', int nPad = 0) const;
+	bool OutPut(FILE * pFile, TCHAR pad = '\t', int nPad = 0) const;
 	Prm Get(Ui n) const { return m_str[n]; }
 	TS & Get(Ui n) { return m_str[n]; }
 
@@ -80,7 +80,7 @@ public:
 
 private:
 	//! 输出格式化内容到文件,递归应用于子菜单
-	
+
 	//! @param pFile 已经打开的文件
 	//! @param pad 子菜单的前缀字符( 如用tab缩进)
 	//! @param nPad 固定添加的前缀字符个数

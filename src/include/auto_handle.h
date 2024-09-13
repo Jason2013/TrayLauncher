@@ -6,7 +6,9 @@
 #define WUKONG_AUTO_HANDLE_H
 #include <algorithm>
 #include <assert.h>
+#include <stdio.h>
 #include "TypeTraits.h"
+#include <tchar.h>
 
 namespace wukong {
 ;

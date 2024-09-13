@@ -12,6 +12,9 @@ VC2008 express version should also work,
 You can add all files in "src" folder and adjust some project settings.
 The VC2010 project was converted from a 2008 project which had been converted from a VC2005 project.
 
+Traylauncher menu command editor uses wxWidgets(www.wxwidgets.org).
+Traylauncher uses pugixml to handle xml file format.
+
 Some Note about version control:
 	I created Traylauncher a few years ago, before I knew of version control and SVN (subversion).
 	So the earlier code are not under version control.

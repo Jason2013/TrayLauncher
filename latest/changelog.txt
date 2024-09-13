@@ -1,4 +1,10 @@
-﻿[2012-02-12] v2.5.2
+﻿[2012-05-19] v2.6.0
+[TrayLauncher]
+Added	: use xml file to save menu commands.
+[TLMC]
+Added	: support xml command file.
+
+[2012-02-12] v2.5.2
 [TrayLauncher]
 Added	: display language version in language menu.
 Added	: updated default command example.

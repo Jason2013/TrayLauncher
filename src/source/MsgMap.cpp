@@ -258,7 +258,7 @@ int BuildMenuFromFile(const TCHAR * strFile)
 
 	if(!file) {
 		nItems = -1; // 打开文件错误
-	} else if (_fgettc(file) != 0xfeff) {
+	} else if (!ns_file_str_ops::IsStrEndWith(strFile, _T(".xml"), false) && _fgettc(file) != 0xfeff) {
 		MessageBox(NULL, _LNG(STR_cmd_file_not_UNICODE),NULL,MB_OK);
 	} else {
 		file.Reset();
@@ -881,6 +881,30 @@ bool AddHotkey(HWND hWnd, int id, UINT fsModifiers, UINT vk)
 }
 
 
+const TSTRING TryUpdateMenuFileToXml(const TSTRING & strFileName)
+{
+	TSTRING new_name(strFileName);
+	// update to xml format.
+	if (!ns_file_str_ops::IsStrEndWith(strFileName, _T(".xml"), false)) {
+		if (IDYES == MessageBox(NULL, _LNG(STR_ASK_UPDATE_MENU_FILE_TO_XML), _T("Tray Launcher"), MB_YESNO)) {
+			CMenuData tmp(_T("root"));
+			tmp.Load(strFileName);
+			const TSTRING prefix = strFileName.substr(0, strFileName.find_last_of('.'));
+			new_name = prefix + _T(".xml");
+			// get new xml file name.
+			int n = 1;
+			while (file_ptr(new_name.c_str(), _T("rb"))) {
+				TCHAR num[64] = {0};
+				_stprintf(num, _T("%d"), n++);
+				new_name = prefix + _T("_") + num + _T(".xml");
+			}
+			tmp.SaveAs(new_name);
+		}
+	}
+	return new_name;
+}
+
+
 // 以下是不同消息相应的处理函数 : Msg....(HWND, UINT, WPARAM, LPARAM) ;
 // WM_CREATE
 LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* lParam */)
@@ -1076,12 +1100,12 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 	if(Settings().Get(sectionGeneral, keyCommand, strFileName)) {
 		g_fileName = strFileName;
 	} else {
-		Settings().Set(sectionGeneral, keyCommand, g_fileName, true);
 		const BOOL no_over_write = TRUE;
 		CopyFile(_T(".\\tlcmd.example"), g_fileName.c_str(), no_over_write);
 	}
 
-
+	g_fileName = TryUpdateMenuFileToXml(g_fileName);
+	Settings().Set(sectionGeneral, keyCommand, g_fileName, true);
 	//BuildMenuFromFile(g_fileName.c_str());
 	UpdateMenu();
 
@@ -1203,10 +1227,10 @@ void SaveRunPos()
 	int y = 0;
 	GetRunPos(x, y);
 	TCHAR sz[64] = {0};
-	_snwprintf(sz, sizeof(sz), _T("%d"), x);
+	snwprintf(sz, sizeof(sz), _T("%d"), x);
 	Settings().Set(sectionGeneral, keyRunPosX, sz);
 	memset(sz, 0, sizeof(sz));
-	_snwprintf(sz, sizeof(sz), _T("%d"), y);
+	snwprintf(sz, sizeof(sz), _T("%d"), y);
 	Settings().Set(sectionGeneral, keyRunPosY, sz);
 }
 

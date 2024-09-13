@@ -13,6 +13,7 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DDEBUG" />
 					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
 				</Compiler>
 				<ResourceCompiler>
@@ -37,6 +38,7 @@
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-DNDEBUG" />
 					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
 				</Compiler>
 				<ResourceCompiler>
@@ -61,11 +63,12 @@
 			<Add option="-mthreads" />
 			<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
 			<Add option="-Winvalid-pch" />
-			<Add option="-include wx_pch.h" />
 			<Add option="-D__GNUWIN32__" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DwxUSE_UNICODE" />
 			<Add option="-DWX_PRECOMP" />
+			<Add option="-D_UNICODE" />
+			<Add option="-DUNICODE" />
 			<Add directory=".\include" />
 			<Add directory="..\src\source" />
 			<Add directory="..\src\include" />
@@ -94,6 +97,19 @@
 			<Add library="libodbc32.a" />
 			<Add library="Shlwapi" />
 		</Linker>
+		<Unit filename="..\src\source\FileStrFnc.cpp" />
+		<Unit filename="..\src\source\FileStrFnc.h" />
+		<Unit filename="..\src\source\MenuData.cpp" />
+		<Unit filename="..\src\source\MenuData.h" />
+		<Unit filename="..\src\source\SettingFile.cpp" />
+		<Unit filename="..\src\source\SettingFile.h" />
+		<Unit filename="..\src\source\language.cpp" />
+		<Unit filename="..\src\source\language.h" />
+		<Unit filename="..\src\source\pugixml\pugiconfig.hpp" />
+		<Unit filename="..\src\source\pugixml\pugixml.cpp" />
+		<Unit filename="..\src\source\pugixml\pugixml.hpp" />
+		<Unit filename="..\src\source\xmlmenudata.cpp" />
+		<Unit filename="..\src\source\xmlmenudata.h" />
 		<Unit filename="TLMenuCfgApp.cpp" />
 		<Unit filename="TLMenuCfgApp.h" />
 		<Unit filename="TLMenuCfgMain.cpp" />
@@ -108,14 +124,6 @@
 			<Option weight="0" />
 		</Unit>
 		<Unit filename="wxsmith\TLMenuCfgdialog.wxs" />
-		<Unit filename="..\src\source\FileStrFnc.cpp" />
-		<Unit filename="..\src\source\FileStrFnc.h" />
-		<Unit filename="..\src\source\MenuData.cpp" />
-		<Unit filename="..\src\source\MenuData.h" />
-		<Unit filename="..\src\source\SettingFile.cpp" />
-		<Unit filename="..\src\source\SettingFile.h" />
-		<Unit filename="..\src\source\language.cpp" />
-		<Unit filename="..\src\source\language.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
