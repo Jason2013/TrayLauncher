@@ -200,7 +200,7 @@ LRESULT  MsgDeviceChange(HWND, UINT, WPARAM, LPARAM);
 LRESULT  MsgRefresh(HWND, UINT, WPARAM, LPARAM);
 
 
-BOOL  CALLBACK AboutProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR  CALLBACK AboutProc(HWND, UINT, WPARAM, LPARAM);
 
 
 enum MENU_ID_TYPE {BASE = 2000,CMDID_START = BASE,AUTOSTART = BASE,SEPRATER,RELOAD,EDITCMDS,EXIT,ABOUT, OPTION, MCLICK,RUNDLG,
@@ -1396,7 +1396,7 @@ int GetRand(const int to_range)
 }
 
 // “关于”框的消息处理程序。
-BOOL  CALLBACK AboutProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR  CALLBACK AboutProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	const UINT uTimerID = 1;
 	static bool bCloseWindow = true;

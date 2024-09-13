@@ -52,7 +52,7 @@ namespace
 	int g_run_pos_y = 0;
 }
 
-BOOL  CALLBACK RunDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR  CALLBACK RunDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 HWND CreateRunDialog(HINSTANCE hInst)
 {
@@ -601,7 +601,7 @@ struct PreferMatchStart
 };
 
 //! 执行对话框 的消息处理函数。
-BOOL  CALLBACK RunDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR  CALLBACK RunDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	const unsigned int kTimerIDCloseWindow = 1;
 	const int iCmdSize(MAX_PATH);
