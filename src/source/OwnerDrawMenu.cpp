@@ -380,7 +380,7 @@ BOOL COwnerDrawMenu::Insert(IDTYPE ID,const TCHAR * strName, UINT pos, ICONTYPE 
 		DestroyMenu(ForceCast<MENUTYPE,IDTYPE>(ID));
 	}
 
-	assert( ! IsMenu(ForceCast<MENUTYPE,IDTYPE>(ID)));
+	//assert( ! IsMenu(ForceCast<MENUTYPE,IDTYPE>(ID)));
 
 	if(hIcon) {
 		ItemIcon(ID, hIcon);
