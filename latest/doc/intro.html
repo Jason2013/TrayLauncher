@@ -1,0 +1,144 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>TrayLauncher documentation</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" title="TrayLauncher documentation"><div class="titlepage"><div><div><h2 class="title"><a name="id526263"></a>TrayLauncher documentation</h2></div><div><div class="author"><h3 class="author"><span class="firstname">Li</span> <span class="surname">Chao</span></h3></div></div><div><p class="pubdate">2010-11-25</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#id592484">1. Introduction</a></span></dt><dt><span class="section"><a href="#id592520">2. Features</a></span></dt><dt><span class="section"><a href="#id592564">3. Install &amp; Un install</a></span></dt><dt><span class="section"><a href="#id592601">4. Usage</a></span></dt><dd><dl><dt><span class="section"><a href="#id592607">4.1. Mouse control</a></span></dt><dt><span class="section"><a href="#id592625">4.2. Keyboard control</a></span></dt><dt><span class="section"><a href="#id592886">4.3. Auto run</a></span></dt></dl></dd><dt><span class="section"><a href="#id592903">5. The file format</a></span></dt><dd><dl><dt><span class="section"><a href="#id592954">5.1. Comments:</a></span></dt><dt><span class="section"><a href="#id592975">5.2. Menu item</a></span></dt><dt><span class="section"><a href="#id593035">5.3. Sub menu</a></span></dt><dt><span class="section"><a href="#file-format.index-letter">5.4. Setting index letter</a></span></dt><dt><span class="section"><a href="#id593099">5.5. Using the '<span class="emphasis"><em>*</em></span>'</a></span></dt><dt><span class="section"><a href="#id593166">5.6. Title</a></span></dt><dt><span class="section"><a href="#id593197">5.7. The relative paths</a></span></dt><dt><span class="section"><a href="#id593208">5.8. Separator and empty line</a></span></dt></dl></dd><dt><span class="section"><a href="#id593224">6. The run dialog</a></span></dt><dt><span class="section"><a href="#id593276">7. Multilingual</a></span></dt><dt><span class="section"><a href="#id593303">8. Skins</a></span></dt><dt><span class="section"><a href="#settingfile">9. Setting file</a></span></dt></dl></div><div class="section" title="1. Introduction"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id592484"></a>1. Introduction</h2></div></div></div><p>TrayLauncher (Tray Launcher) is a file launcher that stays in the
+    system tray.</p><p>It helps you to access your files and/or programs much
+    faster.</p><p>OS: Win Xp/Vista/7</p><p><span class="emphasis"><em>TrayLauncher is open-source.</em></span></p><p>Website: <a class="ulink" href="http://code.google.com/p/traylauncher" target="_top">http://code.google.com/p/traylauncher</a></p><p>E-mail : <code class="email">&lt;<a class="email" href="mailto:traylauncher@gmail.com">traylauncher@gmail.com</a>&gt;</code></p></div><div class="section" title="2. Features"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id592520"></a>2. Features</h2></div></div></div><p>Easy to use;</p><p>Small size;</p><p>Resource friendly;</p><p>Powerful "Run" dialog box;</p><p>Icon preview; Skinable;</p><p>Keyboard support;</p><p>Unlimited numbers of menu items;</p><p>Support wild card and relative paths;</p><p>Support multilingual user interface;</p><p>Optional start with system;</p></div><div class="section" title="3. Install &amp; Un install"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id592564"></a>3. Install &amp; Un install</h2></div></div></div><div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="images/important.png"></td><th align="left">Important</th></tr><tr><td align="left" valign="top"><p>Upgrade tip: Do NOT overwrite your own command file or setting
+        file.</p></td></tr></table></div><p>To Install and use, just unzip the files to an empty folder
+    and run
+    <span class="application"><code class="filename">traylauncher.exe</code></span>.</p><p>To Un install, disable autostart (<span class="emphasis"><em>un check</em></span> the
+    <span class="guimenuitem">Start With Windows</span> on the context menu), and
+    delete the folder.</p></div><div class="section" title="4. Usage"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id592601"></a>4. Usage</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#id592607">4.1. Mouse control</a></span></dt><dt><span class="section"><a href="#id592625">4.2. Keyboard control</a></span></dt><dt><span class="section"><a href="#id592886">4.3. Auto run</a></span></dt></dl></div><div class="section" title="4.1. Mouse control"><div class="titlepage"><div><div><h3 class="title"><a name="id592607"></a>4.1. Mouse control</h3></div></div></div><p>Left click on the tray icon to launch normal menu, or right click
+      to launch program context menu.</p><p>TrayLauncher does <span class="emphasis"><em>nothing</em></span> when you drag the
+      tray icon.</p></div><div class="section" title="4.2. Keyboard control"><div class="titlepage"><div><div><h3 class="title"><a name="id592625"></a>4.2. Keyboard control</h3></div></div></div><p>You can also use System-Wide hot key : <span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>win key</strong></span>, <span class="keycap"><strong>Shift</strong></span>+<span class="keycap"><strong>win key</strong></span> and <span class="keycap"><strong>Ctrl</strong></span>+<span class="keycap"><strong>win key</strong></span>.</p><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>You can customize the hot keys in the <a class="link" href="#settingfile" title="9. Setting file">setting file</a>.</p></td></tr></table></div><p>Note that the left and the right Win keys have different meanings
+      :</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p><span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>left win</strong></span> is like left click on the tray icon, while <span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>right win</strong></span> is like right click on the tray icon. The only
+          difference is that when you use System-Wide hot keys, the menu will
+          be displayed at the left up corner of your screen instead of at the
+          position of your mouse pointer.</p></li><li class="listitem"><p><span class="keycap"><strong>Shift</strong></span>+<span class="keycap"><strong>left win</strong></span> is like <span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>left win</strong></span>, but the menu will be displayed at the point of your
+          mouse cursor.</p></li><li class="listitem"><p><span class="keycap"><strong>Ctrl</strong></span>+<span class="keycap"><strong>left win</strong></span> will display the Execute or Run dialog, press again,
+          it will disappear.</p></li></ol></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>If the hot keys are already used by another program,
+        TrayLauncher will display a message, and you will not be able to use
+        the hot key(s) with TrayLauncher.</p></td></tr></table></div><p>Actually, you can control TrayLauncher without using your mouse at
+      all. You can use the arrow key to select a menu item, press enter to
+      execute it. For fast access, you can use a letter key. The first letter
+      of the name of the menu item is used as the index key, the index letter
+      is <span class="emphasis"><em>not</em></span> case sensitive, so <span class="keycap"><strong>a</strong></span> is
+      equal to <span class="keycap"><strong>A</strong></span>.</p><p>For example : if you have the following 3 menu items:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Opera</p></li><li class="listitem"><p>Firefox</p></li><li class="listitem"><p>Flashget</p></li></ul></div><p>when you press the key <span class="keycap"><strong>o</strong></span>, Opera will be launched.
+      (You should have given the correct path for it.)</p><p>And when you press the key <span class="keycap"><strong>F</strong></span>, since there are two
+      items begin with <span class="keycap"><strong>F</strong></span>, first Firefox will be selected, and
+      you press <span class="keycap"><strong>F</strong></span> key again, Flashget will be selected,
+      <span class="keycap"><strong>F</strong></span> key again and Firefox is again selected. Press Enter
+      to execute.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>You can set the index letter instead of using the default first
+        letter. See <a class="link" href="#file-format.index-letter" title="5.4. Setting index letter">below</a>.</p></td></tr></table></div></div><div class="section" title="4.3. Auto run"><div class="titlepage"><div><div><h3 class="title"><a name="id592886"></a>4.3. Auto run</h3></div></div></div><p>Use the <span class="command"><strong>Start With Windows</strong></span> option on the
+      context menu. Check this, and TrayLauncher will start automatically when
+      you start your computer.</p></div></div><div class="section" title="5. The file format"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id592903"></a>5. The file format</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#id592954">5.1. Comments:</a></span></dt><dt><span class="section"><a href="#id592975">5.2. Menu item</a></span></dt><dt><span class="section"><a href="#id593035">5.3. Sub menu</a></span></dt><dt><span class="section"><a href="#file-format.index-letter">5.4. Setting index letter</a></span></dt><dt><span class="section"><a href="#id593099">5.5. Using the '<span class="emphasis"><em>*</em></span>'</a></span></dt><dt><span class="section"><a href="#id593166">5.6. Title</a></span></dt><dt><span class="section"><a href="#id593197">5.7. The relative paths</a></span></dt><dt><span class="section"><a href="#id593208">5.8. Separator and empty line</a></span></dt></dl></div><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Since V2.0, there is a GUI menu editor, so you don't need to know
+      all the details to edit the command. You can skip this section if you
+      just use the common features.</p><p>But it would be useful if you use some of the advanced features
+      such as wild card mode.</p></td></tr></table></div><p>Maybe the most difficult part is to understand the command file
+    format. TrayLauncher use a command file to store the menu items or
+    commands. You need to edit the file (it's a text file) to add your own
+    items. Menu items look much better on the menu than in the command
+    file.</p><p>You can launch context menu, and use <span class="command"><strong>Edit
+    Commands</strong></span> to open and edit <code class="filename">TLCmd.txt</code>, and
+    after you save the change(s), the menu will be updated the next time you
+    open it, or you can use <span class="command"><strong>Refresh</strong></span> to update the menu
+    yourself, no need to restart TrayLauncher.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>This command file (<code class="filename">TLCmd.txt</code> by default) is a
+      normal text file, and it must be saved in Unicode (little
+      endian).</p></td></tr></table></div><div class="section" title="5.1. Comments:"><div class="titlepage"><div><div><h3 class="title"><a name="id592954"></a>5.1. Comments:</h3></div></div></div><p>Texts after ";" until the end of the line are comments , and will
+      be ignored by TrayLauncher. Otherwise, they present a command or menu
+      item.</p><div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td align="left" valign="top"><p>If you use the GUI command editor to edit and save the menu,
+        <span class="emphasis"><em>all comments will be lost</em></span>.</p></td></tr></table></div></div><div class="section" title="5.2. Menu item"><div class="titlepage"><div><div><h3 class="title"><a name="id592975"></a>5.2. Menu item</h3></div></div></div><p>A command or menu item contains two parts :</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>the text before "=" , the name of the item. This is the text
+          shown on the menu item.</p></li><li class="listitem"><p>the text after "=" until the end of the line, that is the
+          filename or command line, or the command of the item.. TrayLauncher
+          will execute the command when you click the menu item.</p></li></ol></div><p>For example, add the following two lines to
+      <code class="filename">TLCmd.txt</code>:</p><div class="example"><a name="id593014"></a><p class="title"><b>Example 1. menu item</b></p><div class="example-contents"><div class="literallayout"><p>notepad = C:\windows\notepad.exe<br>
+notepadToo = "C:\windows\notepad.exe" a.txt  ;try to open a.txt, <br>
+; Since v1.9, file icon is customizable, just add ||| your icon path at the end.  <br>
+notepadToo = "C:\windows\notepad.exe" a.txt ||| myicon.ico  ;same as above, but use another icon.<br>
+</p></div></div></div><br class="example-break"><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>The " " is optional for normal file target. You use them to
+        quote the executable file when it needs parameters.</p></td></tr></table></div></div><div class="section" title="5.3. Sub menu"><div class="titlepage"><div><div><h3 class="title"><a name="id593035"></a>5.3. Sub menu</h3></div></div></div><p>Adding a sub menu is much the same as adding a normal menu item.
+      Just add an extra "&gt;" at the beginning of the line. The lines that
+      followed will all be added to the sub menu, until they meet a line that
+      begin with "&lt;" which means end of sub menu.</p><p>The following example Created a sub menu that have 3 items:</p><div class="example"><a name="id593050"></a><p class="title"><b>Example 2. sub menu</b></p><div class="example-contents"><div class="literallayout"><p>&gt; SubmenuName = "you use this path to set the icon of the sub menu"<br>
+item1 = notepad.exe<br>
+item2 = "notepad.exe" a.txt<br>
+item3 = notepad.exe <br>
+&lt; ; end of sub menu<br>
+</p></div></div></div><br class="example-break"></div><div class="section" title="5.4. Setting index letter"><div class="titlepage"><div><div><h3 class="title"><a name="file-format.index-letter"></a>5.4. Setting index letter</h3></div></div></div><p>Just add a "&amp;" before the letter which you want to set as the
+      index letter:</p><div class="example"><a name="id593075"></a><p class="title"><b>Example 3. index letter</b></p><div class="example-contents"><div class="literallayout"><p>notepad&amp;Three = "C:\windows\notepad.exe"</p></div></div></div><br class="example-break"><p>The letter "T" will be underlined on the menu, to indicate that
+      it's the index letter. </p><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>If you want to write the letter "&amp;" itself, use
+          "&amp;&amp;" instead.</p></td></tr></table></div></div><div class="section" title="5.5. Using the '*'"><div class="titlepage"><div><div><h3 class="title"><a name="id593099"></a>5.5. Using the '<span class="emphasis"><em>*</em></span>'</h3></div></div></div><p>you can add multiple items at once with "*"; there are now 4 types
+      of usage: *.*, * , ** and *+*. Here are some examples:</p><div class="example"><a name="id593112"></a><p class="title"><b>Example 4. wild card mode</b></p><div class="example-contents"><div class="literallayout"><p>*.exe = c:\windows\*.* ;add every .exe file in C:\windows\ .<br>
+a*=c:\windows\* ;add every file and folder that begins with "a" in c:\windows\ .<br>
+*.exe = c:\windows\** ;add every .exe file in c:\windows\ or its sub folders or its sub folders' sub folders...<br>
+*.exe = c:\windows\*+* ;add every .exe file in c:\windows\ or its sub folders or its sub folders' sub folders...<br>
+<br>
+;Since v1.8.7, you can use multiple wild cards separated by "|" :  <br>
+*.exe|*.com = c:\windows\*.* ;add every .exe and .com file in c:\windows\ .<br>
+<br>
+;Since v1.9, you can explore all your files with a single line :<br>
+ = \\** ; A special mode to explore My Computer.</p></div></div></div><br class="example-break"><p>The difference between ** and *+* mode :</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>when you use *+* mode, the menu is built at once and no more
+          (if you don't Refresh),</p></li><li class="listitem"><p>and when you use **, the sub menus are built each time you
+          explore them.</p></li></ul></div><div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="images/important.png"></td><th align="left">Important</th></tr><tr><td align="left" valign="top"><p>Use the *+* mode carefully, it may take minutes to build the
+        menu when there are too many files.</p><p>The ** mode is recommended for large number of items.</p><p>The *+* mode is better for small number of items as the items
+        will be indexed when you use the run dialog.</p><p>Do NOT use any spaces beside "|" when using multiple wild cards,
+        they count.</p></td></tr></table></div></div><div class="section" title="5.6. Title"><div class="titlepage"><div><div><h3 class="title"><a name="id593166"></a>5.6. Title</h3></div></div></div><p>Title is just some text displayed on the menu. To add a Title, you
+      just need to write the text, and that's it. For example, add the
+      following line to the command file:</p><div class="example"><a name="id593176"></a><p class="title"><b>Example 5. title</b></p><div class="example-contents"><div class="literallayout"><p>This will be displayed as title!</p></div></div></div><br class="example-break"><p>You will see the text on the menu, but it will be grayed, and
+      nothing will happen when you click on it.</p><p>You can use titles to display some instructions.</p></div><div class="section" title="5.7. The relative paths"><div class="titlepage"><div><div><h3 class="title"><a name="id593197"></a>5.7. The relative paths</h3></div></div></div><p>A single dot, "." means the current directory, that is the one
+      where you put TrayLauncher.exe, while ".." means the parent directory of
+      the current directory.</p></div><div class="section" title="5.8. Separator and empty line"><div class="titlepage"><div><div><h3 class="title"><a name="id593208"></a>5.8. Separator and empty line</h3></div></div></div><p>An empty line means a separator. So, don't use that if you don't
+      need any separator.</p><p>To make your file more readable, you can use a line that contains
+      only a ";", and the hole line will be treated as a comment and
+      TrayLauncher will simply ignore it.</p></div></div><div class="section" title="6. The run dialog"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id593224"></a>6. The run dialog</h2></div></div></div><p>Just press <span class="keycap"><strong>Ctrl</strong></span>+<span class="keycap"><strong>left win</strong></span> to launch the run dialog.</p><p>As you type, TrayLauncher will automatically search the menu items
+    and your system for executable or files that match your input.</p><p>After you enter a command and run it, the run dialog will
+    automatically disappear if there is no error.</p><p>It remembers the latest 50 correct commands and your last input. To
+    clear the history list, enter <strong class="userinput"><code>-clear</code></strong> or
+    <strong class="userinput"><code>:clear</code></strong> in the edit box and run it.</p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Since v1.8.6 the run dialog can also be launched from the context
+      menu.</p></td></tr></table></div></div><div class="section" title="7. Multilingual"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id593276"></a>7. Multilingual</h2></div></div></div><p>Since V1.8, you could use the <code class="filename">TL.ini</code> setting
+    file to specify the language file.</p><p>A language file is just another UNICODE text file, you can edit it
+    if you like.</p><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>Since v1.8.5, you can choose language in the context menu. No need
+      to edit the setting file manually.</p></td></tr></table></div></div><div class="section" title="8. Skins"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id593303"></a>8. Skins</h2></div></div></div><p>Since V1.8 TrayLauncher supports skins.</p><p>A skin is just a set of bitmap files in a folder inside the
+    <code class="filename">skin</code> folder; you can create your own skin as you
+    wish.</p><p>Since V1.9.6 some menu icons can also be customized together in a
+    skin.</p><p>Put the icons in the "icons" folder within a skin folder, and when
+    the skin is selected, the icons within it are used automatically.</p><p>The icons should be named as follow:</p><div class="literallayout"><p>about.ico<br>
+autostart.ico<br>
+close.ico<br>
+edit.ico<br>
+exit.ico<br>
+language.ico<br>
+mclick.ico<br>
+open.ico<br>
+refresh.ico<br>
+run.ico<br>
+skin.ico<br>
+unknown.ico</p></div><div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>You can put a small (82X110 or smaller) bitmap file
+      <code class="filename">TLlogo.bmp</code> along with <code class="filename">TrayLauncher.exe,
+      it will be displayed in the about dialog.</code></p></td></tr></table></div></div><div class="section" title="9. Setting file"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="settingfile"></a>9. Setting file</h2></div></div></div><p>Since V1.8 Traylauncher has got a setting file, you can edit this
+    file to set a few settings; more settings may be added later.</p><p>The setting file is divided into sections, and each section has some
+    key-value pairs. </p><p>A key is a setting option, while a value is the what you set for
+    that option. Here are some of the keys and their values in general
+    section:</p><div class="table"><a name="id593374"></a><p class="title"><b>Table 1. general settings</b></p><div class="table-contents"><table summary="general settings" border="1"><colgroup><col><col><col></colgroup><thead><tr><th align="center">key</th><th align="center">description</th><th align="center">available values</th></tr></thead><tbody><tr><td>command</td><td>specify a command file</td><td>should be a valid path to a text file.</td></tr><tr><td>confirm_exit</td><td>option to show the confirm dialog when exit
+            traylauncher</td><td>1 (show) or 0 ( not show).</td></tr><tr><td>language</td><td>set the language file to use</td><td>a valid language file name.</td></tr><tr><td>midclick</td><td>use the mid mouse button to show menu or not.</td><td>1 (use) or 0 (not use).</td></tr><tr><td>runicon</td><td>use a custom icon for run dialog.</td><td>(valid path to an icon.)</td></tr><tr><td>trayicon</td><td>use a custom icon for the system tray.</td><td>(valid path to an icon.)</td></tr><tr><td>priority</td><td>set priority of traylauncher.</td><td>high, above_normal, normal, below_normal, idle</td></tr><tr><td>skin</td><td>set the skin</td><td>(skin name, or folder name of a skin)</td></tr><tr><td>showhidden</td><td>show hidden files for wild card mode.</td><td>1 (show) or 0 (not show)</td></tr></tbody></table></div></div><br class="table-break"><p>The history section is maintained by traylauncher automatically,
+    it's the history command you typed in the run dialog.</p><p>The hotkey section is used to change hot keys. Available values are
+    like these: <span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>A</strong></span>, <span class="keycap"><strong>Ctrl</strong></span>+<span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>LWin</strong></span>, <span class="keycap"><strong>Win</strong></span>+<span class="keycap"><strong>Q</strong></span>, <span class="keycap"><strong>Shift</strong></span>+<span class="keycap"><strong>LWin</strong></span>, etc. </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>These are system wide hot keys, if another program has already
+        used it, traylauncher would not be able to use that setting.</p></td></tr></table></div><p>Here is a sample setting file:</p><div class="example"><a name="id593620"></a><p class="title"><b>Example 6. setting file</b></p><div class="example-contents"><div class="literallayout"><p><br>
+[general]<br>
+command = .\TLCmd.txt<br>
+confirm_exit = 0<br>
+language = TL_cn.lng<br>
+midclick = 0<br>
+runicon = .\TLRun.ico<br>
+priority = above_normal<br>
+showhidden = 0<br>
+skin = Office<br>
+trayicon = .\TLTray.ico<br>
+<br>
+[history]<br>
+01 = Avant<br>
+02 = Code Blocks<br>
+<br>
+[hotkey]<br>
+ShowMenuAtMouse = Shift + LWin<br>
+RunDialog = Ctrl + LWin<br>
+ShowContextMenu = Alt + RWin<br>
+ShowContextMenu_alt = Ctrl + Alt + LWin<br>
+ShowMenu = Alt + LWin</p></div></div></div><br class="example-break"></div></div></body></html>

@@ -1,0 +1,16 @@
+==Plan==
+(features)
+	Run 对话框 的下拉列表也显示图标; (icons for run dialog dropdown list)
+	不画图标， (optional : no icons for menu items)
+	language implimentation, try to use integer id.
+
+==Working on==
+	可视编辑，(a visual editor)	
+	check ExecuteEx() 相对路径
+
+
+==Finished==
+	2010-11-25  更新文档，介绍配置文件选项
+	2010-11-25  支持设置线程优先级;
+	2010-11-25  展开环境变量（图标/命令）
+	2010-11-13	关于对话框链接到网站主页。 about dialog links to project web page.

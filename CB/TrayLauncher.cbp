@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TrayLauncher" />
+		<Option default_target="Release" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\TrayLauncher" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-D_DEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\TrayLauncher" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wshadow" />
+			<Add option="-Wall" />
+			<Add option="-Winvalid-pch" />
+			<Add option="-include stdafx.h" />
+			<Add directory="..\dll" />
+			<Add directory="..\src\source" />
+			<Add directory="..\src\include" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="..\src\source\rc" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-static-libstdc++" />
+			<Add option="-static" />
+			<Add library="gdi32" />
+			<Add library="user32" />
+			<Add library="kernel32" />
+			<Add library="shlwapi" />
+			<Add library="Ole32" />
+			<Add library="Comctl32" />
+			<Add library="uuid" />
+		</Linker>
+		<Unit filename="..\src\source\FileStrFnc.cpp" />
+		<Unit filename="..\src\source\FileStrFnc.h" />
+		<Unit filename="..\src\source\GDIWavePic.cpp" />
+		<Unit filename="..\src\source\GDIWavePic.h" />
+		<Unit filename="..\src\source\Hotkey.cpp" />
+		<Unit filename="..\src\source\Hotkey.h" />
+		<Unit filename="..\src\source\MenuData.cpp" />
+		<Unit filename="..\src\source\MenuData.h" />
+		<Unit filename="..\src\source\MenuWithIcon.cpp">
+			<Option weight="20" />
+		</Unit>
+		<Unit filename="..\src\source\MenuWithIcon.h" />
+		<Unit filename="..\src\source\MsgMap.cpp" />
+		<Unit filename="..\src\source\MsgMap.h" />
+		<Unit filename="..\src\source\OwnerDrawMenu.cpp">
+			<Option weight="10" />
+		</Unit>
+		<Unit filename="..\src\source\OwnerDrawMenu.h" />
+		<Unit filename="..\src\source\Resource.h" />
+		<Unit filename="..\src\source\RunDlg.cpp" />
+		<Unit filename="..\src\source\RunDlg.h" />
+		<Unit filename="..\src\source\SettingFile.cpp">
+			<Option weight="6" />
+		</Unit>
+		<Unit filename="..\src\source\SettingFile.h" />
+		<Unit filename="..\src\source\TrayStart.cpp" />
+		<Unit filename="..\src\source\TrayStart.h" />
+		<Unit filename="..\src\source\TrayStart.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="..\src\source\WavePic.cpp" />
+		<Unit filename="..\src\source\WavePic.h" />
+		<Unit filename="..\src\source\appstrings.h" />
+		<Unit filename="..\src\source\language.cpp" />
+		<Unit filename="..\src\source\language.h" />
+		<Unit filename="..\src\source\rc\TrayLauncher.exe.Manifest" />
+		<Unit filename="..\src\source\stdafx.cpp" />
+		<Unit filename="..\src\source\stdafx.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
+			</wxsmith>
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

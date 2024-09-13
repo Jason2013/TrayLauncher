@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<article>
+  <articleinfo>
+    <title>TrayLauncher documentation</title>
+
+    <author>
+      <firstname>Li</firstname>
+
+      <surname>Chao</surname>
+    </author>
+
+    <pubdate>2010-11-25</pubdate>
+  </articleinfo>
+
+  <section>
+    <title>Introduction</title>
+
+    <para>TrayLauncher (Tray Launcher) is a file launcher that stays in the
+    system tray.</para>
+
+    <para>It helps you to access your files and/or programs much
+    faster.</para>
+
+    <para>OS: Win Xp/Vista/7</para>
+
+    <para><emphasis>TrayLauncher is open-source.</emphasis></para>
+
+    <para>Website: <ulink
+    url="http://code.google.com/p/traylauncher">http://code.google.com/p/traylauncher</ulink></para>
+
+    <para>E-mail : <email>traylauncher@gmail.com</email></para>
+  </section>
+
+  <section>
+    <title>Features</title>
+
+    <para>Easy to use;</para>
+
+    <para>Small size;</para>
+
+    <para>Resource friendly;</para>
+
+    <para>Powerful "Run" dialog box;</para>
+
+    <para>Icon preview; Skinable;</para>
+
+    <para>Keyboard support;</para>
+
+    <para>Unlimited numbers of menu items;</para>
+
+    <para>Support wild card and relative paths;</para>
+
+    <para>Support multilingual user interface;</para>
+
+    <para>Optional start with system;</para>
+  </section>
+
+  <section>
+    <title>Install &amp; Un install</title>
+
+    <para><important>
+        <para>Upgrade tip: Do NOT overwrite your own command file or setting
+        file.</para>
+      </important>To Install and use, just unzip the files to an empty folder
+    and run
+    <application><filename>traylauncher.exe</filename></application>.</para>
+
+    <para>To Un install, disable autostart (<emphasis>un check</emphasis> the
+    <guimenuitem>Start With Windows</guimenuitem> on the context menu), and
+    delete the folder.</para>
+  </section>
+
+  <section>
+    <title>Usage</title>
+
+    <section>
+      <title>Mouse control</title>
+
+      <para>Left click on the tray icon to launch normal menu, or right click
+      to launch program context menu.</para>
+
+      <para>TrayLauncher does <emphasis>nothing</emphasis> when you drag the
+      tray icon.</para>
+    </section>
+
+    <section>
+      <title>Keyboard control</title>
+
+      <para>You can also use System-Wide hot key : <keycombo>
+          <keycap>Alt</keycap>
+
+          <keycap>win key</keycap>
+        </keycombo>, <keycombo>
+          <keycap>Shift</keycap>
+
+          <keycap>win key</keycap>
+        </keycombo> and <keycombo>
+          <keycap>Ctrl</keycap>
+
+          <keycap>win key</keycap>
+        </keycombo>.</para>
+
+      <tip>
+        <para>You can customize the hot keys in the <link
+        linkend="settingfile">setting file</link>.</para>
+      </tip>
+
+      <para>Note that the left and the right Win keys have different meanings
+      :</para>
+
+      <orderedlist>
+        <listitem>
+          <para><keycombo>
+              <keycap>Alt</keycap>
+
+              <keycap>left win</keycap>
+            </keycombo> is like left click on the tray icon, while <keycombo>
+              <keycap>Alt</keycap>
+
+              <keycap>right win</keycap>
+            </keycombo> is like right click on the tray icon. The only
+          difference is that when you use System-Wide hot keys, the menu will
+          be displayed at the left up corner of your screen instead of at the
+          position of your mouse pointer.</para>
+        </listitem>
+
+        <listitem>
+          <para><keycombo>
+              <keycap>Shift</keycap>
+
+              <keycap>left win</keycap>
+            </keycombo> is like <keycombo>
+              <keycap>Alt</keycap>
+
+              <keycap>left win</keycap>
+            </keycombo>, but the menu will be displayed at the point of your
+          mouse cursor.</para>
+        </listitem>
+
+        <listitem>
+          <para><keycombo>
+              <keycap>Ctrl</keycap>
+
+              <keycap>left win</keycap>
+            </keycombo> will display the Execute or Run dialog, press again,
+          it will disappear.</para>
+        </listitem>
+      </orderedlist>
+
+      <note>
+        <para>If the hot keys are already used by another program,
+        TrayLauncher will display a message, and you will not be able to use
+        the hot key(s) with TrayLauncher.</para>
+      </note>
+
+      <para>Actually, you can control TrayLauncher without using your mouse at
+      all. You can use the arrow key to select a menu item, press enter to
+      execute it. For fast access, you can use a letter key. The first letter
+      of the name of the menu item is used as the index key, the index letter
+      is <emphasis>not</emphasis> case sensitive, so <keycap>a</keycap> is
+      equal to <keycap>A</keycap>.</para>
+
+      <para>For example : if you have the following 3 menu items:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Opera</para>
+        </listitem>
+
+        <listitem>
+          <para>Firefox</para>
+        </listitem>
+
+        <listitem>
+          <para>Flashget</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>when you press the key <keycap>o</keycap>, Opera will be launched.
+      (You should have given the correct path for it.)</para>
+
+      <para>And when you press the key <keycap>F</keycap>, since there are two
+      items begin with <keycap>F</keycap>, first Firefox will be selected, and
+      you press <keycap>F</keycap> key again, Flashget will be selected,
+      <keycap>F</keycap> key again and Firefox is again selected. Press Enter
+      to execute.</para>
+
+      <note>
+        <para>You can set the index letter instead of using the default first
+        letter. See <link
+        linkend="file-format.index-letter">below</link>.</para>
+      </note>
+    </section>
+
+    <section>
+      <title>Auto run</title>
+
+      <para>Use the <command>Start With Windows</command> option on the
+      context menu. Check this, and TrayLauncher will start automatically when
+      you start your computer.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>The file format</title>
+
+    <note>
+      <para>Since V2.0, there is a GUI menu editor, so you don't need to know
+      all the details to edit the command. You can skip this section if you
+      just use the common features.</para>
+
+      <para>But it would be useful if you use some of the advanced features
+      such as wild card mode.</para>
+    </note>
+
+    <para>Maybe the most difficult part is to understand the command file
+    format. TrayLauncher use a command file to store the menu items or
+    commands. You need to edit the file (it's a text file) to add your own
+    items. Menu items look much better on the menu than in the command
+    file.</para>
+
+    <para>You can launch context menu, and use <command>Edit
+    Commands</command> to open and edit <filename>TLCmd.txt</filename>, and
+    after you save the change(s), the menu will be updated the next time you
+    open it, or you can use <command>Refresh</command> to update the menu
+    yourself, no need to restart TrayLauncher.</para>
+
+    <note>
+      <para>This command file (<filename>TLCmd.txt</filename> by default) is a
+      normal text file, and it must be saved in Unicode (little
+      endian).</para>
+    </note>
+
+    <section>
+      <title>Comments:</title>
+
+      <para>Texts after ";" until the end of the line are comments , and will
+      be ignored by TrayLauncher. Otherwise, they present a command or menu
+      item.</para>
+
+      <caution>
+        <para>If you use the GUI command editor to edit and save the menu,
+        <emphasis>all comments will be lost</emphasis>.</para>
+      </caution>
+    </section>
+
+    <section>
+      <title>Menu item</title>
+
+      <para>A command or menu item contains two parts :</para>
+
+      <orderedlist>
+        <listitem>
+          <para>the text before "=" , the name of the item. This is the text
+          shown on the menu item.</para>
+        </listitem>
+
+        <listitem>
+          <para>the text after "=" until the end of the line, that is the
+          filename or command line, or the command of the item.. TrayLauncher
+          will execute the command when you click the menu item.</para>
+        </listitem>
+      </orderedlist>
+
+      <para>For example, add the following two lines to
+      <filename>TLCmd.txt</filename>:</para>
+
+      <example>
+        <title>menu item</title>
+
+        <literallayout>notepad = C:\windows\notepad.exe
+notepadToo = "C:\windows\notepad.exe" a.txt  ;try to open a.txt, 
+; Since v1.9, file icon is customizable, just add ||| your icon path at the end.  
+notepadToo = "C:\windows\notepad.exe" a.txt ||| myicon.ico  ;same as above, but use another icon.
+</literallayout>
+      </example>
+
+      <tip>
+        <para>The " " is optional for normal file target. You use them to
+        quote the executable file when it needs parameters.</para>
+      </tip>
+    </section>
+
+    <section>
+      <title>Sub menu</title>
+
+      <para>Adding a sub menu is much the same as adding a normal menu item.
+      Just add an extra "&gt;" at the beginning of the line. The lines that
+      followed will all be added to the sub menu, until they meet a line that
+      begin with "&lt;" which means end of sub menu.</para>
+
+      <para>The following example Created a sub menu that have 3 items:</para>
+
+      <example>
+        <title>sub menu</title>
+
+        <literallayout>&gt; SubmenuName = "you use this path to set the icon of the sub menu"
+item1 = notepad.exe
+item2 = "notepad.exe" a.txt
+item3 = notepad.exe 
+&lt; ; end of sub menu
+</literallayout>
+      </example>
+    </section>
+
+    <section id="file-format.index-letter">
+      <title>Setting index letter</title>
+
+      <para>Just add a "&amp;" before the letter which you want to set as the
+      index letter:</para>
+
+      <example>
+        <title>index letter</title>
+
+        <literallayout>notepad&amp;Three = "C:\windows\notepad.exe"</literallayout>
+      </example>
+
+      <para>The letter "T" will be underlined on the menu, to indicate that
+      it's the index letter. <tip>
+          <para>If you want to write the letter "&amp;" itself, use
+          "&amp;&amp;" instead.</para>
+        </tip></para>
+    </section>
+
+    <section>
+      <title>Using the '<emphasis>*</emphasis>'</title>
+
+      <para>you can add multiple items at once with "*"; there are now 4 types
+      of usage: *.*, * , ** and *+*. Here are some examples:</para>
+
+      <example>
+        <title>wild card mode</title>
+
+        <literallayout>*.exe = c:\windows\*.* ;add every .exe file in C:\windows\ .
+a*=c:\windows\* ;add every file and folder that begins with "a" in c:\windows\ .
+*.exe = c:\windows\** ;add every .exe file in c:\windows\ or its sub folders or its sub folders' sub folders...
+*.exe = c:\windows\*+* ;add every .exe file in c:\windows\ or its sub folders or its sub folders' sub folders...
+
+;Since v1.8.7, you can use multiple wild cards separated by "|" :  
+*.exe|*.com = c:\windows\*.* ;add every .exe and .com file in c:\windows\ .
+
+;Since v1.9, you can explore all your files with a single line :
+ = \\** ; A special mode to explore My Computer.</literallayout>
+      </example>
+
+      <para>The difference between ** and *+* mode :</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>when you use *+* mode, the menu is built at once and no more
+          (if you don't Refresh),</para>
+        </listitem>
+
+        <listitem>
+          <para>and when you use **, the sub menus are built each time you
+          explore them.</para>
+        </listitem>
+      </itemizedlist>
+
+      <important>
+        <para>Use the *+* mode carefully, it may take minutes to build the
+        menu when there are too many files.</para>
+
+        <para>The ** mode is recommended for large number of items.</para>
+
+        <para>The *+* mode is better for small number of items as the items
+        will be indexed when you use the run dialog.</para>
+
+        <para>Do NOT use any spaces beside "|" when using multiple wild cards,
+        they count.</para>
+      </important>
+    </section>
+
+    <section>
+      <title>Title</title>
+
+      <para>Title is just some text displayed on the menu. To add a Title, you
+      just need to write the text, and that's it. For example, add the
+      following line to the command file:</para>
+
+      <example>
+        <title>title</title>
+
+        <literallayout>This will be displayed as title!</literallayout>
+      </example>
+
+      <para>You will see the text on the menu, but it will be grayed, and
+      nothing will happen when you click on it.</para>
+
+      <para>You can use titles to display some instructions.</para>
+    </section>
+
+    <section>
+      <title>The relative paths</title>
+
+      <para>A single dot, "." means the current directory, that is the one
+      where you put TrayLauncher.exe, while ".." means the parent directory of
+      the current directory.</para>
+    </section>
+
+    <section>
+      <title>Separator and empty line</title>
+
+      <para>An empty line means a separator. So, don't use that if you don't
+      need any separator.</para>
+
+      <para>To make your file more readable, you can use a line that contains
+      only a ";", and the hole line will be treated as a comment and
+      TrayLauncher will simply ignore it.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>The run dialog</title>
+
+    <para>Just press <keycombo>
+        <keycap>Ctrl</keycap>
+
+        <keycap>left win</keycap>
+      </keycombo> to launch the run dialog.</para>
+
+    <para>As you type, TrayLauncher will automatically search the menu items
+    and your system for executable or files that match your input.</para>
+
+    <para>After you enter a command and run it, the run dialog will
+    automatically disappear if there is no error.</para>
+
+    <para>It remembers the latest 50 correct commands and your last input. To
+    clear the history list, enter <userinput>-clear</userinput> or
+    <userinput>:clear</userinput> in the edit box and run it.</para>
+
+    <note>
+      <para>Since v1.8.6 the run dialog can also be launched from the context
+      menu.</para>
+    </note>
+  </section>
+
+  <section>
+    <title>Multilingual</title>
+
+    <para>Since V1.8, you could use the <filename>TL.ini</filename> setting
+    file to specify the language file.</para>
+
+    <para>A language file is just another UNICODE text file, you can edit it
+    if you like.</para>
+
+    <tip>
+      <para>Since v1.8.5, you can choose language in the context menu. No need
+      to edit the setting file manually.</para>
+    </tip>
+  </section>
+
+  <section>
+    <title>Skins</title>
+
+    <para>Since V1.8 TrayLauncher supports skins.</para>
+
+    <para>A skin is just a set of bitmap files in a folder inside the
+    <filename>skin</filename> folder; you can create your own skin as you
+    wish.</para>
+
+    <para>Since V1.9.6 some menu icons can also be customized together in a
+    skin.</para>
+
+    <para>Put the icons in the "icons" folder within a skin folder, and when
+    the skin is selected, the icons within it are used automatically.</para>
+
+    <para>The icons should be named as follow:</para>
+
+    <literallayout>about.ico
+autostart.ico
+close.ico
+edit.ico
+exit.ico
+language.ico
+mclick.ico
+open.ico
+refresh.ico
+run.ico
+skin.ico
+unknown.ico</literallayout>
+
+    <tip>
+      <para>You can put a small (82X110 or smaller) bitmap file
+      <filename>TLlogo.bmp</filename> along with <filename>TrayLauncher.exe,
+      it will be displayed in the about dialog.</filename></para>
+    </tip>
+  </section>
+
+  <section id="settingfile">
+    <title>Setting file</title>
+
+    <para>Since V1.8 Traylauncher has got a setting file, you can edit this
+    file to set a few settings; more settings may be added later.</para>
+
+    <para>The setting file is divided into sections, and each section has some
+    key-value pairs. </para>
+
+    <para>A key is a setting option, while a value is the what you set for
+    that option. Here are some of the keys and their values in general
+    section:</para>
+
+    <table>
+      <title>general settings</title>
+
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry align="center">key</entry>
+
+            <entry align="center">description</entry>
+
+            <entry align="center">available values</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>command</entry>
+
+            <entry>specify a command file</entry>
+
+            <entry>should be a valid path to a text file.</entry>
+          </row>
+
+          <row>
+            <entry>confirm_exit</entry>
+
+            <entry>option to show the confirm dialog when exit
+            traylauncher</entry>
+
+            <entry>1 (show) or 0 ( not show).</entry>
+          </row>
+
+          <row>
+            <entry>language</entry>
+
+            <entry>set the language file to use</entry>
+
+            <entry>a valid language file name.</entry>
+          </row>
+
+          <row>
+            <entry>midclick</entry>
+
+            <entry>use the mid mouse button to show menu or not.</entry>
+
+            <entry>1 (use) or 0 (not use).</entry>
+          </row>
+
+          <row>
+            <entry>runicon</entry>
+
+            <entry>use a custom icon for run dialog.</entry>
+
+            <entry>(valid path to an icon.)</entry>
+          </row>
+
+          <row>
+            <entry>trayicon</entry>
+
+            <entry>use a custom icon for the system tray.</entry>
+
+            <entry>(valid path to an icon.)</entry>
+          </row>
+
+          <row>
+            <entry>priority</entry>
+
+            <entry>set priority of traylauncher.</entry>
+
+            <entry>high, above_normal, normal, below_normal, idle</entry>
+          </row>
+
+          <row>
+            <entry>skin</entry>
+
+            <entry>set the skin</entry>
+
+            <entry>(skin name, or folder name of a skin)</entry>
+          </row>
+
+          <row>
+            <entry>showhidden</entry>
+
+            <entry>show hidden files for wild card mode.</entry>
+
+            <entry>1 (show) or 0 (not show)</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>The history section is maintained by traylauncher automatically,
+    it's the history command you typed in the run dialog.</para>
+
+    <para>The hotkey section is used to change hot keys. Available values are
+    like these: <keycombo>
+        <keycap>Alt</keycap>
+
+        <keycap>A</keycap>
+      </keycombo>, <keycombo>
+        <keycap>Ctrl</keycap>
+
+        <keycap>Alt</keycap>
+
+        <keycap>LWin</keycap>
+      </keycombo>, <keycombo>
+        <keycap>Win</keycap>
+
+        <keycap>Q</keycap>
+      </keycombo>, <keycombo>
+        <keycap>Shift</keycap>
+
+        <keycap>LWin</keycap>
+      </keycombo>, etc. <note>
+        <para>These are system wide hot keys, if another program has already
+        used it, traylauncher would not be able to use that setting.</para>
+      </note></para>
+
+    <para>Here is a sample setting file:</para>
+
+    <example>
+      <title>setting file</title>
+
+      <literallayout>
+[general]
+command = .\TLCmd.txt
+confirm_exit = 0
+language = TL_cn.lng
+midclick = 0
+runicon = .\TLRun.ico
+priority = above_normal
+showhidden = 0
+skin = Office
+trayicon = .\TLTray.ico
+
+[history]
+01 = Avant
+02 = Code Blocks
+
+[hotkey]
+ShowMenuAtMouse = Shift + LWin
+RunDialog = Ctrl + LWin
+ShowContextMenu = Alt + RWin
+ShowContextMenu_alt = Ctrl + Alt + LWin
+ShowMenu = Alt + LWin</literallayout>
+    </example>
+  </section>
+</article>

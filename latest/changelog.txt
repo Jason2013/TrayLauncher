@@ -1,0 +1,267 @@
+﻿[2012-02-12] v2.5.2
+[TrayLauncher]
+Added	: display language version in language menu.
+Added	: updated default command example.
+
+[2012-01-05] v2.5.1
+[TrayLauncher]
+Fixed	: run dialog position not saved on system shutdown or user logout.
+
+[2012-01-03] v2.5.0
+[TrayLauncher]
+Added	: run dialog match command name not only (but prefer) from beginning.
+Added	: run dialog try to execute when user click enter.(the list refreshes on each type, may be improved later.)
+Added	: remember run dialog position in setting file.
+Added	: new command line --sid=<session-id>, --ini=<setting-file>, for running multiple instances.
+Fixed	: do not disable the menu item any more if run failed, could be a UAC cancel.
+
+[2011-12-15] v2.4.2
+[TrayLauncher]
+Fixed	: Holding Ctrl to run as admin should work for mouse click too.
+Fixed	: error message not displayed if cancel run as admin in run dialog.
+Fixed	: files not listed if directory has variables in run dialog.
+Fixed	: error while run non-executable file in run dialog.
+Added	: vs2008 project file.
+Added	: remove history if run command failed.
+Added	: type ":exit" to exit traylauncher.
+
+
+[2011-12-03] v2.4.1
+[TrayLauncher]
+Fixed	: sub folders not searched in wild card mode if path has environment variable.
+
+[2011-12-03] v2.4.0
+[TrayLauncher]
+Added	: force run as administator if Ctrl is pressed, works for menu and run dialog.
+Fixed	: bug reading the icon index.
+[TLMC]
+Added	: select icon from files with multiple icons, like exe,dll.
+
+[2011-10-23] v2.3.0
+[TrayLauncher]
+Added	: support "file_path,n" icon index, where file_path is exe or dll, and n is 0 based.
+	Note that there is NO preview in menu editor, as I don't know how to do it with wxWidgets.
+Fixed	: shortcuts are not executed on some (maybe not full install) xp systems. 
+Fixed	: renamed the sample command file, to avoid over writing old configurations while updating.
+
+[2011-10-05] v2.2.1
+[TrayLauncher]
+Added	: wild card mode supports environment variables.
+Fixed	: menu not always update for run dialog.
+
+[2011-10-04] v2.2.0
+[TrayLauncher]
+Change	: New internal language implementation, use integer as id. (NO change in language file)
+[TLMC]
+Added	: Search support to quickly locate a menu item.
+
+[2010-11-30] v2.1.0
+[TrayLauncher]
+Added	: Expand environment variables in paths.
+Added	: Set process priority in setting file.
+Added	: Some docs
+Change	: For short commands, try more search for execuables.
+Fixed	: A bug about executing relative paths.
+[TLMC]
+Added	: Expand environment variables in paths.
+Change	: quote target file name on drag & drop and find button, find button may update name.
+Change	: show tip message(instead of a dialog box) for name error.
+Fixed	: did not read command file name from setting file.
+
+[2010-11-14] v2.0.0
+Added	: TLMenuCfg, a GUI command editor.
+Change	: About dialog links to website.
+
+[2010-07-31] v1.9.9
+News	: TrayLauncher is open-source now.
+Change	: new multilingual implementation, language file format changed (more readable now).
+Change	: add X button and change some info in about dialog box.
+Change	: some changes in code and code structure.
+Fix		: sometimes failed to get the corrent icon.
+
+[2009-01-10] v1.9.8
+Added	: Hotkeys are customizable by editing the setting file "TL.ini".
+Added	: Auto refresh menu on media insert and remove.
+
+[2008-12-13] v1.9.7
+Fixed	: A display bug that may cause blank sub menus.
+Added	: Romanian translation by Lia Remus Adrian
+
+[2008-12-09] v1.9.6
+Change	: Updated readme.rtf and TLCmd.txt
+Added	: Refresh automatically when run dialog is opened.
+Added	: Menu icons are part of skin. (context menu icons and sub menu icons.)
+Added	: Some nice icons in Office skin by Denny Weinberg.
+Change	: Add a separator between folders and files for dynamic items.
+Change	: Context menu items reordered.
+Change	: Only context menu has side image.
+Fixed	: A display problem that could cause blank items (which open sub menus).
+
+[2008-11-22] v1.9.5.1
+Change	: About dialog: contact email changed.
+Change	: home page moved -> http://sites.google.com/site/chaosplaceorg/tools/traylauncher
+	because all google pages sites are blocked in China.
+Added	: Office skin (microsoft office 2007 skin) by Denny Weinberg
+Added	: German translation "TL_de.lng" by Denny Weinberg
+Fixed	: skin and lng names displayed in correct cases now.
+
+[2008-11-20] v1.9.5
+Added	: Refresh automatically if command file is changed.
+Fixed	: file icon may not be displayed.
+Added	: open dynamic directories, using double click.
+
+[2008-10-21] v1.9.4
+Change	: Updated readme.
+Added	: Run dailog, double-click on the icon will copy command line.
+Change	: some change in code.
+
+[2008-07-01] v1.9.3
+Fixed	: Run dialog does not search in some cases.
+Change	: Limit run dialog input to 512 characters.
+Added	: Save settings when shutting down system.
+
+[2008-06-15] v1.9.2
+Added	: Run dialog lists available files under entered directory.
+Added	: Ignore mid click if clicked multiple times quickly(within 1 second).
+Change	: Limit maximum menu width to 384 pixels.
+Fixed	: Run dialog command detection and relative path problems.
+Change	: Run dialog box displayes the same icon as the menu does.
+Added	: New hotkey, ctrl + alt + leftWinKey, popup context menu. (same as alt + rightWinKey)
+
+[2008-06-06] v1.9.1
+Added	: Hold "Shift" to ignore global Mid click. 
+Fixed	: icon path does not work if quoted.
+Change	: Updated TLCmd.txt.  
+
+[2008-05-20] v1.9.0
+Added	: Press a key with "Shift" down, to prevent the menuitem form being executed.
+Change	: Updated readme and TLCmd.txt.
+Fixed	: a bug in TL.dll.
+Added 	: a special mode(\\**) to explore My Computer.
+Change	: Display menu at last position after refresh.
+Added	: Set the file icon.( * mode NOT supported )
+Change	: No empty line needed at the end of the command file.
+
+[2008-01-22] v1.8.8
+Fixed	: A serious bug that will crash the program in ** mode.
+
+[2008-01-11] v1.8.7
+Change	: Updated readme.
+Added	: Support multiple wildcards separated by "|" .
+
+[2007-12-24] v1.8.6
+Change	: Updated readme.
+Fixed	: Crash with empty path environment variable.
+Change	: Use new method to tell sub menus from menu items.
+Added	: Open run dialog from context menu.
+Added	: Mid click open context menu with left mouse button being pressed down.
+
+[2007-11-19] v1.8.5
+Added 	: Language selection option.
+Added	: Mid mouse click option; to enable this, TL.dll is required.
+Change	: Updated language files.
+Change	: Show menu at mouse cursor position when TrayLauncher is reopened.
+Change	: Check item icon.
+Fixed	: Menu gets blank.
+
+[2007-11-12] v1.8.3
+Added	: 5 new skins(blue, green, gray, or, red) by Anthony.
+Change	: Updated French translation by Anthony.
+Fixed	: Skin menu does not work.
+
+[2007-11-09] v1.8.2
+Change	: Updated readme.
+Fixed	: AutoStart sometimes does not work.
+Added	: Run dialog : Alt-Enter to display the file property.
+Added	: French translation by Chris
+Added	: Run dialog : Drag and drop support and tooltip.
+Fixed	: Run dialog : sometimes does not get the correct executable path.
+Change	: Some minor changes;
+Change	: Updated the default command file "TLCmd.txt".
+
+[2007-09-27] v1.8.1
+Change	: Removed the manifest file.
+Fixed	: History list not saved in the correct order.
+
+[2007-09-22] v1.8
+Change	: Updated readme.
+Added   : Menus are now skinable, two simple skins are included by default.
+Added	: Run dialog history is saved in TL.ini when quit.
+Added	: Run dialog : Search registry for proper executable files.
+Fixed:	: Run dialog box do not set the correct working directory.
+Added	: TL.ini : Show/hide hidden files and folders for wildcard items.
+Change	: Commandline parameters removed.
+
+v1.6.0.370
+Added	: A configuration file TL.ini, to save settings, now only 4. 
+Change	: Now use right click to close the "About" dialog box.
+Fixed	: Run dialog path sometimes contains %1 at the end.
+
+[2007-07-14] v1.6.0.360
+Change	: Improved speed.
+Change	: In the exit confirm dialog box, the default button is now set to Yes;
+Change	: some code improved.
+Fixed 	: commandline does not accept "", and other minor fixes.
+
+[2007-06-19] v1.5.0.352
+Change	: Run dialog box UI, preview moved to above.
+Added	: Run dialog box displays all of the found commands.
+Fixed	: Run dialog box preview icons do not match exactly.
+
+[2007-06-09] v1.5.0.350
+Change	: Updated readme.
+Added	: The tray icon is customizable; so is the run dialog box default icon.
+Added	: A Language file "TL.lng"(a unicode text file) to support multilingual user interface.
+Added	: A new wildcard mode(*+*) for advanced users.
+Added	: Execute dialog, Auto complete known commands, icon and command (or fullpath) preview.
+Change	: Program renamed to "TrayLauncher" from "TrayStart"; command file renamed to "TLCmd.txt" from "TSCmd.txt".
+Change	: Execute dialog, History list can has 50 items.
+Fixed	: Execute dialog, allow long commands.
+
+[2007-05-11] v1.4.0.282
+Change	: Optimized some code and speed.
+Fixed	: Execute dialog position not correctly remembered.
+Fixed	: Execute dialog history list display problem.
+
+[2007-05-09] v1.4.0.249
+Added	: A new Hotkey: Shift + LeftWinkey.
+
+[2007-04-29] v1.4.0.232
+Added	: Sort menu items added by wildcard.
+Added	: A default icon for unknown files.
+Change	: Some code has been rewritten.
+Fixed	: "**" mode don't work well with heavy folders.
+
+[2007-04-26] v1.3.0.170 (not public release)
+Change	: Display "Empty" for an empty folder.
+Change	: Optimized dynamic menu.
+
+[2007-04-25] v1.2.0.164
+Change  : Relative path now works well.
+Change  : Some change in readme.
+Change  : A New ** mode example in TSCmd.txt
+
+[2007-04-24] v1.2.0.162
+Change  : "**" mode should now work better.
+
+[2007-04-19] v1.1.0.141
+Added	: Now the execute dialog supports commands with parameters.
+Added	: Support xp themes.
+
+[2007-04-14] v1.1.0.133
+Change  : Compressed with UPX
+Fixed	: Execute dialog sometimes does not get input focus.
+
+[2007-04-12] traystart v1.0.1.109
+Added 	: an execute dialog, it's like the native run dialog. Use hotkey "Ctrl + leftWinkey" to launch it.
+Change	: readme.rtf .
+Fixed 	: program silently quit problem when press Alt + space.
+Removed	: changeable About logo image. It's not very useful.
+
+[2007-02-09] traystart v1.0.1.88
+changeable About dialog logo image.
+updated readme
+some minor fix
+
+[2007-02-04] traystart v1.0
+first release.
