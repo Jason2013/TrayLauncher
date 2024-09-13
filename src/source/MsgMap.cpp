@@ -1203,10 +1203,10 @@ void SaveRunPos()
 	int y = 0;
 	GetRunPos(x, y);
 	TCHAR sz[64] = {0};
-	snwprintf(sz, sizeof(sz), _T("%d"), x);
+	_snwprintf(sz, sizeof(sz), _T("%d"), x);
 	Settings().Set(sectionGeneral, keyRunPosX, sz);
 	memset(sz, 0, sizeof(sz));
-	snwprintf(sz, sizeof(sz), _T("%d"), y);
+	_snwprintf(sz, sizeof(sz), _T("%d"), y);
 	Settings().Set(sectionGeneral, keyRunPosY, sz);
 }
 
