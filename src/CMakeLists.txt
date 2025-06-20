@@ -55,28 +55,11 @@ set_target_properties(${PROJ_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
 )
 
-
-# 获取资源目录下的所有文件
-file(GLOB_RECURSE ICON_FILES "${CMAKE_SOURCE_DIR}/intro/*")
-file(GLOB_RECURSE LANG_FILES "${CMAKE_SOURCE_DIR}/lng/*")
-file(GLOB_RECURSE SKIN_FILES "${CMAKE_SOURCE_DIR}/skin/*")
-
-function(add_custom_depend2 folder depends)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}"
-        COMMAND ${CMAKE_COMMAND} -E echo "Copy ${CMAKE_SOURCE_DIR}/${folder} to ${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_SOURCE_DIR}/${folder}" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}"
-        DEPENDS "${CMAKE_SOURCE_DIR}/${folder}")
-    set(${depends} ${depends} "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}" SCOPE_PARENT)
-endfunction()
-
 function(copy_folder folder depend_lst)
 
     set(_updated_depends "${${depend_lst}}")
-# 递归列出某个目录下的所有文件
-    file(GLOB_RECURSE ALL_FILES "${CMAKE_SOURCE_DIR}/${folder}/*")
 
-# 依次打印每个文件路径
+    file(GLOB_RECURSE ALL_FILES "${CMAKE_SOURCE_DIR}/${folder}/*")
     foreach(file_path IN LISTS ALL_FILES)
         # message(STATUS "Found file: ${file_path}")
         file(RELATIVE_PATH rel_path "${CMAKE_SOURCE_DIR}" "${file_path}")
@@ -94,35 +77,14 @@ function(copy_folder folder depend_lst)
         list(APPEND _updated_depends "${_output_path}")
     endforeach()
 
-    # 获取调用方传入的变量值
-    # message(STATUS "+++++ " "${depend_lst}")
-    # set(_updated_depends "${${depend_lst}}")
-    # message(STATUS "----- " "${_updated_depends}")
-    # message(STATUS "----- " "${_updated_depends}")
     set(${depend_lst} "${_updated_depends}" PARENT_SCOPE)
 endfunction()
 
 set(depends "")
 
-# add_custom_command(
-#     OUTPUT "${CMAKE_BINARY_DIR}/.resources_copied"
-#     COMMAND ${CMAKE_COMMAND} -E echo "copy files"
-#     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
-#     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_SOURCE_DIR}/intro" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/intro"
-#     COMMAND ${CMAKE_COMMAND} -E echo "${CMAKE_SOURCE_DIR}/intro" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/intro"
-#     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/lng" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/lng"
-#     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/skin" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/skin"
-#     COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/.resources_copied"
-#     DEPENDS ${LANG_FILES} ${ICON_FILES} ${SKIN_FILES}
-#     COMMENT "Copying resources only if changed..."
-# )
-
-# add_cus
 copy_folder(intro depends)
 copy_folder(lng depends)
 copy_folder(skin depends)
 
 add_custom_target(copy_resources DEPENDS "${depends}")
 add_dependencies(${PROJ_NAME} copy_resources)
-
-message(STATUS "*****" ${depends})

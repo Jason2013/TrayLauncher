@@ -24,7 +24,6 @@ set(SOURCE_FILES
 		resource.rc
     )
 
-# set(wxWidgets_ROOT_DIR C:/chenchang/study/TrayLauncher-source/source-archive/wxWidgets-3.2.6-install)
 include(FetchContent)
 FetchContent_Declare(wxWidgets
     GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
@@ -32,14 +31,6 @@ FetchContent_Declare(wxWidgets
 )
 
 set(wxBUILD_SHARED OFF)
-# set(wxBUILD_SAMPLES OFF CACHE BOOL "" FORCE)
-# set(wxBUILD_DEMOS OFF CACHE BOOL "" FORCE)
-# set(wxBUILD_TOOLS OFF CACHE BOOL "" FORCE)
-# set(wxUSE_GUI ON CACHE BOOL "" FORCE)
-# set(wxUSE_NO_MANIFEST ON CACHE BOOL "" FORCE)
-# set(wxUSE_HTML OFF CACHE BOOL "" FORCE)
-# set(wxUSE_MEDIACTRL OFF CACHE BOOL "" FORCE)
-# set(wxUSE_XRC OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(wxWidgets)
 
