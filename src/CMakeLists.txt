@@ -71,22 +71,34 @@ function(add_custom_depend2 folder depends)
 endfunction()
 
 function(copy_folder folder depend_lst)
-    set(_output_path "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}")
-    set(_input_path "${CMAKE_SOURCE_DIR}/${folder}")
 
-    add_custom_command(
-        OUTPUT "${_output_path}"
-        COMMAND ${CMAKE_COMMAND} -E echo "Copy ${_input_path} to ${_output_path}"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${_input_path}" "${_output_path}"
-        DEPENDS "${_input_path}"
-    )
+    set(_updated_depends "${${depend_lst}}")
+# 递归列出某个目录下的所有文件
+    file(GLOB_RECURSE ALL_FILES "${CMAKE_SOURCE_DIR}/${folder}/*")
+
+# 依次打印每个文件路径
+    foreach(file_path IN LISTS ALL_FILES)
+        # message(STATUS "Found file: ${file_path}")
+        file(RELATIVE_PATH rel_path "${CMAKE_SOURCE_DIR}" "${file_path}")
+        message(STATUS "Found file: ${rel_path}")
+
+        set(_output_path "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${rel_path}")
+        set(_input_path "${CMAKE_SOURCE_DIR}/${rel_path}")
+
+        add_custom_command(
+            OUTPUT "${_output_path}"
+            COMMAND ${CMAKE_COMMAND} -E echo "Copy ${_input_path} to ${_output_path}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_input_path}" "${_output_path}"
+            DEPENDS "${_input_path}"
+        )
+        list(APPEND _updated_depends "${_output_path}")
+    endforeach()
 
     # 获取调用方传入的变量值
-    message(STATUS "+++++ " "${depend_lst}")
-    set(_updated_depends "${${depend_lst}}")
-    message(STATUS "----- " "${_updated_depends}")
-    list(APPEND _updated_depends "${_output_path}")
-    message(STATUS "----- " "${_updated_depends}")
+    # message(STATUS "+++++ " "${depend_lst}")
+    # set(_updated_depends "${${depend_lst}}")
+    # message(STATUS "----- " "${_updated_depends}")
+    # message(STATUS "----- " "${_updated_depends}")
     set(${depend_lst} "${_updated_depends}" PARENT_SCOPE)
 endfunction()
 
