@@ -1,6 +1,6 @@
 .hg
 .hgtags
-build
+build*
 VisualStudio/.vs
 VisualStudio/Debug
 VisualStudio/x64/Debug

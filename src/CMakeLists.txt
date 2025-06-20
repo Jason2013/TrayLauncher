@@ -50,3 +50,67 @@ target_compile_definitions(${PROJ_NAME} PRIVATE _UNICODE UNICODE)
 target_link_options(${PROJ_NAME} PRIVATE /SUBSYSTEM:WINDOWS)
 
 target_link_libraries(${PROJ_NAME} Shlwapi.lib Comctl32.lib)
+
+set_target_properties(${PROJ_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+)
+
+
+# 获取资源目录下的所有文件
+file(GLOB_RECURSE ICON_FILES "${CMAKE_SOURCE_DIR}/intro/*")
+file(GLOB_RECURSE LANG_FILES "${CMAKE_SOURCE_DIR}/lng/*")
+file(GLOB_RECURSE SKIN_FILES "${CMAKE_SOURCE_DIR}/skin/*")
+
+function(add_custom_depend2 folder depends)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}"
+        COMMAND ${CMAKE_COMMAND} -E echo "Copy ${CMAKE_SOURCE_DIR}/${folder} to ${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_SOURCE_DIR}/${folder}" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}"
+        DEPENDS "${CMAKE_SOURCE_DIR}/${folder}")
+    set(${depends} ${depends} "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}" SCOPE_PARENT)
+endfunction()
+
+function(copy_folder folder depend_lst)
+    set(_output_path "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/${folder}")
+    set(_input_path "${CMAKE_SOURCE_DIR}/${folder}")
+
+    add_custom_command(
+        OUTPUT "${_output_path}"
+        COMMAND ${CMAKE_COMMAND} -E echo "Copy ${_input_path} to ${_output_path}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${_input_path}" "${_output_path}"
+        DEPENDS "${_input_path}"
+    )
+
+    # 获取调用方传入的变量值
+    message(STATUS "+++++ " "${depend_lst}")
+    set(_updated_depends "${${depend_lst}}")
+    message(STATUS "----- " "${_updated_depends}")
+    list(APPEND _updated_depends "${_output_path}")
+    message(STATUS "----- " "${_updated_depends}")
+    set(${depend_lst} "${_updated_depends}" PARENT_SCOPE)
+endfunction()
+
+set(depends "")
+
+# add_custom_command(
+#     OUTPUT "${CMAKE_BINARY_DIR}/.resources_copied"
+#     COMMAND ${CMAKE_COMMAND} -E echo "copy files"
+#     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different "${CMAKE_SOURCE_DIR}/intro" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/intro"
+#     COMMAND ${CMAKE_COMMAND} -E echo "${CMAKE_SOURCE_DIR}/intro" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/intro"
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/lng" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/lng"
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/skin" "${CMAKE_BINARY_DIR}/bin/$<CONFIG>/skin"
+#     COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/.resources_copied"
+#     DEPENDS ${LANG_FILES} ${ICON_FILES} ${SKIN_FILES}
+#     COMMENT "Copying resources only if changed..."
+# )
+
+# add_cus
+copy_folder(intro depends)
+copy_folder(lng depends)
+copy_folder(skin depends)
+
+add_custom_target(copy_resources DEPENDS "${depends}")
+add_dependencies(${PROJ_NAME} copy_resources)
+
+message(STATUS "*****" ${depends})

@@ -31,7 +31,7 @@ FetchContent_Declare(wxWidgets
     GIT_TAG v3.2.6
 )
 
-# set(wxBUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(wxBUILD_SHARED OFF)
 # set(wxBUILD_SAMPLES OFF CACHE BOOL "" FORCE)
 # set(wxBUILD_DEMOS OFF CACHE BOOL "" FORCE)
 # set(wxBUILD_TOOLS OFF CACHE BOOL "" FORCE)
@@ -43,17 +43,7 @@ FetchContent_Declare(wxWidgets
 
 FetchContent_MakeAvailable(wxWidgets)
 
-# Find wxWidgets
-# find_package(wxWidgets REQUIRED COMPONENTS core base)
-
-# Include wxWidgets use file
-#include(${wxWidgets_USE_FILE})
-
 add_executable(${PROJ_NAME} ${SOURCE_FILES})
-
-# target_include_directories(MyApp PRIVATE
-#     ${wxWidgets_SOURCE_DIR}/include
-# )
 
 target_include_directories(${PROJ_NAME} PRIVATE    
     ../src/include    
@@ -62,13 +52,17 @@ target_include_directories(${PROJ_NAME} PRIVATE
     .    
     ${wxWidgets_SOURCE_DIR}/include)
 
-target_compile_definitions(${PROJ_NAME} PRIVATE _UNICODE UNICODE WXUSINGDLL)
+add_definitions(-DwxNO_UNSAFE_WXUSINGDLL)
+target_compile_definitions(${PROJ_NAME} PRIVATE _UNICODE UNICODE)
 
 target_link_options(${PROJ_NAME} PRIVATE /SUBSYSTEM:WINDOWS)
 
 # Link wxWidgets libraries
-# target_link_libraries(${PROJ_NAME} ${wxWidgets_LIBRARIES})
 target_link_libraries(${PROJ_NAME} PRIVATE
     wx::core
     wx::base
+)
+
+set_target_properties(${PROJ_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
 )
