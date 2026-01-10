@@ -1,0 +1,44 @@
+# 构建目录和产物
+build/
+build*/
+VisualStudio/.vs
+VisualStudio/Debug
+VisualStudio/x64/Debug
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.cbp
+*.vcproj
+
+# CMake 生成文件
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles/
+
+# 二进制文件
+*.exe
+*.dll
+*.lib
+*.obj
+*.o
+*.a
+
+# 资源文件（通常不需要索引）
+*.bmp
+*.ico
+*.png
+*.jpg
+*.nfo
+
+# 文档和配置文件
+*.txt
+*.cfg
+*.lng
+*.xml
+*.html
+
+# 其他不需要索引的文件
+*.wxs
+*.rc
+gpl-3.0.txt
+plan.txt
