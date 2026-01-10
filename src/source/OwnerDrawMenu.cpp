@@ -373,14 +373,14 @@ bool COwnerDrawMenu::IconByPos(const int iPos, const ICONTYPE hIcon) {
 //! 插入一个菜单项
 BOOL COwnerDrawMenu::Insert(IDTYPE ID,const TCHAR * strName, UINT pos, ICONTYPE hIcon)
 {
-	if (IsMenu(ForceCast<MENUTYPE,IDTYPE>(ID))) {
+	if (IsMenu(ForceCast<MENUTYPE,UINT_PTR>(ID))) {
 #ifdef _DEBUG
-		TrackPopupMenu(ForceCast<MENUTYPE,IDTYPE>(ID), 0, 0, 0,0,m_hWnd,0);
+		TrackPopupMenu(ForceCast<MENUTYPE,UINT_PTR>(ID), 0, 0, 0,0,m_hWnd,0);
 #endif
-		DestroyMenu(ForceCast<MENUTYPE,IDTYPE>(ID));
+		DestroyMenu(ForceCast<MENUTYPE,UINT_PTR>(ID));
 	}
 
-	//assert( ! IsMenu(ForceCast<MENUTYPE,IDTYPE>(ID)));
+	//assert( ! IsMenu(ForceCast<MENUTYPE,UINT_PTR>(ID))); // Updated IDTYPE to UINT_PTR
 
 	if(hIcon) {
 		ItemIcon(ID, hIcon);
@@ -664,7 +664,7 @@ MENUTYPE COwnerDrawMenu::TryGetSubMenu(const DRAWITEMSTRUCT * pDI)
 		if (const unsigned int id = pDI->itemID) {
 			IdStrIter last = m_ItemName.end();
 			if (m_ItemName.empty() || (--last)->first < id) {
-				MenuStrMap::const_iterator it = m_MenuName.find(reinterpret_cast<MENUTYPE>(id));
+				MenuStrMap::const_iterator it = m_MenuName.find(reinterpret_cast<MENUTYPE>((UINT_PTR)id));
 				if (it != m_MenuName.end()) {
 					assert (id >= (1 << 16));
 					hResult = it->first;
@@ -745,7 +745,7 @@ bool COwnerDrawMenu::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 
 	IDTYPE iMaybeID = pDI->itemID;
 	MENUTYPE hMaybeMenu = TryGetSubMenu(pDI);
-	assert(!hMaybeMenu || hMaybeMenu == (HMENU)iMaybeID);
+	assert(!hMaybeMenu || hMaybeMenu == (HMENU)(UINT_PTR)iMaybeID);
 
 	const bool bDrawedIcon = DrawMenuIcon(pDI);
 

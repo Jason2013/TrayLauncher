@@ -1585,7 +1585,7 @@ INT_PTR  CALLBACK AboutProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 	case WM_CTLCOLORSTATIC:
 
 		SetBkMode(reinterpret_cast<HDC>(wParam),TRANSPARENT);
-		return reinterpret_cast<BOOL>(GetStockObject(NULL_BRUSH));
+		return GetStockObject(NULL_BRUSH) != NULL;
 
 	case WM_DESTROY:
 		KillTimer(hDlg,uTimerID);
