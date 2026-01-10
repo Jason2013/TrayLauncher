@@ -16,15 +16,16 @@ protected:
 	typedef TS & RTS;
 	typedef CRTS Prm;
 	typedef unsigned int Ui;
-	inline static CS Empty() {return _T("");}
 public:
-	explicit CItem( Prm strName, Prm strPath = Empty(), Prm strEx = Empty() );
+	inline static CS Empty() {return _T("");}
+	explicit CItem( Prm strName, Prm strPath = Empty(), Prm strEx = Empty(), Prm strWorkDir = Empty() );
 
 	virtual ~CItem() {}
 
 	Prm Name() const { return Get(0); }
 	Prm Path() const { return Get(1); }
 	Prm Ex() const { return Get(2);}
+	Prm WorkDir() const { return Get(3);}
 	Prm Icon() const {return Ex().length()?Ex():Path();}
 
 	TS & Name() { return Get(0); }
@@ -32,6 +33,7 @@ public:
 	Prm Name(Prm strName) { return Get(0) = strName; }
 	Prm Path(Prm strPath) { return Get(1) = strPath; }
 	Prm Ex(Prm strEx) { return Get(2) = strEx; }
+	Prm WorkDir(Prm strWorkDir) { return Get(3) = strWorkDir; }
 	Prm Icon(Prm strEx) { return Get(2) = strEx; }
 
 private:
@@ -40,7 +42,7 @@ private:
 	TS & Get(Ui n) { return m_str[n]; }
 
 private:
-	std::vector<TS> m_str; // { name, path }
+	std::vector<TS> m_str; // { name, path, icon, workdir }
 	//TS::value_type m_sep;// '='
 
 };
@@ -52,7 +54,7 @@ public:
 	using CItem::Name;
 	using CItem::Path;
 
-	explicit CMenuData( Prm strName, Prm strPath = Empty(), Prm strEx = Empty() );
+	explicit CMenuData( Prm strName, Prm strPath = Empty(), Prm strEx = Empty(), Prm strWorkDir = Empty() );
 	~CMenuData();
 	Ui Count() const { return m_sub.size(); }
 
@@ -67,9 +69,9 @@ public:
 
 	void Clear();
 
-	bool AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx = Empty()) ;
+	bool AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx = Empty(), Prm strWorkDir = Empty()) ;
 
-	bool AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx = Empty());
+	bool AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx = Empty(), Prm strWorkDir = Empty());
 
 	bool Remove(Ui pos) ;
 
@@ -79,12 +81,12 @@ public:
 
 
 private:
-	//! Êä³ö¸ñÊ½»¯ÄÚÈİµ½ÎÄ¼ş,µİ¹éÓ¦ÓÃÓÚ×Ó²Ëµ¥
+	//! è¾“å‡ºæ ¼å¼åŒ–å†…å®¹åˆ°æ–‡ä»¶,é€’å½’åº”ç”¨äºå­èœå•
 
-	//! @param pFile ÒÑ¾­´ò¿ªµÄÎÄ¼ş
-	//! @param pad ×Ó²Ëµ¥µÄÇ°×º×Ö·û( ÈçÓÃtabËõ½ø)
-	//! @param nPad ¹Ì¶¨Ìí¼ÓµÄÇ°×º×Ö·û¸öÊı
-	//! @param pFile ×Ó²Ëµ¥µÄËõ½ø¼¶Êı(padµÄ¸öÊı)
+	//! @param pFile å·²ç»æ‰“å¼€çš„æ–‡ä»¶
+	//! @param pad å­èœå•çš„å‰ç¼€å­—ç¬¦( å¦‚ç”¨tabç¼©è¿›)
+	//! @param nPad å›ºå®šæ·»åŠ çš„å‰ç¼€å­—ç¬¦ä¸ªæ•°
+	//! @param pFile å­èœå•çš„ç¼©è¿›çº§æ•°(padçš„ä¸ªæ•°)
 	bool OutPut(FILE * pFile, TCHAR pad, int nPad, int step) const;
 	int LoadFile(FILE *pFile) ;
 	std::vector<CItem*> m_sub;

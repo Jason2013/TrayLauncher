@@ -5,11 +5,11 @@
 
 namespace ns_file_str_ops {
 
-//!´ÓÎÄ¼ş¶ÁÈ¡Ò»ĞĞ¡£
+//!ä»æ–‡ä»¶è¯»å–ä¸€è¡Œã€‚
 
-//! \param file FILE *ÎÄ¼şÖ¸Õë£¬Êä³ö¡£
-//! \param strLine TSTRING ÀàĞÍ ±£´æ½á¹û¡£
-//! \return ¶Áµ½ÎÄ¼şÄ©Î²·µ»Øfalse£» ·ñÔò·µ»Ø true ¡£
+//! \param file FILE *æ–‡ä»¶æŒ‡é’ˆï¼Œè¾“å‡ºã€‚
+//! \param strLine TSTRING ç±»å‹ ä¿å­˜ç»“æœã€‚
+//! \return è¯»åˆ°æ–‡ä»¶æœ«å°¾è¿”å›falseï¼› å¦åˆ™è¿”å› true ã€‚
 bool GetLine(FILE * file, TSTRING &strLine)
 {
 
@@ -67,7 +67,7 @@ TSTRING & ToLowerCase(TSTRING &str)
 	return str;
 }
 
-//! È¥µô×Ö·û´® Ê×Î² µÄ¿Õ°×¡£
+//! å»æ‰å­—ç¬¦ä¸² é¦–å°¾ çš„ç©ºç™½ã€‚
 const TSTRING StripSpaces(const TSTRING & inStr)
 {
 	TSTRING::size_type iStart(0);
@@ -150,7 +150,7 @@ void GetCmdAndParam(const TSTRING& const_strCmdParam, TSTRING& strCmd, TSTRING& 
 	strCmd.clear();
 	strParam.clear();
 
-	//È¥µôÒıµ¼¿Õ°×
+	//å»æ‰å¼•å¯¼ç©ºç™½
 	if (strCmdParam.length() && (_istspace(*strCmdParam.begin()) || _istspace(*strCmdParam.rbegin()) )) {
 		strCmdParam = ns_file_str_ops::StripSpaces(strCmdParam);
 	}
@@ -185,7 +185,7 @@ void GetCmdAndParam(const TSTRING& const_strCmdParam, TSTRING& strCmd, TSTRING& 
 }
 
 
-//! ¸ù¾İºó×ºÃûÅĞ¶ÏÎÄ¼şÊÇ·ñÎª¿ÉÖ´ĞĞÎÄ¼ş.
+//! æ ¹æ®åç¼€ååˆ¤æ–­æ–‡ä»¶æ˜¯å¦ä¸ºå¯æ‰§è¡Œæ–‡ä»¶.
 bool IsPathExe(const TSTRING & path)
 {
 
@@ -225,7 +225,7 @@ bool ToFullPath(TSTRING & strFile)
 	{
 		TCHAR path[MAX_PATH] ={0};
 
-		// Ïà¶ÔÂ·¾¶,»ñÈ¡Ä¿Â¼µÄ¾ø¶ÔÂ·¾¶
+		// ç›¸å¯¹è·¯å¾„,è·å–ç›®å½•çš„ç»å¯¹è·¯å¾„
 		int length = GetFullPathName(strFile.c_str(), MAX_PATH,path,NULL);
 		if (length > MAX_PATH) {
 			std::vector<TCHAR> vEnough(length);
@@ -247,21 +247,21 @@ bool ToFullPath(TSTRING & strFile)
 	return bRet;
 }
 
-//! ÔËĞĞÃüÁîĞĞ
+//! è¿è¡Œå‘½ä»¤è¡Œ
 bool Execute(const TSTRING & strToBeExecuted, const TCHAR * pOpr, const bool bExpandEnv)
 {
-	return ExecuteEx(strToBeExecuted, pOpr, NULL, bExpandEnv);
+	return ExecuteEx(strToBeExecuted, pOpr, NULL, bExpandEnv, _T(""));
 }
 
-//! ÔËĞĞÃüÁîĞĞ
-bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr, HWND hwnd, bool bExpandEnv)
+//! è¿è¡Œå‘½ä»¤è¡Œ
+bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr, HWND hwnd, bool bExpandEnv, const TSTRING & strWorkDir)
 {
-	// ÏÈÕ¹¿ª»·¾³±äÁ¿
+	// å…ˆå±•å¼€ç¯å¢ƒå˜é‡
 	const int N = 512;
 	std::vector<TCHAR> buf(N);
 	if (bExpandEnv && ExpandEnvironmentStrings(strToBeExecuted.c_str(), &buf[0], N) && TSTRING(strToBeExecuted) != &buf[0])
 	{
-		return ExecuteEx(&buf[0], pOpr, hwnd, false);
+		return ExecuteEx(&buf[0], pOpr, hwnd, false, strWorkDir);
 	}
 
 	TSTRING strCmd,strParam;
@@ -269,9 +269,23 @@ bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr, HWND hwnd, b
 	ToFullPath(strCmd);
 
 	TSTRING strDir;
-	const TSTRING::size_type posDirEnd = strCmd.find_last_of('\\');
-	if (strCmd.npos != posDirEnd) {
-		strDir = strCmd.substr(0, posDirEnd);
+	// å¦‚æœæŒ‡å®šäº†å·¥ä½œç›®å½•ï¼Œä½¿ç”¨æŒ‡å®šçš„å·¥ä½œç›®å½•ï¼›å¦åˆ™ä½¿ç”¨ç¨‹åºæ‰€åœ¨ç›®å½•
+	if (!strWorkDir.empty()) {
+		strDir = strWorkDir;
+		// å±•å¼€ç¯å¢ƒå˜é‡
+		if (ExpandEnvironmentStrings(strDir.c_str(), &buf[0], N) && TSTRING(strDir) != &buf[0]) {
+			strDir = &buf[0];
+		}
+		// è½¬æ¢ä¸ºç»å¯¹è·¯å¾„
+		TCHAR fullPath[MAX_PATH] = {0};
+		if (GetFullPathName(strDir.c_str(), MAX_PATH, fullPath, NULL) > 0) {
+			strDir = fullPath;
+		}
+	} else {
+		const TSTRING::size_type posDirEnd = strCmd.find_last_of('\\');
+		if (strCmd.npos != posDirEnd) {
+			strDir = strCmd.substr(0, posDirEnd);
+		}
 	}
 
 	SHELLEXECUTEINFO sei = {0};
@@ -281,14 +295,14 @@ bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr, HWND hwnd, b
 	sei.lpVerb = pOpr;
 	sei.lpFile = strCmd.c_str();
 	if (IsPathExe(strCmd)) {
-		// À©Õ¹ \"  - > \"\"\"
-		TSTRING::size_type pos = strParam.find('\"');
-		while (pos != strParam.npos) {
-			strParam.insert(strParam.begin() + pos, '\"');
-			strParam.insert(strParam.begin() + pos, '\"');
-			pos += 3;
-			pos = strParam.find('\"', pos);
-		}
+		// å±•å¼€ \"  - > \"\"\"
+		//TSTRING::size_type pos = strParam.find('\"');
+		//while (pos != strParam.npos) {
+		//	strParam.insert(strParam.begin() + pos, '\"');
+		//	strParam.insert(strParam.begin() + pos, '\"');
+		//	pos += 3;
+		//	pos = strParam.find('\"', pos);
+		//}
 		sei.lpParameters = strParam.c_str();
 	}
 	else
@@ -305,10 +319,13 @@ bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr, HWND hwnd, b
 			TSTRING strPath;
 			if (FindExe(strCmd, strPath))
 			{
-				strDir.clear();
-				TSTRING::size_type pos = strPath.find_last_of('\\');
-				if (TSTRING::npos != pos) {
-					strDir = strPath.substr(0,pos);
+				// å¦‚æœæŒ‡å®šäº†å·¥ä½œç›®å½•ï¼Œä¿æŒä½¿ç”¨æŒ‡å®šçš„å·¥ä½œç›®å½•
+				if (strWorkDir.empty()) {
+					strDir.clear();
+					TSTRING::size_type pos = strPath.find_last_of('\\');
+					if (TSTRING::npos != pos) {
+						strDir = strPath.substr(0,pos);
+					}
 				}
 				sei.lpFile = strPath.c_str();
 				sei.lpDirectory = strDir.c_str();

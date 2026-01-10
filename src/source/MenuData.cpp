@@ -4,28 +4,36 @@
 
 using namespace ns_file_str_ops;
 
-CItem::CItem( Prm strName, Prm strPath, Prm strEx):m_str(3){
+CItem::CItem( Prm strName, Prm strPath, Prm strEx, Prm strWorkDir):m_str(4){
 		m_str[0] = strName;
 		m_str[1] = strPath;
 		m_str[2] = strEx;
-}
+		m_str[3] = strWorkDir;
+	}
 
 bool CItem::OutPut(FILE * pFile, TCHAR pad, int nPad) const{
 	if (!pFile)
 		return false;
 	if (!(Name() == Empty() && Path() == Empty())) {
-		WriteStringToFile(tString(nPad, pad) + Name() + _T(" = ") + Path(), pFile);
+		TSTRING strLine = tString(nPad, pad) + Name() + _T(" = ") + Path();
 		if (!Ex().empty()) {
-			WriteStringToFile(tString(3,'|') + Ex(), pFile);
+			strLine += _T("|||") + Ex();
 		}
+		if (!WorkDir().empty()) {
+			if (Ex().empty()) {
+				strLine += _T("|||");
+			}
+			strLine += _T("|||") + WorkDir();
+		}
+		WriteStringToFile(strLine, pFile);
 	}
 	return true;
 }
 
 
 
-CMenuData::CMenuData( Prm strName, Prm strPath, Prm strEx)
-:CItem(strName,strPath,strEx)
+CMenuData::CMenuData( Prm strName, Prm strPath, Prm strEx, Prm strWorkDir)
+:CItem(strName,strPath,strEx,strWorkDir)
 {}
 
 CMenuData::~CMenuData() { Clear();}
@@ -40,18 +48,18 @@ void CMenuData::Clear() {
 
 
 
-bool CMenuData::AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx) {
+bool CMenuData::AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx, Prm strWorkDir) {
 	if ( pos >= 0 && pos <= m_sub.size() ) {
-		CItem * p = new CItem(strName, strPath, strEx);
+		CItem * p = new CItem(strName, strPath, strEx, strWorkDir);
 		m_sub.insert(m_sub.begin() + pos, p);
 		return true;
 	}
 	return false;
 }
 
-bool CMenuData::AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx) {
+bool CMenuData::AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx, Prm strWorkDir) {
 	if ( pos >= 0 && pos <= m_sub.size() ) {
-		CMenuData * p = new CMenuData(strName, strPath, strEx);
+		CMenuData * p = new CMenuData(strName, strPath, strEx, strWorkDir);
 		m_sub.insert(m_sub.begin() + pos, p);
 		return true;
 	}
@@ -126,21 +134,39 @@ bool CMenuData::OutPut(FILE * pFile, TCHAR pad, int nPad, int step) const {
 
 namespace {
 
-void SepPathAndIcon(TSTRING &strPath, TSTRING &strIcon)
+void SepPathIconAndWorkDir(TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkDir)
 {
 	TSTRING strSep(_T("|||"));
-	const TSTRING & strPathAndIcon = strPath;
-	TSTRING::size_type sepPos = strPathAndIcon.find(strSep);
+	const TSTRING & strPathAndExtras = strPath;
+	TSTRING::size_type sepPos1 = strPathAndExtras.find(strSep);
 
-	if (TSTRING::npos != sepPos)
+	if (TSTRING::npos != sepPos1)
 	{
-		strIcon = ns_file_str_ops::StripSpaces( strPathAndIcon.substr(sepPos + strSep.length()) );
-		strPath = ns_file_str_ops::StripSpaces( strPathAndIcon.substr(0, sepPos) );
+		TSTRING strRemaining = ns_file_str_ops::StripSpaces( strPathAndExtras.substr(sepPos1 + strSep.length()) );
+		strPath = ns_file_str_ops::StripSpaces( strPathAndExtras.substr(0, sepPos1) );
+		
+		// Check for second separator (work directory)
+		TSTRING::size_type sepPos2 = strRemaining.find(strSep);
+		if (TSTRING::npos != sepPos2)
+		{
+			strIcon = ns_file_str_ops::StripSpaces( strRemaining.substr(0, sepPos2) );
+			strWorkDir = ns_file_str_ops::StripSpaces( strRemaining.substr(sepPos2 + strSep.length()) );
+		}
+		else
+		{
+			strIcon = strRemaining;
+			strWorkDir = CItem::Empty();
+		}
 
 		if (!strIcon.empty() && '\"' == strIcon[0]) {
 			TSTRING::size_type pos = strIcon.find('\"', 1);
 			strIcon = strIcon.substr(1, pos == TSTRING::npos ? pos : pos - 1);
 		}
+	}
+	else
+	{
+		strIcon = CItem::Empty();
+		strWorkDir = CItem::Empty();
 	}
 }
 
@@ -185,9 +211,9 @@ int CMenuData::LoadFile(FILE *pFile) {
 				//break;
 			default:
 				{
-					TSTRING strIcon;
-					SepPathAndIcon(strPath, strIcon);
-					nItems += AddItem(Count(), strName, strPath, strIcon);
+					TSTRING strIcon, strWorkDir;
+					SepPathIconAndWorkDir(strPath, strIcon, strWorkDir);
+					nItems += AddItem(Count(), strName, strPath, strIcon, strWorkDir);
 				}
 				break;
 		}

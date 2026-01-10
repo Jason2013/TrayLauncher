@@ -67,13 +67,13 @@ namespace ns_findfile {
 	template <class Container, class Cond>
 	unsigned int BuildNameMap(const TSTRING & strPath, Container &namePaths, Cond allow = KeepAll())
 	{
-		const TCHAR * pSearch = strPath.c_str();//strPath °üº¬×îºóÒ»¸ö*£¬ÓÃÓÚËÑË÷Ìõ¼ş
+		const TCHAR * pSearch = strPath.c_str();//strPath åŒ…å«æœ€åä¸€ä¸ª*ï¼Œç”¨äºæœç´¢æ¡ä»¶
 		assert(!strPath.empty() && *strPath.rbegin() == '*');
 		WIN32_FIND_DATA fd = {0};
 		const TCHAR *f = fd.cFileName;
 		const int NBUF = 1024;
 		TCHAR fullPath[NBUF] = {0};
-		const size_t len = _tcslen(pSearch)-1;// len : Ö÷Ä¿Â¼Â·¾¶(°üÀ¨·´Ğ±Ïß)³¤¶È
+		const size_t len = _tcslen(pSearch)-1;// len : ç›®å½•è·¯å¾„(ä¸åŒ…å«åæ–œæ )é•¿åº¦
 
 		memcpy(fullPath,pSearch, len * sizeof(TCHAR));
 		unsigned int n = 0;
@@ -85,7 +85,7 @@ namespace ns_findfile {
 					continue;
 				}
 
-				//ÎÄ¼ş»ò×ÓÄ¿Â¼£¨²»´ø·´Ğ±Ïß£©µÄÍêÕûÂ·¾¶£¬
+				//æ–‡ä»¶æˆ–å­ç›®å½•ï¼ˆä¸å¸¦åæ–œçº¿ï¼‰çš„å®Œæ•´è·¯å¾„ï¼Œ
 				memcpy(fullPath + len,f,(1 + _tcslen(f))*sizeof(TCHAR));
 
 				namePaths.push_back(StrPair(f, fullPath));
@@ -112,7 +112,7 @@ namespace  ns_file_str_ops
 	const TSTRING StripSpaces(const TSTRING & str);
 	bool StripCharsAtEnds(TSTRING & str, const TSTRING & chars);
 
-	//! ×ª»»µ½Ğ¡Ğ´×ÖÄ¸¡£
+	//! è½¬æ¢åˆ°å°å†™å­—æ¯ã€‚
 	TSTRING & ToLowerCase(TSTRING &str);
 	inline TSTRING LowerCase(const TSTRING &str) {
 		TSTRING s(str);
@@ -121,31 +121,31 @@ namespace  ns_file_str_ops
 
 	TSTRING & DoubleChar(TSTRING & str, const TSTRING::value_type ch);
 
-	//! ÅĞ¶Ï×Ö·û´®ÊÇ·ñÒÔ ¸ø¶¨µÄ×Ö·û´®½áÎ²¡£
+	//! åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä»¥ ç»™å®šçš„å­—ç¬¦ä¸²ç»“å°¾ã€‚
 	bool IsStrEndWith(const TSTRING & strSrc, const TSTRING & strMatchThis, bool bMatchCase = true);
 
-	//! ¸ù¾İºó×ºÃûÅĞ¶ÏÎÄ¼şÊÇ·ñÎª¿ÉÖ´ĞĞÎÄ¼ş.
+	//! æ ¹æ®åç¼€ååˆ¤æ–­æ–‡ä»¶æ˜¯å¦ä¸ºå¯æ‰§è¡Œæ–‡ä»¶.
 	bool IsPathExe(const TSTRING & path);
 
 
 	bool GetLastFileTime(const TCHAR * szFN, FILETIME *pSTCreate, FILETIME *pSTAccess,  FILETIME *pSTWrite);
 
-	//! ·ÖÎö³öÃüÁîºÍ²ÎÊı
+	//! åˆ†æå‡ºå‘½ä»¤å’Œå‚æ•°
 	void GetCmdAndParam(const TSTRING& const_strCmdParam, TSTRING& strCmd, TSTRING& strParam);
 
 
 	inline bool ShellSuccess(const HINSTANCE hInst)
 	{
-		return reinterpret_cast<int>(hInst) > 32;
+		return hInst > reinterpret_cast<HINSTANCE>(32);
 	}
 
 	bool FindExe(const TSTRING &strCmd, TSTRING & strFullPath);
 
-	//! ÔËĞĞÃüÁîĞĞ
+	//! è¿è¡Œå‘½ä»¤è¡Œ
 	bool Execute(const TSTRING & strToBeExecuted, const TCHAR * pOpr = NULL, const bool bExpandEnv = true);
 
-	//! ÔËĞĞÃüÁîĞĞ
-	bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr = NULL, HWND hwnd = NULL, bool bExpandEnv = true);
+	//! è¿è¡Œå‘½ä»¤è¡Œ
+	bool ExecuteEx(const TSTRING & strToBeExecuted, const TCHAR * pOpr = NULL, HWND hwnd = NULL, bool bExpandEnv = true, const TSTRING & strWorkDir = _T(""));
 
 };
 

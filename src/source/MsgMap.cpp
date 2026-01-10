@@ -186,7 +186,7 @@ bool & IgnoreUser()
 	return s_bIgnoreUser;
 }
 
-//£¨ÏûÏ¢£©º¯ÊýÉùÃ÷
+//æ¶ˆæ¯å¤„ç†å‡½æ•°å£°æ˜Ž
 LRESULT  MsgCreate		(HWND, UINT, WPARAM, LPARAM);
 LRESULT  MsgIconNotify	(HWND, UINT, WPARAM, LPARAM);
 LRESULT  MsgDestroy		(HWND, UINT, WPARAM, LPARAM);
@@ -254,16 +254,16 @@ int SetHotkeys()
 int BuildMenuFromFile(const TCHAR * strFile)
 {
 	file_ptr file(strFile,TEXT("rb"));
-	int nItems = 0; //²Ëµ¥Ïî¸öÊý,·µ»ØÖµ
+	int nItems = 0; //ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½Öµ
 
 	if(!file) {
-		nItems = -1; // ´ò¿ªÎÄ¼þ´íÎó
+		nItems = -1; // ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	} else if (!ns_file_str_ops::IsStrEndWith(strFile, _T(".xml"), false) && _fgettc(file) != 0xfeff) {
 		MessageBox(NULL, _LNG(STR_cmd_file_not_UNICODE),NULL,MB_OK);
 	} else {
 		file.Reset();
 		nItems = g_pTray->LoadMenuFromFile(strFile, MENUID_START);
-		//nItems = g_pTray->BuildMenu(file,MENUID_START); //todo Ò²×ö³É ·Ç ³ÉÔ±º¯Êý??
+		//nItems = g_pTray->BuildMenu(file,MENUID_START); //todo Ò²ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½??
 	}
 
 	return nItems;
@@ -411,7 +411,7 @@ void SetMenuIcons(const TSTRING & iconDir = _T(""))
 
 
 }
-//! ÉèÖÃ²Ëµ¥Æ¤·ô
+//! ï¿½ï¿½ï¿½Ã²Ëµï¿½Æ¤ï¿½ï¿½
 void SetMenuSkin(const TSTRING & skinSubDir)
 {
 	const int nPicPerItem = 3;
@@ -484,7 +484,7 @@ void SetMenuSkin(const TSTRING & skinSubDir)
 }
 
 
-// ²Ù×÷ÍÐÅÌÍ¼±ê,Ìí¼Ó,¸üÐÂ»òÉ¾³ý
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Â»ï¿½É¾ï¿½ï¿½
 void Systray(const HWND hWnd, const DWORD dwMessage, ICONTYPE hIcon = NULL, const TSTRING &strInfo = _T(""))
 {
 	NOTIFYICONDATA nid = {0};
@@ -600,7 +600,7 @@ void ShowSysMenu(HWND hWnd, const POINT * p = NULL)
 }
 
 
-//ÏÔÊ¾ÔËÐÐ¶Ô»°¿ò
+//æ˜¾ç¤ºè¿è¡Œå¯¹è¯æ¡†
 void ShowRunDlg()
 {
 	if (IgnoreUser()) return;
@@ -681,7 +681,7 @@ int MyProcessCommand(HWND hWnd, int id)
 		Settings().Save();
 		if(	!ShellSuccess(ShellExecute(NULL, _T("open"), _T(".\\TLMenuCfg.exe"), (_T("\"--ini=") + ExtraSettings()[_T("ini")] + _T("\"")).c_str(), NULL,SW_SHOW)) &&
 			!ShellSuccess(ShellExecute(NULL,NULL,g_fileName.c_str(),NULL,NULL,SW_SHOW))) {
-			//Ö´ÐÐÃüÁîÊ§°Ü
+			//Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
 			if(ShellSuccess(ShellExecute(NULL, _T("open"), _T("notepad.exe"), g_fileName.c_str(),NULL,SW_SHOW)))
 				break;
 
@@ -713,7 +713,7 @@ int MyProcessCommand(HWND hWnd, int id)
 
 		//todo Now it's for test only
 		if(!ShellSuccess(ShellExecute(NULL,NULL, _T(".\\TL.ini"),NULL,NULL,SW_SHOW))) {
-			//Ö´ÐÐÃüÁîÊ§°Ü
+			//Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
 			ShellSuccess(ShellExecute(NULL,_T("open"),_T("notepad.exe"), _T(".\\TL.ini"), NULL,SW_SHOW));
 		}
 
@@ -760,7 +760,7 @@ int MyProcessCommand(HWND hWnd, int id)
 }
 
 
-// ³õÊ¼»¯£¬Ìí¼ÓÏûÏ¢Ó³Éä
+// åˆå§‹åŒ–å¹¶æ³¨å†Œæ¶ˆæ¯æ˜ å°„
 void InitMsgMap()
 {
 	TheMsgMap().Add(WM_CREATE,		&MsgCreate);
@@ -776,17 +776,17 @@ void InitMsgMap()
 }
 
 
-//! ´¦ÀíÀ´×ÔÁíÒ»¸ö½ø³ÌµÄÍ¨Öª
+//! å¤„ç†æ–°å®žä¾‹å¯åŠ¨çš„é€šçŸ¥
 LRESULT  MsgNewInstance(HWND hWnd, UINT, WPARAM, LPARAM)
 {
-	Sleep(100);//µÈ´ý·¢ËÍ·½ÍË³ö¡£
+	Sleep(100);//ç­‰å¾…å…¶ä»–è¿›ç¨‹é€€å‡º
 	Systray(hWnd,NIM_ADD,GTrayIcon().Get());
 	ShowMenu();
 	return 0;
 }
 
 
-//! ´¦ÀíË¢ÐÂÍ¨Öª
+//! å¤„ç†åˆ·æ–°é€šçŸ¥
 LRESULT  MsgRefresh(HWND, UINT, WPARAM, LPARAM)
 {
 	if (g_pTray.Get() && g_pTray->HasMyComputer()) {
@@ -795,7 +795,7 @@ LRESULT  MsgRefresh(HWND, UINT, WPARAM, LPARAM)
 
 	return 0;
 }
-//! ´¦ÀíÊó±êÖÐ¼üµã»÷µÄÍ¨Öª
+//! å¤„ç†é¼ æ ‡ä¸­é”®ç‚¹å‡»é€šçŸ¥
 LRESULT  MsgMidClick(HWND hWnd, UINT, WPARAM bDown, LPARAM)
 {
 	if(bDown || (GetKeyState(VK_LBUTTON)&0x8000) )
@@ -812,11 +812,11 @@ LRESULT  MsgMidClick(HWND hWnd, UINT, WPARAM bDown, LPARAM)
 }
 
 
-//! ´¦Àí¹Ø»ú£¬×¢ÏúµÈ Í¨Öª
+//! å¤„ç†ç³»ç»Ÿå…³é—­æˆ–æ³¨é”€çš„é€šçŸ¥
 LRESULT  MsgEndSession(HWND, UINT, WPARAM wParam, LPARAM)   // WM_ENDSESSION
 {
 	if (wParam) {
-		// ¼´½«¹Ø±Õ»á»°
+		// ç³»ç»Ÿå…³é—­ä¼šè¯
 		SaveRunPos();
 		Settings().Save();
 	}
@@ -824,7 +824,7 @@ LRESULT  MsgEndSession(HWND, UINT, WPARAM wParam, LPARAM)   // WM_ENDSESSION
 	return 0;
 }
 
-//! ´¦Àí¹Ø»ú£¬×¢ÏúµÈ Í¨Öª
+//! å¤„ç†è®¾å¤‡å˜åŒ–é€šçŸ¥
 LRESULT  MsgDeviceChange(HWND hWnd, UINT, WPARAM wParam, LPARAM lParam)   // WM_DEVICECHANGE
 {
 	PDEV_BROADCAST_HDR lpdb = (PDEV_BROADCAST_HDR)lParam;
@@ -853,11 +853,11 @@ LRESULT  MsgDeviceChange(HWND hWnd, UINT, WPARAM wParam, LPARAM lParam)   // WM_
 	return 0;
 }
 //
-//  º¯Êý: ProcMessage(HWND, UINT, WPARAM, LPARAM)
+//  å‡½æ•°: ProcMessage(HWND, UINT, WPARAM, LPARAM)
 //
-//  Ä¿µÄ: ´¦ÀíÖ÷´°¿ÚµÄÏûÏ¢¡£
+//  ç›®æ ‡: å¤„ç†çª—å£çš„æ¶ˆæ¯
 //
-// ·ÖÅäÏûÏ¢
+//å¤„ç†æ¶ˆæ¯
 LRESULT CALLBACK ProcMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result(0xdeadbeef);
@@ -886,9 +886,9 @@ const TSTRING TryUpdateMenuFileToXml(const TSTRING & strFileName)
 	TSTRING new_name(strFileName);
 	// update to xml format.
 	if (!ns_file_str_ops::IsStrEndWith(strFileName, _T(".xml"), false)) {
-		if (IDYES == MessageBox(NULL, _LNG(STR_ASK_UPDATE_MENU_FILE_TO_XML), _T("Tray Launcher"), MB_YESNO)) {
-			CMenuData tmp(_T("root"));
-			tmp.Load(strFileName);
+		// è‡ªåŠ¨è½¬æ¢ä¸º XML æ ¼å¼ï¼Œä¸è¯¢é—®ç”¨æˆ·
+		CMenuData tmp(_T("root"));
+		if (tmp.Load(strFileName) > 0) {  // åªæœ‰æˆåŠŸåŠ è½½æ‰è½¬æ¢
 			const TSTRING prefix = strFileName.substr(0, strFileName.find_last_of('.'));
 			new_name = prefix + _T(".xml");
 			// get new xml file name.
@@ -905,7 +905,7 @@ const TSTRING TryUpdateMenuFileToXml(const TSTRING & strFileName)
 }
 
 
-// ÒÔÏÂÊÇ²»Í¬ÏûÏ¢ÏàÓ¦µÄ´¦Àíº¯Êý : Msg....(HWND, UINT, WPARAM, LPARAM) ;
+// ä»¥ä¸‹æ˜¯ä¸åŒæ¶ˆæ¯å¯¹åº”çš„å¤„ç†å‡½æ•° : Msg....(HWND, UINT, WPARAM, LPARAM) ;
 // WM_CREATE
 LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* lParam */)
 {
@@ -918,7 +918,7 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 
 	//	}
 	//}
-	UINT WM_TASKBARCREATED = RegisterWindowMessage(_T("TaskbarCreated")); // »ñÈ¡ÍÐÅÌÖØ½¨ÏûÏ¢£¬»Ö¸´ÍÐÅÌÍ¼±ê¡£
+	UINT WM_TASKBARCREATED = RegisterWindowMessage(_T("TaskbarCreated")); // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ê¡£
 
 	if (WM_TASKBARCREATED != 0)
 		TheMsgMap().Add(WM_TASKBARCREATED, &MsgTaskbarCreated);
@@ -937,7 +937,7 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 	g_pSysTray->Insert(EXIT,_LNG(MENU_Exit));
 	//*
 
-	//¹¹ÔìskinÑ¡Ïî
+	//ï¿½ï¿½ï¿½ï¿½skinÑ¡ï¿½ï¿½
 	HMENU hSkinMenu = CreatePopupMenu();
 
 	if (IsMenu(hSkinMenu) ) {
@@ -952,12 +952,12 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 			std::map<TSTRING,TSTRING> nameName;
 
 			do {
-				//Ö»´¦ÀíÎÄ¼þ¼Ð£¬ //Ìø¹ý "." ºÍ ".." Ä¿Â¼
+				//Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ð£ï¿½ //ï¿½ï¿½ï¿½ï¿½ "." ï¿½ï¿½ ".." Ä¿Â¼
 				if((!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) ||
 				        fd.cFileName[0] == '.' )
 					continue;
 
-				////ÎÄ¼þÃû×÷Îª²Ëµ¥ÃûÊ±£¬ÆäÖÐµÄ '&' À©Õ¹³É  '&&'
+				////ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ëµï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ '&' ï¿½ï¿½Õ¹ï¿½ï¿½  '&&'
 				TSTRING strFileName(fd.cFileName);
 				TCHAR ch('&');
 				TSTRING & str = strFileName;
@@ -968,7 +968,7 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 					pos+=2;
 				}
 
-				// ºöÂÔ´óÐ¡Ð´
+				// ï¿½ï¿½ï¿½Ô´ï¿½Ð¡Ð´
 				TSTRING strNameLower(strFileName);
 				TSTRING::size_type size = strNameLower.length();
 
@@ -995,7 +995,7 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 	}
 
 
-	//¹¹Ôìlanguage
+	//ï¿½ï¿½ï¿½ï¿½language
 	HMENU hLngMenu = CreatePopupMenu();
 
 	if (IsMenu(hLngMenu) ) {
@@ -1010,11 +1010,11 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 			std::map<TSTRING,TSTRING> nameName;
 
 			do {
-				//Ìø¹ýÄ¿Â¼
+				//ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
 				if(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 					continue;
 
-				////ÎÄ¼þÃû×÷Îª²Ëµ¥ÃûÊ±£¬ÆäÖÐµÄ '&' À©Õ¹³É  '&&'
+				////ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ëµï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ '&' ï¿½ï¿½Õ¹ï¿½ï¿½  '&&'
 				TSTRING strFileName(fd.cFileName);
 				TCHAR ch('&');
 				TSTRING & str = strFileName;
@@ -1025,7 +1025,7 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 					pos+=2;
 				}
 
-				// ºöÂÔ´óÐ¡Ð´
+				// ï¿½ï¿½ï¿½Ô´ï¿½Ð¡Ð´
 				TSTRING strNameLower(strFileName);
 				TSTRING::size_type size = strNameLower.length();
 
@@ -1126,7 +1126,7 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 	AddHotkey(hWnd,HOTKEYPOPSYSMENU_ALTER,MOD_ALT | MOD_CONTROL | MOD_WIN, VK_LWIN);
 	//*/
 
-	//³¢ÊÔ¶ÁÈ¡ÓÃ»§×Ô¶¨ÒåÍ¼±ê
+	//ï¿½ï¿½ï¿½Ô¶ï¿½È¡ï¿½Ã»ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
 	TSTRING strIcon;
 
 	if (!Settings().Get(sectionGeneral, keyRunIcon, strIcon)) {
@@ -1144,7 +1144,7 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 	GTrayIcon() = (ICONTYPE)LoadImage(0,strIcon.c_str(),IMAGE_ICON,0,0,LR_LOADFROMFILE);
 	Systray(hWnd,NIM_ADD,GTrayIcon().Get());
 
-	// ¶ÁÈ¡ÀúÊ·¼ÇÂ¼
+	// ï¿½ï¿½È¡ï¿½ï¿½Ê·ï¿½ï¿½Â¼
 	std::vector<TSTRING> vHisKey, vHisValue;
 	Settings().GetSection(sectionHistory, vHisKey, vHisValue);
 	InitHistory(vHisValue);
@@ -1175,14 +1175,14 @@ LRESULT  MsgCreate(HWND hWnd, UINT /*message*/, WPARAM /* wParam */, LPARAM /* l
 }
 
 
-//! ¹Ø±ÕÏûÏ¢
+//! ï¿½Ø±ï¿½ï¿½ï¿½Ï¢
 LRESULT  MsgClose(HWND, UINT, WPARAM, LPARAM)
 {
-	// ÆÁ±Î¹Ø±ÕÏûÏ¢
+	// ï¿½ï¿½ï¿½Î¹Ø±ï¿½ï¿½ï¿½Ï¢
 	return 0;
 }
 
-//! È«¾Ö¿ì½Ý¼ü
+//! È«ï¿½Ö¿ï¿½Ý¼ï¿½
 LRESULT MsgHotKey(HWND hWnd, UINT /*message*/, WPARAM wParam, LPARAM /*lParam*/)
 {
 	if(IgnoreUser() || wParam < HOTKEYBEGIN || wParam >= HOTKEYEND) {
@@ -1194,14 +1194,14 @@ LRESULT MsgHotKey(HWND hWnd, UINT /*message*/, WPARAM wParam, LPARAM /*lParam*/)
 		case HOTKEYMIDCLICK:
 			ShowMenu();
 			break;
-		case HOTKEYPOPMENU://×ó¼ü²Ëµ¥
+		case HOTKEYPOPMENU://ï¿½ï¿½ï¿½ï¿½Ëµï¿½
 			ShowMenu(&point);
 			break;
-		case HOTKEYPOPSYSMENU://ÓÒ¼ü²Ëµ¥
+		case HOTKEYPOPSYSMENU://ï¿½Ò¼ï¿½ï¿½Ëµï¿½
 		case HOTKEYPOPSYSMENU_ALTER:
 			ShowSysMenu(hWnd, &point);
 			break;
-		case HOTKEYPOPEXECUTE://ÏÔÊ¾ÔËÐÐ¶Ô»°¿ò
+		case HOTKEYPOPEXECUTE://ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ð¶Ô»ï¿½ï¿½ï¿½
 			ShowRunDlg();
 			break;
 		default:
@@ -1213,7 +1213,7 @@ LRESULT MsgHotKey(HWND hWnd, UINT /*message*/, WPARAM wParam, LPARAM /*lParam*/)
 }
 
 
-//! explorer ÖØÆôºó»Ö¸´ÍÐÅÌÍ¼±ê¡£
+//! explorer ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ê¡£
 LRESULT  MsgTaskbarCreated(HWND hWnd, UINT /*message*/, WPARAM /*wParam*/, LPARAM /* lParam */)
 {
 	Sleep(2000);
@@ -1235,7 +1235,7 @@ void SaveRunPos()
 }
 
 
-//! ÍË³ö³ÌÐò
+//! ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
 LRESULT  MsgDestroy(HWND hWnd, UINT /*message*/, WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	IgnoreUser() = true;
@@ -1255,7 +1255,7 @@ LRESULT  MsgDestroy(HWND hWnd, UINT /*message*/, WPARAM /*wParam*/, LPARAM /*lPa
 }
 
 
-//! ÍÐÅÌÍ¼±ê²Ù×÷¡£
+//! ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 LRESULT  MsgIconNotify(HWND hWnd, UINT /*message*/, WPARAM /*wParam*/, LPARAM lParam)
 {
 	if (!IgnoreUser()) {
@@ -1311,7 +1311,7 @@ LRESULT  MsgIconNotify(HWND hWnd, UINT /*message*/, WPARAM /*wParam*/, LPARAM lP
 }
 
 
-//! ½«Ö¸¶¨´°¿ÚÒÆ¶¯µ½ÆÁÄ»ÖÐÑë
+//! ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½
 void CentralWindow(const HWND hWnd,const HWND hParentWnd = NULL)
 {
 	RECT rect;
@@ -1323,12 +1323,12 @@ void CentralWindow(const HWND hWnd,const HWND hParentWnd = NULL)
 	int dh = rect.bottom - rect.top;
 
 	MoveWindow(hWnd,rect.left + ((dw - ww)>>1), rect.top + ((dh - wh)>>1), ww, wh, TRUE);
-	// ×ÜÔÚ×îÉÏ¡£
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½
 //	SetWindowPos(hWnd, HWND_TOPMOST, rect.left + ((dw - ww)>>1), rect.top + ((dh - wh)>>1), ww, wh,SWP_SHOWWINDOW);
 }
 
 int QuoteString(TSTRING &str, const TSTRING::value_type ch = '\"', bool bProcessEmpty = false);
-//! ÇÐ»»¿ª»úÆô¶¯
+//! ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int AutoStart(AUTORUN action)
 {
 	int result = 0;
@@ -1386,7 +1386,7 @@ int AutoStart(AUTORUN action)
 
 ////////////////////////////////////////////////////////////////////////////////
 //////////
-//////////						"¹ØÓÚ" ¶Ô»°¿ò²¿·Ö
+//////////						"ï¿½ï¿½ï¿½ï¿½" ï¿½Ô»ï¿½ï¿½ò²¿·ï¿½
 //////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1395,7 +1395,7 @@ int GetRand(const int to_range)
 	return static_cast<int>(rand() * to_range / static_cast<double>(RAND_MAX));
 }
 
-// ¡°¹ØÓÚ¡±¿òµÄÏûÏ¢´¦Àí³ÌÐò¡£
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 INT_PTR  CALLBACK AboutProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	const UINT uTimerID = 1;
@@ -1460,7 +1460,7 @@ INT_PTR  CALLBACK AboutProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 		//else
 		if (NULL != (hdc = GetWindowDC(hDlg))) {
 			SetBkMode(hdc, TRANSPARENT);
-			// ÔÊÐí TLLogo.bmp ×Ô¶¨Òå¹ØÓÚ¶Ô»°¿ò logo
+			// ï¿½ï¿½ï¿½ï¿½ TLLogo.bmp ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶Ô»ï¿½ï¿½ï¿½ logo
 			gdi_ptr<HBITMAP> hBitmap ((HBITMAP)LoadImage(ThisHinstGet(),TEXT("TLLogo.bmp"),IMAGE_BITMAP,0,0,LR_LOADFROMFILE));
 
 			if (hBitmap) {
@@ -1579,7 +1579,7 @@ INT_PTR  CALLBACK AboutProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 				FillRect(reinterpret_cast<HDC>(wParam),&rectClient, gdi_ptr<HBRUSH>(CreateSolidBrush(RGB(0xD0,0xE0,0xF0))));
 			}
 
-			bResult = TRUE;//ÒÑ¾­Ïû³ý
+			bResult = TRUE;//ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
 			break;
 		}
 	case WM_CTLCOLORSTATIC:

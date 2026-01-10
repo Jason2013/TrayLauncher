@@ -39,6 +39,7 @@ XmlName xn_sub = "is_menu";
 XmlName xn_name = "name";
 XmlName xn_path = "path";
 XmlName xn_icon = "icon";
+XmlName xn_workdir = "workdir";
 
 typedef const TCHAR * const XmlValue;
 XmlValue xv_true = _T("true");
@@ -148,21 +149,15 @@ bool XmlToMD(xml_node node, CMenuData & menu)
 	for (xml_node item = node.child(xn_item); item; item = item.next_sibling(xn_item)) {
 		if (IsSubMenu(item)) {
 			///
-			menu.AddMenu(menu.Count(), _T(""), _T(""));
+			TSTRING strWorkDir = get_item_attr(item, xn_workdir);
+			menu.AddMenu(menu.Count(), get_item_attr(item, xn_name), _T(""), get_item_attr(item, xn_icon), strWorkDir);
 			CMenuData *pSub = menu.Menu(menu.Count()-1);
 			if (pSub) {
-				pSub->Name(get_item_attr(item, xn_name));
-				pSub->Icon(get_item_attr(item, xn_icon));
 				XmlToMD(item, *pSub);
 			}
 		} else if (IsMenuItem(item)) {
-			menu.AddItem(menu.Count(), _T(""), _T(""));
-			CItem *pItem = menu.Item(menu.Count()-1);
-			if (pItem) {
-				pItem->Name(get_item_attr(item, xn_name));
-				pItem->Path(get_item_attr(item, xn_path));
-				pItem->Ex(get_item_attr(item, xn_icon));
-			}
+			TSTRING strWorkDir = get_item_attr(item, xn_workdir);
+			menu.AddItem(menu.Count(), get_item_attr(item, xn_name), get_item_attr(item, xn_path), get_item_attr(item, xn_icon), strWorkDir);
 		} else {
 			// other thing?
 		}
@@ -187,6 +182,7 @@ bool MDToXml(const CMenuData &menu, xml_node node)
 
 				set_xml_attr(sub, xn_name, p->Name());
 				set_xml_attr(sub, xn_icon, p->Icon());
+				set_xml_attr(sub, xn_workdir, p->WorkDir());
 				MDToXml(*menu.Menu(i), sub);
 			}
 		} else {
@@ -197,6 +193,7 @@ bool MDToXml(const CMenuData &menu, xml_node node)
 
 				set_xml_attr(item, xn_path, p->Path());
 				set_xml_attr(item, xn_icon, p->Ex());
+				set_xml_attr(item, xn_workdir, p->WorkDir());
 			}
 		}
 	}
