@@ -494,9 +494,9 @@ wxIcon WxExtractIcon(const wxString &path, const int index, const bool smallIcon
 
 bool ExtractAllIcons(const wxString &path, std::deque<wxIcon> &icons, bool smallIcon = false)
 {
-	int const num_icon = reinterpret_cast<int>(ExtractIcon(wxGetInstance(), path.c_str(), -1));
+	int const num_icon = (UINT)(UINT_PTR)ExtractIcon(wxGetInstance(), path.c_str(), -1);
 
-	for (int i = 0; i < num_icon; ++i)
+	for (UINT i = 0; i < num_icon; ++i)
 	{
 		wxIcon icon(WxExtractIcon(path, i, smallIcon));
 		if (!icon.Ok())

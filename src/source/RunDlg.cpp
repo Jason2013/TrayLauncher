@@ -446,7 +446,7 @@ HWND WINAPI CreateTT(HWND hwndOwner, HWND hwndTool)
 	ti.cbSize = sizeof(TOOLINFO) - sizeof(void*);
 	ti.uFlags = TTF_IDISHWND | TTF_SUBCLASS | TTF_CENTERTIP;// | TTF_TRACK | TTF_ABSOLUTE;
 	ti.hwnd   = hwndOwner;
-	ti.uId	= (UINT)hwndTool;
+	ti.uId	= (UINT_PTR)hwndTool;
 	ti.hinst  = NULL;
 	ti.lpszText  = LPSTR_TEXTCALLBACK;
 	ti.rect.left = rect.left;
