@@ -277,7 +277,7 @@ bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & 
 
 
 //! 添加一个菜单项,负责去掉 前导空白
-int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tString & inStrPath, EICONGETTYPE needIcon, const tString & strIcon)
+int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tString & inStrPath, EICONGETTYPE needIcon, const tString & strIcon, const tString & strWorkDir)
 {
 	// ID的起始位置 CMDS;
 	assert(strName.length());
@@ -315,6 +315,11 @@ int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tS
 					AddToMap(m_ItemParam, m_ID, inStrPath.substr(strCmd-strBegin));
 				}
 			}
+		}
+
+		
+		if (!strWorkDir.empty()) {
+			AddToMap(m_ItemWorkDir, m_ID, strWorkDir);
 		}
 
 		if (needIcon != NOICON) {
@@ -475,7 +480,11 @@ bool CMenuWithIcon::TryProcessCommand(unsigned int nSysID)
 			}
 		}
 
-		if (!ns_file_str_ops::Execute(strCmdLine, pOpr))
+		
+		const TCHAR *pWorkDir = WorkDir(nSysID);
+		TSTRING strWorkDir = pWorkDir ? pWorkDir : _T("");
+
+		if (!ns_file_str_ops::ExecuteEx(strCmdLine, pOpr, NULL, true, strWorkDir))
 		{
 			//执行命令失败
 			//EnableMenuItem(Menu(),nSysID,MF_BYCOMMAND | MF_GRAYED); // maybe a UAC problem, don't disable for now.
@@ -611,9 +620,10 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 
 					}
 				}
+				tString strWorkDir = pMenu->Item(index)->WorkDir();
 				nItems += AddMenuItem( hMenu,
 						pMenu->Item(index)->Name().empty() ? _T("< ??? >") : pMenu->Item(index)->Name() ,
-						strPath, FILEFOLDERICON, strIcon);//统计菜单项总数
+						strPath, FILEFOLDERICON, strIcon, strWorkDir);//统计菜单项总数
 			}
 		}
 		else if ( ! (pMenu->Item(index)->Name().empty()) ) {
@@ -689,6 +699,7 @@ void CMenuWithIcon::Destroy(void)
 	m_ItemIconPath.clear();
 	m_ItemCmd.clear();
 	m_ItemParam.clear();
+	m_ItemWorkDir.clear();
 	m_StaticPath.clear();
 	m_ExpanedMenu.clear();
 	m_NameIdMap.clear();

@@ -49,6 +49,8 @@ public:
 	const TCHAR * Param(const IDTYPE nID) const {return GetStr(m_ItemParam,nID);};
 	//! 返回菜单项对应的命令行(不含参数)
 	const TCHAR * Cmd(const IDTYPE nID) const {return GetStr(m_ItemCmd,nID);};
+	
+	const TCHAR * WorkDir(const IDTYPE nID) const {return GetStr(m_ItemWorkDir,nID);};
 	unsigned int Find(const TSTRING& strName, TSTRING& strPath) const;
 	unsigned int FindAll(const TSTRING& strBeginWith,std::vector<TSTRING> &vStrName, bool bAllowDup = false) const;
 	unsigned int FindAllBeginWith(const TSTRING& strBeginWith,std::vector<TSTRING> &vStrName, bool bAllowDup = false) const;
@@ -72,7 +74,7 @@ private:
 	typedef std::map<TSTRING, TSTRING> StrStrMap;
 
 	bool AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & strName, const tString & strIconPath, EICONGETTYPE needIcon = FILEFOLDERICON);
-	int AddMenuItem(MENUTYPE hMenu, const tString & strName, const tString & inStrPath, EICONGETTYPE needIcon = FILEFOLDERICON, const tString & strIcon = _T(""));
+	int AddMenuItem(MENUTYPE hMenu, const tString & strName, const tString & inStrPath, EICONGETTYPE needIcon = FILEFOLDERICON, const tString & strIcon = _T(""), const tString & strWorkDir = _T(""));
 	int MultiAddMenuItem(MENUTYPE hMenu, const tString & inStrPath,const tString & strName);
 	int DoBuildDynamic(MENUTYPE hMenu);
 	void Destroy(void);
@@ -158,6 +160,7 @@ private :
 	IdStrMap m_ItemCmd;
 	IdStrMap m_ItemParam;
 	IdStrMap m_ItemIconPath;
+	IdStrMap m_ItemWorkDir;
 
 
 	IDTYPE m_startID;
