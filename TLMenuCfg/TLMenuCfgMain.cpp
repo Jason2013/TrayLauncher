@@ -1221,12 +1221,12 @@ void TLMenuCfgDialog::TryExtractIcons()
 		{
 			for (unsigned int i = 0; i < icons.size(); ++i)
 			{
-				// @todo (lichao#1#): Text is not refreshed properly : \
-				If cancel the drop down list, \
-				later selection will change the bitmap,\
-				but the text remain the same.\
-				maybe a wxbitmapcombobox bug? \
-				try to implement a ownerdrawcombox to fix this later.)
+				// @todo (lichao#1#): Text is not refreshed properly :
+				// If cancel the drop down list,
+				// later selection will change the bitmap,
+				// but the text remain the same.
+				// maybe a wxbitmapcombobox bug?
+				// try to implement a ownerdrawcombox to fix this later.)
 				m_cbIcon->Append(_T(""), //wxString::Format(_T("%d"), i),
 									icons[i]);
 			}
