@@ -1,10 +1,10 @@
-#ifndef MENU_WITH_ICON_H
+ï»¿#ifndef MENU_WITH_ICON_H
 #define MENU_WITH_ICON_H
 
 #include "OwnerDrawMenu.h"
 #include "MenuData.h"
 
-//! ³õÊ¼»¯ com µÄÀà£¬ÉùÃ÷Ò»¸ö¶ÔÏó¾Í¿ÉÒÔÁË¡£Ò²¿ÉÒÔÊÖ¶¯³õÊ¼»¯
+//! åˆå§‹åŒ– com çš„ç±»ï¼Œå£°æ˜ä¸€ä¸ªå¯¹è±¡å°±å¯ä»¥äº†ã€‚ä¹Ÿå¯ä»¥æ‰‹åŠ¨åˆå§‹åŒ–
 class ComIniter
 {
 	bool m_bSuccess;
@@ -27,7 +27,7 @@ public:
 	}
 };
 
-// ´øÍ¼±êµÄÃüÁî²Ëµ¥¡£
+// å¸¦å›¾æ ‡çš„å‘½ä»¤èœå•ã€‚
 class CMenuWithIcon : public COwnerDrawMenu
 {
 	typedef COwnerDrawMenu Super;
@@ -45,9 +45,9 @@ private:
 public:
 	ICONTYPE GetBigIcon(const unsigned int id, int index = 0);
 	ICONTYPE GetBigIcon(const tString & path, const int index = 0) {return GetIcon(path,FILEFOLDERICON,index,true);}
-	//! ·µ»Ø²Ëµ¥Ïî¶ÔÓ¦µÄÃüÁîĞĞµÄ²ÎÊı
+	//! è¿”å›èœå•é¡¹å¯¹åº”çš„å‘½ä»¤è¡Œçš„å‚æ•°
 	const TCHAR * Param(const IDTYPE nID) const {return GetStr(m_ItemParam,nID);};
-	//! ·µ»Ø²Ëµ¥Ïî¶ÔÓ¦µÄÃüÁîĞĞ(²»º¬²ÎÊı)
+	//! è¿”å›èœå•é¡¹å¯¹åº”çš„å‘½ä»¤è¡Œ(ä¸å«å‚æ•°)
 	const TCHAR * Cmd(const IDTYPE nID) const {return GetStr(m_ItemCmd,nID);};
 	
 	const TCHAR * WorkDir(const IDTYPE nID) const {return GetStr(m_ItemWorkDir,nID);};
@@ -96,9 +96,9 @@ private:
 	{
 		return m_ExpanedMenu.find(hMenu) != m_ExpanedMenu.end();
 	}
-	// Ìí¼ÓÍ¨Åä·û¼ÇÂ¼£¬·µ»ØË÷Òı£¬Ê§°Ü·µ»Ø -1.
+	// æ·»åŠ é€šé…ç¬¦è®°å½•ï¼Œè¿”å›ç´¢å¼•ï¼Œå¤±è´¥è¿”å› -1.
 	int AddWildcard(const tString & str);
-	// ¸ù¾İË÷Òı£¬·µ»ØÍ¨Åä·û£¬Ã»ÓĞ·µ»Ø NULL
+	// æ ¹æ®ç´¢å¼•ï¼Œè¿”å›é€šé…ç¬¦ï¼Œæ²¡æœ‰è¿”å› NULL
 	const TCHAR * GetWildcard(int index);
 
 
@@ -108,30 +108,30 @@ private :
 	int DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPathForSearch, const tString & strName, const std::vector<TSTRING> & vStrFilter, EBUILDMODE mode,bool bNoFileIcon);
 	int MultiModeBuildMenu(MENUTYPE, const tString & strPath, const tString & strName, EBUILDMODE mode,bool bNoFileIcon = false);
 
-	//! ÕÒ³öÆ¥Åä£¬¼ÓÈëµ½Ö¸¶¨×Ö·û´®ÏòÁ¿Ä©Î²£¬bNoDup = true ÒÑ´æÔÚµÄÌø¹ı¡£
+	//! æ‰¾å‡ºåŒ¹é…ï¼ŒåŠ å…¥åˆ°æŒ‡å®šå­—ç¬¦ä¸²å‘é‡æœ«å°¾ï¼ŒbNoDup = true å·²å­˜åœ¨çš„è·³è¿‡ã€‚
 	template <class Cond>
 	unsigned int FindIf(Cond cond, std::vector<TSTRING> &vStrName, bool bAllowDup) const
 	{
 		unsigned int iFound = 0;
 
-		for(std::map<TSTRING,IDTYPE>::const_iterator iter = m_NameIdMap.begin(); iter != m_NameIdMap.end(); ++iter) { //m_NameIdMapÊÇ°´ÕÕ×ÖÄ¸±íË³ĞòµÄ
+		for(std::map<TSTRING,IDTYPE>::const_iterator iter = m_NameIdMap.begin(); iter != m_NameIdMap.end(); ++iter) { //m_NameIdMapæ˜¯æŒ‰ç…§å­—æ¯è¡¨é¡ºåºçš„
 			if(cond(iter->first)) {
 				bool bIgnoreThis = false;
 				if (!bAllowDup) {
 					for (std::vector<TSTRING>::size_type i = 0; i < vStrName.size(); ++i) {
 						if (vStrName[i].length() == iter->first.length() && _tcsicmp(vStrName[i].c_str(), iter->first.c_str()) == 0) {
-							//²»¿¼ÂÇ´óĞ¡Ğ´£¬ÏàÍ¬
+							//ä¸è€ƒè™‘å¤§å°å†™ï¼Œç›¸åŒ
 							bIgnoreThis = true;
 							break;
 						}
 					}
 				}
 				if (!bIgnoreThis) {
-					const TCHAR * pCmd = Cmd(iter->second); //ÓÃÓÚÅÅ³ı±êÌâ¡£
+					const TCHAR * pCmd = Cmd(iter->second); //ç”¨äºæ’é™¤æ ‡é¢˜ã€‚
 					if (pCmd && *pCmd) {
 						++iFound;
 						tString strName = ItemName(iter->second);
-						//ÒÆ³ıÃ¿´Î³öÏÖµÄµÚÒ»¸ö &
+						//ç§»é™¤æ¯æ¬¡å‡ºç°çš„ç¬¬ä¸€ä¸ª &
 						TSTRING::size_type len = strName.length();
 						TSTRING::size_type move = 0;
 						for (TSTRING::size_type j = 0; j < len; ++j) {
@@ -142,7 +142,7 @@ private :
 							if(move)
 								strName[j-move] = strName[j];
 						}
-						//½Ø¶Ï;
+						//æˆªæ–­;
 						strName.resize(strName.size() - move);
 						vStrName.push_back(strName);
 					}
@@ -152,7 +152,7 @@ private :
 		return iFound;
 	}
 
-	std::map<TSTRING, IDTYPE> m_NameIdMap;//ÓÃÓÚ²éÕÒÃû³ÆºÍÃüÁîµÄ¶ÔÓ¦¹ØÏµ,È«²¿Ğ¡Ğ´×ÖÄ¸
+	std::map<TSTRING, IDTYPE> m_NameIdMap;//ç”¨äºæŸ¥æ‰¾åç§°å’Œå‘½ä»¤çš„å¯¹åº”å…³ç³»,å…¨éƒ¨å°å†™å­—æ¯
 	HIcon m_hIconOpen;
 	HIcon m_hIconClose;
 	HIcon m_hIconUnknowFile;
@@ -165,19 +165,19 @@ private :
 
 	IDTYPE m_startID;
 	IDTYPE m_ID;
-	ComIniter m_comInited; //com ÊÇ·ñÒÑ¾­³õÊ¼»¯
+	ComIniter m_comInited; //com æ˜¯å¦å·²ç»åˆå§‹åŒ–
 
 	//typedef const std::vector<TSTRING> wildcard_type;
-	//std::vector<wildcard_type> m_Wildcard;//ÎÄ¼şÍ¨Åä·ûÌõ¼ş
-	std::vector<TSTRING> m_Wildcard;//ÎÄ¼şÍ¨Åä·ûÌõ¼ş
+	//std::vector<wildcard_type> m_Wildcard;//æ–‡ä»¶é€šé…ç¬¦æ¡ä»¶
+	std::vector<TSTRING> m_Wildcard;//æ–‡ä»¶é€šé…ç¬¦æ¡ä»¶
 
 	TSTRING m_strEmpty;
-	std::map<MENUTYPE,int> m_StaticMenuWildcard;// ¾²Ì¬Ä¿Â¼µÄÎÄ¼şÍ¨Åä·ûË÷Òı
-	std::map<MENUTYPE,int> m_DynamicMenuWildcard;// ¶¯Ì¬Ä¿Â¼µÄÎÄ¼şÍ¨Åä·ûË÷Òı
-	MenuStrMap m_StaticPath;//²»ÇåÀíµÄ ¸ù ¶¯Ì¬Â·¾¶
-	MenuStrMap m_DynamicPath;// ÔËĞĞÊ±¶¯Ì¬ÇåÀíµÄÂ·¾¶
-	MenuStrMap m_ExpanedMenu;//²»ÇåÀíµÄ£¬²»´æ´¢Í¼±ê¡£
-	IDTYPE m_dynamicStartID;//¼ÇÂ¼¶¯Ì¬²Ëµ¥ÏîÆğÊ¼£¬ÓÃÓÚÏú»Ù
+	std::map<MENUTYPE,int> m_StaticMenuWildcard;// é™æ€ç›®å½•çš„æ–‡ä»¶é€šé…ç¬¦ç´¢å¼•
+	std::map<MENUTYPE,int> m_DynamicMenuWildcard;// åŠ¨æ€ç›®å½•çš„æ–‡ä»¶é€šé…ç¬¦ç´¢å¼•
+	MenuStrMap m_StaticPath;//ä¸æ¸…ç†çš„ æ ¹ åŠ¨æ€è·¯å¾„
+	MenuStrMap m_DynamicPath;// è¿è¡Œæ—¶åŠ¨æ€æ¸…ç†çš„è·¯å¾„
+	MenuStrMap m_ExpanedMenu;//ä¸æ¸…ç†çš„ï¼Œä¸å­˜å‚¨å›¾æ ‡ã€‚
+	IDTYPE m_dynamicStartID;//è®°å½•åŠ¨æ€èœå•é¡¹èµ·å§‹ï¼Œç”¨äºé”€æ¯
 
 	bool m_bShowHidden;
 	bool m_bFilterEmptySubMenus;

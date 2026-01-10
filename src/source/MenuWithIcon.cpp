@@ -1,4 +1,4 @@
-
+ï»¿
 #include <stdexcept>
 #include <shellapi.h>
 #include <commctrl.h>
@@ -16,7 +16,7 @@ using namespace ns_findfile;
 using namespace ns_file_str_ops;
 //using ns_file_str_ops::ToLowerCase;
 
-//! °´ÕÕÖ¸¶¨µÄ×Ö·û(ch)·Ö¸îÊäÈë×Ö·û´®(inStr)£¬Êä³öµ½Ö¸¶¨ÏòÁ¿(vStr). ¿Õ×Ö·û´®Ò²ÓĞĞ§¡£
+//! æŒ‰ç…§æŒ‡å®šçš„å­—ç¬¦(ch)åˆ†å‰²è¾“å…¥å­—ç¬¦ä¸²(inStr)ï¼Œè¾“å‡ºåˆ°æŒ‡å®šå‘é‡(vStr). ç©ºå­—ç¬¦ä¸²ä¹Ÿæœ‰æ•ˆã€‚
 unsigned int GetSeparatedString(const TSTRING & inStr, const TSTRING::value_type ch, std::vector<TSTRING> & vStr)
 {
 	vStr.clear();
@@ -42,7 +42,7 @@ unsigned int GetSeparatedString(const TSTRING & inStr, const TSTRING::value_type
 }
 
 
-//ÅĞ¶Ï null ÊäÈë¡£
+//åˆ¤æ–­ null è¾“å…¥ã€‚
 unsigned int GetSeparatedString(const TSTRING::value_type * inStr, const TSTRING::value_type ch, std::vector<TSTRING> & vStr)
 {
 	if (!inStr) {
@@ -54,7 +54,7 @@ unsigned int GetSeparatedString(const TSTRING::value_type * inStr, const TSTRING
 
 }
 
-//! ¹¹Ôìº¯Êı CMenuWithIcon
+//! æ„é€ å‡½æ•° CMenuWithIcon
 CMenuWithIcon::CMenuWithIcon(ICONTYPE hOpen,ICONTYPE hClose,ICONTYPE hUnknownFile,const TCHAR *szEmpty)
 :COwnerDrawMenu(0,0),
 m_hIconOpen(hOpen),m_hIconClose(hClose),m_hIconUnknowFile(hUnknownFile),
@@ -73,7 +73,7 @@ CMenuWithIcon::~CMenuWithIcon(void)
 }
 
 
-//! ÏÔÊ¾
+//! æ˜¾ç¤º
 int CMenuWithIcon::Display(int x, int y, WINDOWTYPE hWnd, UINT uFlag)
 {
 	int id(Super::Display(x,y, hWnd, uFlag));
@@ -99,14 +99,14 @@ LRESULT CMenuWithIcon::MenuSelect_impl(MENUTYPE hMenu,UINT uItem,UINT uFlags)
 		SelID((UINT_PTR)GetSubMenu(hMenu,uItem));
 		BuildDynamic(reinterpret_cast<MENUTYPE>(SelID()));
 	} else {
-		//²Ëµ¥Ïî
+		//èœå•é¡¹
 		SelID(uItem);
 	}
 	return 0;
 }
 
 
-//! »æÖÆ²Ëµ¥¡£
+//! ç»˜åˆ¶èœå•ã€‚
 bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 {
 	if (!pDI || pDI->rcItem.bottom == pDI->rcItem.top) {
@@ -115,20 +115,20 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 		return true;
 	}
 
-	//Á½¸ö¿ÉÄÜµÄÀàĞÍ£¬²Ëµ¥ÓëÏî
+	//ä¸¤ä¸ªå¯èƒ½çš„ç±»å‹ï¼Œèœå•ä¸é¡¹
 	IDTYPE iMaybeID = pDI->itemID;
 	MENUTYPE hMaybeMenu = TryGetSubMenu(pDI);
 	assert(!hMaybeMenu || hMaybeMenu == (HMENU)(UINT_PTR)iMaybeID);
 	if (!hMaybeMenu && (iMaybeID < m_startID || iMaybeID >= m_ID) ) {
 		hMaybeMenu = (HMENU)(UINT_PTR)iMaybeID;
 	}
-	// Ö÷²Ëµ¥ ºÍ ×Ó²Ëµ¥
+	// ä¸»èœå• å’Œ å­èœå•
 
 	if (hMaybeMenu ) {
 		assert ( IsMenu(hMaybeMenu) );
-		// ×Ó²Ëµ¥Í¼±ê
+		// å­èœå•å›¾æ ‡
 		ICONTYPE hIconSub = NULL;
-		bool bDraw = false;//³É¹¦»æÖÆ¶¯Ì¬×Ó²Ëµ¥
+		bool bDraw = false;//æˆåŠŸç»˜åˆ¶åŠ¨æ€å­èœå•
 		if (IsDynamicMenu(hMaybeMenu)) {
 			TSTRING str(m_DynamicPath[hMaybeMenu]);
 			str.resize(str.size()-2);
@@ -147,7 +147,7 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 		if (!bDraw) {
 			if (pDI->itemState & ODS_GRAYED || pDI->itemState & ODS_DISABLED)
 				hIconSub = NULL;
-			else if (!(pDI->itemState & ODS_SELECTED)) // Ã»ÓĞ´ò¿ª
+			else if (!(pDI->itemState & ODS_SELECTED)) // æ²¡æœ‰æ‰“å¼€
 				hIconSub = m_hIconClose.Get();
 			else
 				hIconSub = m_hIconOpen.Get();
@@ -156,12 +156,12 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 		}
 	}
 	else if(!Cmd(iMaybeID)) {
-		//±êÌâ
+		//æ ‡é¢˜
 		//DrawText(pDI->hDC,Name(iMaybeID),-1,&(pDI->rcItem),DT_CENTER | DT_SINGLELINE |DT_VCENTER);
 		return true;
 	}
 	else if ( IsStaticMenu(MENUTYPE(pDI->hwndItem)) || IsDynamicMenu(MENUTYPE(pDI->hwndItem)) || IsExpanedMenu(MENUTYPE(pDI->hwndItem))) {
-		//³¢ÊÔ¶¯Ì¬²Ëµ¥Ïî£¨ÎÄ¼ş£©
+		//å°è¯•åŠ¨æ€èœå•é¡¹ï¼ˆæ–‡ä»¶ï¼‰
 		SHFILEINFO sfi = {0};
 		//memset(m_psfi.Get(),0,sizeof(SHFILEINFO));
 		HIMAGELIST hImgList = (HIMAGELIST)SHGetFileInfo(Cmd(iMaybeID),
@@ -169,8 +169,8 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 				&sfi,
 				sizeof(SHFILEINFO),
 				SHGFI_SYSICONINDEX | SHGFI_SMALLICON
-				//¶ÁÎÄ¼ş£¬Ä¿Ç°ÖªµÀ .ico Í¼±êÎÄ¼şµÄÍ¼±êĞèÒª¶ÁÎÄ¼ş»ñÈ¡£¬µ«¶ÔÆäËûÒ»Ğ©ÎÄ¼ş	»áÊ§°Ü
-				// | SHGFI_USEFILEATTRIBUTES //²»¶ÁÎÄ¼ş£¬È¡Í¼±ê£¬ÕâÑù  Ä¿Ç°¿´À´   ²»»áÊ§°Ü
+				//è¯»æ–‡ä»¶ï¼Œç›®å‰çŸ¥é“ .ico å›¾æ ‡æ–‡ä»¶çš„å›¾æ ‡éœ€è¦è¯»æ–‡ä»¶è·å–ï¼Œä½†å¯¹å…¶ä»–ä¸€äº›æ–‡ä»¶	ä¼šå¤±è´¥
+				// | SHGFI_USEFILEATTRIBUTES //ä¸è¯»æ–‡ä»¶ï¼Œå–å›¾æ ‡ï¼Œè¿™æ ·  ç›®å‰çœ‹æ¥   ä¸ä¼šå¤±è´¥
 				);
 		if (!hImgList) {
 			hImgList = (HIMAGELIST)SHGetFileInfo(Cmd(iMaybeID),
@@ -178,7 +178,7 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 					&sfi,
 					sizeof(SHFILEINFO),
 					SHGFI_SYSICONINDEX | SHGFI_SMALLICON
-					| SHGFI_USEFILEATTRIBUTES //²»¶ÁÎÄ¼ş£¬È¡Í¼±ê£¬ÕâÑù  Ä¿Ç°¿´À´   ²»»áÊ§°Ü
+					| SHGFI_USEFILEATTRIBUTES //ä¸è¯»æ–‡ä»¶ï¼Œå–å›¾æ ‡ï¼Œè¿™æ ·  ç›®å‰çœ‹æ¥   ä¸ä¼šå¤±è´¥
 					);
 
 		}
@@ -189,7 +189,7 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 		}
 	}
 	else
-		//ÏÔÊ¾Ä¬ÈÏÎ´ÖªÎÄ¼şÍ¼±ê
+		//æ˜¾ç¤ºé»˜è®¤æœªçŸ¥æ–‡ä»¶å›¾æ ‡
 		DrawIconEx(pDI->hDC,pDI->rcItem.left + MENUBLANK,pDI->rcItem.top + MENUBLANK/2 ,m_hIconUnknowFile.Get(),MENUICON,MENUICON,0,NULL,DI_NORMAL|DI_COMPAT);
 
 	return true;
@@ -197,13 +197,13 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 
 
 
-//! »ñÈ¡¿ì½İ·½Ê½£¨.lnkÎÄ¼ş£©Í¼±ê
+//! è·å–å¿«æ·æ–¹å¼ï¼ˆ.lnkæ–‡ä»¶ï¼‰å›¾æ ‡
 ICONTYPE CMenuWithIcon::GetShortCutIcon(LPCTSTR lpszLinkFile, bool bIcon32)
 {
 	if (!m_comInited && !m_comInited.Init()) {
 		return 0;
 	}
-	ICONTYPE hReturn = NULL;//·µ»ØÖµ
+	ICONTYPE hReturn = NULL;//è¿”å›å€¼
 
 	IShellLink * psl;
 	void *ppsl = &psl;
@@ -247,7 +247,7 @@ ICONTYPE CMenuWithIcon::GetShortCutIcon(LPCTSTR lpszLinkFile, bool bIcon32)
 //  */
 
 
-//! Ìí¼Ó×Ó²Ëµ¥£¬strPath ÓÃÓÚ»ñÈ¡Í¼±ê
+//! æ·»åŠ å­èœå•ï¼ŒstrPath ç”¨äºè·å–å›¾æ ‡
 bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & strName, const tString & strIconPath, EICONGETTYPE needIcon)
 {
 	assert(strName.length());
@@ -256,7 +256,7 @@ bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & 
 
 	if (needIcon) {
 		if ( ! IsDynamicMenu(hSubMenu) ) {
-			//¾²Ì¬Ä¿Â¼»òÎÄ¼şÖĞµÄÇ¿ÖÆÄ¿Â¼£¬±ØĞë¼ÓÈëÍ¼±ê
+			//é™æ€ç›®å½•æˆ–æ–‡ä»¶ä¸­çš„å¼ºåˆ¶ç›®å½•ï¼Œå¿…é¡»åŠ å…¥å›¾æ ‡
 			MenuIcon(hSubMenu,GetIcon(strIconPath,needIcon));
 		}
 		else {
@@ -267,7 +267,7 @@ bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & 
 					sizeof(SHFILEINFO),
 					SHGFI_SYSICONINDEX | SHGFI_SMALLICON)) {
 
-				//ÔÚÏµÍ³ÖĞÕÒ²»µ½£¬¼ÓÈëÎÒµÄ¼ÇÂ¼¡£//note: it seems this never happen
+				//åœ¨ç³»ç»Ÿä¸­æ‰¾ä¸åˆ°ï¼ŒåŠ å…¥æˆ‘çš„è®°å½•ã€‚//note: it seems this never happen
 				MenuIcon(hSubMenu, GetIcon(strIconPath,needIcon));
 			}
 		}
@@ -276,24 +276,24 @@ bool CMenuWithIcon::AddSubMenu(MENUTYPE hMenu,MENUTYPE hSubMenu,const tString & 
 }
 
 
-//! Ìí¼ÓÒ»¸ö²Ëµ¥Ïî,¸ºÔğÈ¥µô Ç°µ¼¿Õ°×
+//! æ·»åŠ ä¸€ä¸ªèœå•é¡¹,è´Ÿè´£å»æ‰ å‰å¯¼ç©ºç™½
 int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tString & inStrPath, EICONGETTYPE needIcon, const tString & strIcon, const tString & strWorkDir)
 {
-	// IDµÄÆğÊ¼Î»ÖÃ CMDS;
+	// IDçš„èµ·å§‹ä½ç½® CMDS;
 	assert(strName.length());
 
-	// µ¥Ò»²Ëµ¥Ïî
+	// å•ä¸€èœå•é¡¹
 	AddToMap(ItemNameMap(),m_ID, strName);
 	InsertMenu(hMenu,(UINT)-1,MF_BYPOSITION | MF_OWNERDRAW,m_ID,NULL);//ItemName(m_ID));//
 
 	if(inStrPath.empty()) {
-		// ´¦Àí±êÌâ
+		// å¤„ç†æ ‡é¢˜
 		EnableMenuItem(hMenu,m_ID,MF_BYCOMMAND | MF_DISABLED);
 	}
 	else {
 
-		// ÅĞ¶ÏÊÇ·ñÓĞÃüÁîĞĞ²ÎÊı¡£
-		// ÎÄ¼şÂ·¾¶¼ÓÒıºÅ
+		// åˆ¤æ–­æ˜¯å¦æœ‰å‘½ä»¤è¡Œå‚æ•°ã€‚
+		// æ–‡ä»¶è·¯å¾„åŠ å¼•å·
 		if (inStrPath[0] != '\"')
 			AddToMap(m_ItemCmd, m_ID, inStrPath);
 		else {
@@ -303,10 +303,10 @@ int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tS
 			const TCHAR *strBegin = inStrPath.c_str();
 			const TCHAR *strCmd = strBegin;
 
-			while(*(++strCmd) && *strCmd != '\"') ; //ËÑË÷µÚ¶ş¸öË«ÒıºÅ
+			while(*(++strCmd) && *strCmd != '\"') ; //æœç´¢ç¬¬äºŒä¸ªåŒå¼•å·
 
 			if(!*strCmd)
-				AddToMap(m_ItemCmd, m_ID, inStrPath);//Ë«ÒıºÅ²»Åä¶Ô£¬Ô­Ñù±£´æ
+				AddToMap(m_ItemCmd, m_ID, inStrPath);//åŒå¼•å·ä¸é…å¯¹ï¼ŒåŸæ ·ä¿å­˜
 			else {
 				//*strCmd = '\0';
 				AddToMap(m_ItemCmd, m_ID, inStrPath.substr(1,strCmd - strBegin - 1));
@@ -323,7 +323,7 @@ int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tS
 		}
 
 		if (needIcon != NOICON) {
-			// ·Ç¶¯Ì¬²Ëµ¥Ïî£¬ÒªÍ¼±ê
+			// éåŠ¨æ€èœå•é¡¹ï¼Œè¦å›¾æ ‡
 			const TCHAR *szIconPath = strIcon.empty()?Cmd(m_ID):strIcon.c_str();
 			if (!strIcon.empty())
 				AddToMap(m_ItemIconPath, m_ID, strIcon);
@@ -331,7 +331,7 @@ int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tS
 				ItemIcon(m_ID,GetIcon(szIconPath, needIcon));
 			}
 			else  {
-				//¶¯Ì¬£¬²»ÔÚÏµÍ³ÁĞ±íÖĞµÄ²Å´æ´¢
+				//åŠ¨æ€ï¼Œä¸åœ¨ç³»ç»Ÿåˆ—è¡¨ä¸­çš„æ‰å­˜å‚¨
 				SHFILEINFO sfi = {0};
 				if (!SHGetFileInfo(szIconPath,
 						FILE_ATTRIBUTE_NORMAL,
@@ -351,7 +351,7 @@ int CMenuWithIcon::AddMenuItem(MENUTYPE hMenu, const tString & strName, const tS
 }
 
 
-//! Ìí¼ÓÍ¨Åä·û±íÊ¾µÄ²Ëµ¥Ïî
+//! æ·»åŠ é€šé…ç¬¦è¡¨ç¤ºçš„èœå•é¡¹
 int CMenuWithIcon::MultiAddMenuItem(MENUTYPE hMenu, const tString & inStrPath,const tString & strName)
 {
 	//assert (strName.length());
@@ -364,8 +364,8 @@ int CMenuWithIcon::MultiAddMenuItem(MENUTYPE hMenu, const tString & inStrPath,co
 	}
 	const tString::size_type len = strPath.length();
 
-	// Ä©Î²¸ñÊ½£º¡°\*¡±£¬¡°\*.*¡±£¬¡°\**¡±,ÆäËû¸ñÊ½²»´¦Àí
-	// ĞÂÄ£Ê½\*+* :Ò»´ÎĞÔÖ±½ÓÕ¹¿ª£¬µ«ÊÇ²»±£´æÍ¼±ê
+	// æœ«å°¾æ ¼å¼ï¼šâ€œ\*â€ï¼Œâ€œ\*.*â€ï¼Œâ€œ\**â€,å…¶ä»–æ ¼å¼ä¸å¤„ç†
+	// æ–°æ¨¡å¼\*+* :ä¸€æ¬¡æ€§ç›´æ¥å±•å¼€ï¼Œä½†æ˜¯ä¸ä¿å­˜å›¾æ ‡
 
 	assert (*strPath.rbegin() == '*');
 	EBUILDMODE mode = EFOLDER;
@@ -392,7 +392,7 @@ int CMenuWithIcon::MultiAddMenuItem(MENUTYPE hMenu, const tString & inStrPath,co
 }
 
 
-//! public ¶¯Ì¬ÊµÊ±¹¹ÔìÖ¸¶¨×Ó²Ëµ¥µÄÄÚÈİ,
+//! public åŠ¨æ€å®æ—¶æ„é€ æŒ‡å®šå­èœå•çš„å†…å®¹,
 int CMenuWithIcon::BuildDynamic(MENUTYPE hSubMenu)
 {
 	int result(0);
@@ -408,15 +408,15 @@ int CMenuWithIcon::BuildDynamic(MENUTYPE hSubMenu)
 }
 
 
-//! private ¶¯Ì¬ÊµÊ±¹¹ÔìÖ¸¶¨×Ó²Ëµ¥µÄÄÚÈİ,
+//! private åŠ¨æ€å®æ—¶æ„é€ æŒ‡å®šå­èœå•çš„å†…å®¹,
 
-//! \note Ö»ÊÇÉú³É×Ó²Ëµ¥ºÍ²Ëµ¥Ïî£¬×Ó²Ëµ¥²»Õ¹¿ª£¬
-//! ÏëÒªÕ¹¿ª×Ó²Ëµ¥£¬¶Ô¸Ã×Ó²Ëµ¥µ÷ÓÃ±¾º¯Êı¡£
+//! \note åªæ˜¯ç”Ÿæˆå­èœå•å’Œèœå•é¡¹ï¼Œå­èœå•ä¸å±•å¼€ï¼Œ
+//! æƒ³è¦å±•å¼€å­èœå•ï¼Œå¯¹è¯¥å­èœå•è°ƒç”¨æœ¬å‡½æ•°ã€‚
 int CMenuWithIcon::DoBuildDynamic(MENUTYPE hMenu)
 {
-	// ĞèÒª¼ÇÂ¼Ã¿¸ö¶¯Ì¬µÄ×Ó²Ëµ¥ºÍ²Ëµ¥Ïî£¬//²¢¶¯Ì¬ Ïú»Ù¡£
+	// éœ€è¦è®°å½•æ¯ä¸ªåŠ¨æ€çš„å­èœå•å’Œèœå•é¡¹ï¼Œ//å¹¶åŠ¨æ€ é”€æ¯ã€‚
 
-	//Ìø¹ıÎŞĞ§²Ëµ¥ºÍÒÑ¾­¹¹ÔìÍê±ÏµÄ²Ëµ¥¡£
+	//è·³è¿‡æ— æ•ˆèœå•å’Œå·²ç»æ„é€ å®Œæ¯•çš„èœå•ã€‚
 	if (!IsMenu(hMenu) || GetMenuItemCount(hMenu) > 0)
 		return 0;
 
@@ -439,7 +439,7 @@ int CMenuWithIcon::DoBuildDynamic(MENUTYPE hMenu)
 		strName = GetWildcard(m_DynamicMenuWildcard[hMenu]);
 	}
 
-	while (*strPath && _istspace(*strPath)) ++strPath;//È¥µô¿Õ°×
+	while (*strPath && _istspace(*strPath)) ++strPath;//å»æ‰ç©ºç™½
 	assert (strPath[_tcslen(strPath) - 1] =='*');
 
 	UINT uPreErrMode = SetErrorMode(SEM_FAILCRITICALERRORS);
@@ -450,7 +450,7 @@ int CMenuWithIcon::DoBuildDynamic(MENUTYPE hMenu)
 }
 
 
-//! ´¦Àí²Ëµ¥ÃüÁî£¬µ÷ÓÃÏàÓ¦µÄÃüÁîĞĞ
+//! å¤„ç†èœå•å‘½ä»¤ï¼Œè°ƒç”¨ç›¸åº”çš„å‘½ä»¤è¡Œ
 bool CMenuWithIcon::TryProcessCommand(unsigned int nSysID)
 {
 	if (nSysID < m_startID || nSysID >= m_ID)
@@ -486,7 +486,7 @@ bool CMenuWithIcon::TryProcessCommand(unsigned int nSysID)
 
 		if (!ns_file_str_ops::ExecuteEx(strCmdLine, pOpr, NULL, true, strWorkDir))
 		{
-			//Ö´ĞĞÃüÁîÊ§°Ü
+			//æ‰§è¡Œå‘½ä»¤å¤±è´¥
 			//EnableMenuItem(Menu(),nSysID,MF_BYCOMMAND | MF_GRAYED); // maybe a UAC problem, don't disable for now.
 			MessageBox(NULL, Cmd(nSysID), _LNG(STR_Failed), MB_ICONERROR);
 			result = false;
@@ -506,9 +506,9 @@ const TSTRING CMenuWithIcon::GetCurrentCommandLine(unsigned int nSysID)
 		TCHAR path[MAX_PATH] ={0};
 		TSTRING strWorkPath;
 
-		// »ñÈ¡Ä¿Â¼µÄÂ·¾¶
+		// è·å–ç›®å½•çš„è·¯å¾„
 		GetDirectory(nSysID,strWorkPath);
-		if ('.' == *pCmd) {	//Ïà¶ÔÂ·¾¶
+		if ('.' == *pCmd) {	//ç›¸å¯¹è·¯å¾„
 			TCHAR * FinalName;
 			int length = GetFullPathName(pCmd,MAX_PATH,path,&FinalName);
 			if (length > MAX_PATH) {
@@ -529,7 +529,7 @@ const TSTRING CMenuWithIcon::GetCurrentCommandLine(unsigned int nSysID)
 }
 //*/
 
-//! ´Ó´ò¿ªµÄÎÄ¼ş¹¹Ôì²Ëµ¥£»
+//! ä»æ‰“å¼€çš„æ–‡ä»¶æ„é€ èœå•ï¼›
 int CMenuWithIcon::LoadMenuFromFile(const tString & strFileName, UINT uStartID)
 {
 	Reset();
@@ -546,14 +546,14 @@ int CMenuWithIcon::LoadMenuFromFile(const tString & strFileName, UINT uStartID)
 
 	m_dynamicStartID = m_ID;
 
-	//¹¹Ôì <Ãû³Æ,ID> Ó³Éä
+	//æ„é€  <åç§°,ID> æ˜ å°„
 	TSTRING strName;
 	TSTRING::size_type size = 0;
 	for (IDTYPE i = m_startID; i < m_dynamicStartID; ++i) {
 		strName = ItemName(i);
 		ToLowerCase(strName);
 
-		//ÒÆ³ıÃ¿´Î³öÏÖµÄµÚÒ»¸ö &
+		//ç§»é™¤æ¯æ¬¡å‡ºç°çš„ç¬¬ä¸€ä¸ª &
 		size = strName.length();
 		TSTRING::size_type move = 0;
 		for (TSTRING::size_type j = 0; j < size; ++j) {
@@ -564,7 +564,7 @@ int CMenuWithIcon::LoadMenuFromFile(const tString & strFileName, UINT uStartID)
 			if(move)
 				strName[j-move] = strName[j];
 		}
-		//½Ø¶Ï;
+		//æˆªæ–­;
 		strName.resize(strName.size() - move);
 
 		m_NameIdMap[strName] = i;
@@ -600,15 +600,15 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 			}
 		}
 		else if ( pMenu->Item(index)->Path().length() > 1) {
-			// ÌØÊâÄ£Ê½: \\** , ±íÊ¾ÎÒµÄµçÄÔ
+			// ç‰¹æ®Šæ¨¡å¼: \\** , è¡¨ç¤ºæˆ‘çš„ç”µè„‘
 			if (pMenu->Item(index)->Path()[0] == '\\' && pMenu->Item(index)->Path() != _T("\\\\**"))
 				continue;// filter begin with '\\' but not "\\**"
 
-			// ³£¹æ²Ëµ¥Ïî
+			// å¸¸è§„èœå•é¡¹
 			const tString & strPath = pMenu->Item(index)->Path();
 
 			if (!strPath.empty() &&
-				*(strPath.rbegin())=='*') {// Æ¥ÅäÍ¨Åä·û
+				*(strPath.rbegin())=='*') {// åŒ¹é…é€šé…ç¬¦
 				nItems += MultiAddMenuItem(hMenu,strPath,pMenu->Item(index)->Name());
 			}
 			else {
@@ -623,11 +623,11 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 				tString strWorkDir = pMenu->Item(index)->WorkDir();
 				nItems += AddMenuItem( hMenu,
 						pMenu->Item(index)->Name().empty() ? _T("< ??? >") : pMenu->Item(index)->Name() ,
-						strPath, FILEFOLDERICON, strIcon, strWorkDir);//Í³¼Æ²Ëµ¥Ïî×ÜÊı
+						strPath, FILEFOLDERICON, strIcon, strWorkDir);//ç»Ÿè®¡èœå•é¡¹æ€»æ•°
 			}
 		}
 		else if ( ! (pMenu->Item(index)->Name().empty()) ) {
-			//µ±³É±êÌâ
+			//å½“æˆæ ‡é¢˜
 			nItems += AddMenuItem(hMenu,pMenu->Item(index)->Name(),_T(""));
 		}
 		else {
@@ -640,7 +640,7 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 }
 
 
-//! »ñÈ¡ÎÄ¼şÄ¿Â¼£¬»á½Ø¶ÏÊäÈë×Ö·û´®
+//! è·å–æ–‡ä»¶ç›®å½•ï¼Œä¼šæˆªæ–­è¾“å…¥å­—ç¬¦ä¸²
 bool CMenuWithIcon::GetDirectory(const IDTYPE nID, TSTRING & strWorkPath)
 {
 	strWorkPath = Cmd(nID);
@@ -653,47 +653,47 @@ bool CMenuWithIcon::GetDirectory(const IDTYPE nID, TSTRING & strWorkPath)
 }
 
 
-//! Ïú»Ù¶¯Ì¬ÔªËØ
+//! é”€æ¯åŠ¨æ€å…ƒç´ 
 void CMenuWithIcon::DestroyDynamic()
 {
 	if (m_ID == m_dynamicStartID)
 		return;
 
-	// 1 ÇåÀí ¶¯Ì¬²Ëµ¥Ïî
+	// 1 æ¸…ç† åŠ¨æ€èœå•é¡¹
 	for (IDTYPE i = m_dynamicStartID; i < m_ID; ++i) {
-		//ÇåÀíÃüÁî£¬Ãû³Æ£» //¶¯Ì¬²Ëµ¥ÏîÃ»ÓĞ±£´æÍ¼±ê£¬²»ÓÃÇåÀíÍ¼±ê
+		//æ¸…ç†å‘½ä»¤ï¼Œåç§°ï¼› //åŠ¨æ€èœå•é¡¹æ²¡æœ‰ä¿å­˜å›¾æ ‡ï¼Œä¸ç”¨æ¸…ç†å›¾æ ‡
 		m_ItemCmd.erase(i);
 		ItemNameMap().erase(i);
 	}
 
-	// 2 ÇåÀí×Ó²Ëµ¥¼ÇÂ¼
+	// 2 æ¸…ç†å­èœå•è®°å½•
 	for (MenuStrIter it = m_DynamicPath.begin(); it != m_DynamicPath.end(); ++it) {
-		// ÇåÀíÍ¼±ê
+		// æ¸…ç†å›¾æ ‡
 		if(MenuIcon(it->first)) {
 			//note: it seems this never happen
-			MenuIcon(it->first, 0);//¸³0Öµ£¬ÊµÏÖÉ¾³ı¡£
+			MenuIcon(it->first, 0);//èµ‹0å€¼ï¼Œå®ç°åˆ é™¤ã€‚
 		}
-		// ÇåÀíÃû³Æ¼ÇÂ¼
+		// æ¸…ç†åç§°è®°å½•
 		MenuNameMap().erase(it->first);
 	}
-	// Ïú»Ù¶¯Ì¬²Ëµ¥
+	// é”€æ¯åŠ¨æ€èœå•
 	for (MenuStrIter it = m_StaticPath.begin(); it != m_StaticPath.end(); ++it) {
 		const int n = GetMenuItemCount(it->first);
 		for (int j = 0; j < n; ++j)
 			DeleteMenu(it->first,0,MF_BYPOSITION);
 	}
 
-	// Çå³ı¶¯Ì¬µÄÍ¨Åä·û¼ÇÂ¼
+	// æ¸…é™¤åŠ¨æ€çš„é€šé…ç¬¦è®°å½•
 	m_DynamicMenuWildcard.clear();
-	// Çå³ı¶¯Ì¬×Ó²Ëµ¥¼ÇÂ¼
+	// æ¸…é™¤åŠ¨æ€å­èœå•è®°å½•
 	m_DynamicPath.clear(); //ClearMap(m_DynamicPath);
 
-	// ÖØĞÂ¼ÆÊı
+	// é‡æ–°è®¡æ•°
 	m_ID = m_dynamicStartID;
 }
 
 
-//! ÇåÀíÒ»Ğ©¶«Î÷£¬½ö¹©Reset() ºÍ Îö¹¹º¯Êı µ÷ÓÃ
+//! æ¸…ç†ä¸€äº›ä¸œè¥¿ï¼Œä»…ä¾›Reset() å’Œ ææ„å‡½æ•° è°ƒç”¨
 void CMenuWithIcon::Destroy(void)
 {
 	m_ItemIconPath.clear();
@@ -749,7 +749,7 @@ bool ParseIconIndex(const tString &strPath, tString &path, int &index)
 }
 
 
-//! ¸ù¾İÂ·¾¶»ñÈ¡ 16¡Á16 »ò 32¡Á32 Í¼±ê
+//! æ ¹æ®è·¯å¾„è·å– 16Ã—16 æˆ– 32Ã—32 å›¾æ ‡
 ICONTYPE CMenuWithIcon::GetIcon(const tString & strPath, EICONGETTYPE needIcon, int iconIndex, bool bIcon32)
 {
 	const TCHAR *pPath = strPath.c_str();//
@@ -767,9 +767,9 @@ ICONTYPE CMenuWithIcon::GetIcon(const tString & strPath, EICONGETTYPE needIcon, 
 	}
 	ICONTYPE hIcon = NULL;
 /*
-	// ĞÂ·½Ê½£¬Á½´ÎGetFileInfo ,ÕâÑùµÄÍ¼±ê´æÆğÀ´¿ÉÄÜºÍÖ±½Ó»­³öÀ´²»Í¬£¬
-	// ¶Ô¿ì½İ·½Ê½ ICONTYPE ÊÇ´øÓĞ¼ıÍ·µÄ£¬index¿ÉÒÔÊÇÃ»ÓĞ¼ıÍ·µÄ,
-	// »¹ÊÇÓÃÀÏ°ì·¨È¡ ICONTYPE °É
+	// æ–°æ–¹å¼ï¼Œä¸¤æ¬¡GetFileInfo ,è¿™æ ·çš„å›¾æ ‡å­˜èµ·æ¥å¯èƒ½å’Œç›´æ¥ç”»å‡ºæ¥ä¸åŒï¼Œ
+	// å¯¹å¿«æ·æ–¹å¼ ICONTYPE æ˜¯å¸¦æœ‰ç®­å¤´çš„ï¼Œindexå¯ä»¥æ˜¯æ²¡æœ‰ç®­å¤´çš„,
+	// è¿˜æ˜¯ç”¨è€åŠæ³•å– ICONTYPE å§
 
 	if (!m_comInited && !m_comInited.Init())
 		return NULL;
@@ -779,7 +779,7 @@ ICONTYPE CMenuWithIcon::GetIcon(const tString & strPath, EICONGETTYPE needIcon, 
 		&sfi,
 		sizeof(SHFILEINFO),
 		SHGFI_ICON | SHGFI_SMALLICON
-		| (FILEICON == needIcon ? SHGFI_USEFILEATTRIBUTES : 0) // ²»³¢ÊÔ¶ÁÎÄ¼ş£¬Ö»¸ù¾İÎÄ¼şÀ©Õ¹Ãû»ñÈ¡¹ØÁªÍ¼±ê£¬ÕâÑùµÃ²»µ½ÎÄ¼ş¼ĞµÄÕıÈ·Í¼±ê¡£
+		| (FILEICON == needIcon ? SHGFI_USEFILEATTRIBUTES : 0) // ä¸å°è¯•è¯»æ–‡ä»¶ï¼Œåªæ ¹æ®æ–‡ä»¶æ‰©å±•åè·å–å…³è”å›¾æ ‡ï¼Œè¿™æ ·å¾—ä¸åˆ°æ–‡ä»¶å¤¹çš„æ­£ç¡®å›¾æ ‡ã€‚
 		);//
 	hIcon = sfi.hIcon;
 	if (!hIcon && FILEFOLDERICON == needIcon)
@@ -787,19 +787,19 @@ ICONTYPE CMenuWithIcon::GetIcon(const tString & strPath, EICONGETTYPE needIcon, 
 
 /*/
 	if (bIcon32)
-		ExtractIconEx(pPath,iconIndex, &hIcon,NULL,1); //¼ÙÉèÎÄ¼ş°üº¬Í¼±ê
+		ExtractIconEx(pPath,iconIndex, &hIcon,NULL,1); //å‡è®¾æ–‡ä»¶åŒ…å«å›¾æ ‡
 	else
-		ExtractIconEx(pPath,iconIndex, NULL,&hIcon,1); //¼ÙÉèÎÄ¼ş°üº¬Í¼±ê
+		ExtractIconEx(pPath,iconIndex, NULL,&hIcon,1); //å‡è®¾æ–‡ä»¶åŒ…å«å›¾æ ‡
 	if(hIcon)
 		return hIcon;
 
 	if (IsStrEndWith(pPath, _T(".lnk"), false)) {
-		// ¿ì½İ·½Ê½,Ö÷ÒªÊÇ³¢ÊÔÈ¥µô¿ì½İ·½Ê½¼ıÍ·,·ñÔò(often .url files)Ö±½ÓÓÃÏÂÃæµÄSHGetFileInfo
+		// å¿«æ·æ–¹å¼,ä¸»è¦æ˜¯å°è¯•å»æ‰å¿«æ·æ–¹å¼ç®­å¤´,å¦åˆ™(often .url files)ç›´æ¥ç”¨ä¸‹é¢çš„SHGetFileInfo
 		hIcon = GetShortCutIcon(pPath,bIcon32);
 		return hIcon;
 	}
 
-	////ÎÄ¼şµÄ¹ØÁªÍ¼±ê,ÎÄ¼ş¼ĞµÄÍ¼±ê
+	////æ–‡ä»¶çš„å…³è”å›¾æ ‡,æ–‡ä»¶å¤¹çš„å›¾æ ‡
 	if (!m_comInited && !m_comInited.Init()) {
 		return hIcon;
 	}
@@ -810,7 +810,7 @@ ICONTYPE CMenuWithIcon::GetIcon(const tString & strPath, EICONGETTYPE needIcon, 
 		sizeof(SHFILEINFO),
 		SHGFI_ICON
 		| (bIcon32 ? SHGFI_LARGEICON : SHGFI_SMALLICON)
-		| (FILEICON == needIcon ? SHGFI_USEFILEATTRIBUTES : 0) // ²»³¢ÊÔ¶ÁÎÄ¼ş£¬Ö»¸ù¾İÎÄ¼şÀ©Õ¹Ãû»ñÈ¡¹ØÁªÍ¼±ê£¬ÕâÑùµÃ²»µ½ÎÄ¼ş¼ĞµÄÕıÈ·Í¼±ê¡£
+		| (FILEICON == needIcon ? SHGFI_USEFILEATTRIBUTES : 0) // ä¸å°è¯•è¯»æ–‡ä»¶ï¼Œåªæ ¹æ®æ–‡ä»¶æ‰©å±•åè·å–å…³è”å›¾æ ‡ï¼Œè¿™æ ·å¾—ä¸åˆ°æ–‡ä»¶å¤¹çš„æ­£ç¡®å›¾æ ‡ã€‚
 		);//
 	hIcon = sfi.hIcon;
 
@@ -824,10 +824,10 @@ ICONTYPE CMenuWithIcon::GetIcon(const tString & strPath, EICONGETTYPE needIcon, 
 				ExtractIconEx(path.c_str(), 0, NULL,&hIcon,1);
 
 		}
-		// ÏÖÔÚ»¹Ã»ÓĞÍ¼±ê£¬¿ÉÄÜ£ºÎÄ¼ş¸ù±¾²»´æÔÚ
+		// ç°åœ¨è¿˜æ²¡æœ‰å›¾æ ‡ï¼Œå¯èƒ½ï¼šæ–‡ä»¶æ ¹æœ¬ä¸å­˜åœ¨
 	}
 	{
-		// ³¢ÊÔÕ¹¿ª»·¾³±äÁ¿
+		// å°è¯•å±•å¼€ç¯å¢ƒå˜é‡
 		const int N = 512;
 		std::vector<TCHAR> buf(N);
 		if (ExpandEnvironmentStrings(strPath.c_str(), &buf[0], N) && strPath != &buf[0])
@@ -851,7 +851,7 @@ ICONTYPE CMenuWithIcon::GetBigIcon(const unsigned int id, int index){
 	return result;
 }
 
-//! Çå³ıËùÒÔ²Ëµ¥Ïî
+//! æ¸…é™¤æ‰€ä»¥èœå•é¡¹
 int CMenuWithIcon::Reset()
 {
 	Destroy();
@@ -862,7 +862,7 @@ int CMenuWithIcon::Reset()
 }
 
 
-//! Ìí¼ÓÍ¨Åä·û¼ÇÂ¼£¬·µ»ØË÷Òı¡£
+//! æ·»åŠ é€šé…ç¬¦è®°å½•ï¼Œè¿”å›ç´¢å¼•ã€‚
 int CMenuWithIcon::AddWildcard(const tString & str)
 {
 	if ( ! str.empty()) {
@@ -876,7 +876,7 @@ int CMenuWithIcon::AddWildcard(const tString & str)
 	return -1;
 }
 
-//! ¸ú¾İË÷Òı£¬·µ»ØÍ¨Åä·û¡£
+//! è·Ÿæ®ç´¢å¼•ï¼Œè¿”å›é€šé…ç¬¦ã€‚
 const TCHAR * CMenuWithIcon::GetWildcard(int index)
 {
 	if (index < 0 || index >= static_cast<int>(m_Wildcard.size()))
@@ -920,10 +920,10 @@ int CMenuWithIcon::BuildMyComputer(MENUTYPE hMenu, const tString & strName)
 			if (uDriveMask & 1) {
 				++n;
 				hSubMenu = CreatePopupMenu();
-				//¼ÇÂ¼¶¯Ì¬²Ëµ¥
+				//è®°å½•åŠ¨æ€èœå•
 
-				//µÚÒ»¼¶¶¯Ì¬²Ëµ¥£¬²»ĞèÒªÏú»Ù
-				AddToMap(m_StaticPath, hSubMenu, strDrive+_T("*"));//static ±íÊ¾²»É¾³ıµÄ dynamic
+				//ç¬¬ä¸€çº§åŠ¨æ€èœå•ï¼Œä¸éœ€è¦é”€æ¯
+				AddToMap(m_StaticPath, hSubMenu, strDrive+_T("*"));//static è¡¨ç¤ºä¸åˆ é™¤çš„ dynamic
 				m_StaticMenuWildcard[hSubMenu] = AddWildcard(strName);
 
 				tString strVolName;
@@ -960,8 +960,8 @@ int CMenuWithIcon::BuildMyComputer(MENUTYPE hMenu, const tString & strName)
 }
 
 
-//! Í¨Åä·û²Ëµ¥Ïî¹¹Ôìº¯Êı£¬ÓÃÓÚ¶àÖÖÄ£Ê½
-//!\param mode £ºfile£¬folder£¬expand£¬expandnowµÈÄ£Ê½
+//! é€šé…ç¬¦èœå•é¡¹æ„é€ å‡½æ•°ï¼Œç”¨äºå¤šç§æ¨¡å¼
+//!\param mode ï¼šfileï¼Œfolderï¼Œexpandï¼Œexpandnowç­‰æ¨¡å¼
 //!
 int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPathForSearch, const tString & strName, const std::vector<TSTRING> & vStrFilter, EBUILDMODE mode,bool bNoFileIcon/* = false*/)
 {
@@ -970,7 +970,7 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 		return BuildMyComputer(hMenu, strName);
 	}
 
-	const TCHAR * pSearch = inStrPathForSearch.c_str();//strPath °üº¬×îºóÒ»¸ö*£¬ÓÃÓÚËÑË÷Ìõ¼ş
+	const TCHAR * pSearch = inStrPathForSearch.c_str();//strPath åŒ…å«æœ€åä¸€ä¸ª*ï¼Œç”¨äºæœç´¢æ¡ä»¶
 	std::vector<TCHAR> path_expanded;
 	if(inStrPathForSearch.find('%') != tString::npos)
 	{
@@ -984,7 +984,7 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 
 	if (EEXPAND == mode || EEXPANDNOW == mode || EDYNAMIC == mode) {
 
-		// Ìí¼ÓËùÓĞ×ÓÄ¿Â¼Îª×Ó²Ëµ¥¡£
+		// æ·»åŠ æ‰€æœ‰å­ç›®å½•ä¸ºå­èœå•ã€‚
 
 		typedef std::vector<StrPair> NamePathContainer;
 
@@ -996,16 +996,16 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 			nSubMenus = BuildNameMap(pSearch, namePaths, KeepNohiddenDir());
 		}
 
-		//ÎÄ¼şÃû×÷Îª²Ëµ¥ÃûÊ±£¬ÆäÖĞµÄ '&' À©Õ¹³É  '&&'
+		//æ–‡ä»¶åä½œä¸ºèœå•åæ—¶ï¼Œå…¶ä¸­çš„ '&' æ‰©å±•æˆ  '&&'
 		for (NamePathContainer::iterator it = namePaths.begin(); it != namePaths.end(); ++it) {
 			DoubleChar(it->first, '&');
 		}
 
-		// ºöÂÔ´óĞ¡Ğ´
+		// å¿½ç•¥å¤§å°å†™
 		sort(namePaths.begin(), namePaths.end(), NoCaseCmp1st() );	// for vector<>
 		//namePaths.sort(NoCaseCmp1st()); // for list<>
 
-		// ¹¹ÔìÅÅĞòºóµÄ×Ó²Ëµ¥
+		// æ„é€ æ’åºåçš„å­èœå•
 		MENUTYPE hSubMenu = NULL;
 		TSTRING strWildCardPath;
 		bool bStaticMenu = IsStaticMenu(hMenu);
@@ -1020,11 +1020,11 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 				for (NamePathContainer::const_iterator it = namePaths.begin(); it != namePaths.end(); ++it) {
 					hSubMenu = CreatePopupMenu();
 					strWildCardPath = it->second + _T("\\*");
-					//¼ÇÂ¼¶¯Ì¬²Ëµ¥
+					//è®°å½•åŠ¨æ€èœå•
 
 					AddToMap(m_DynamicPath, hSubMenu, strWildCardPath);
 
-					// ¼ÇÂ¼Í¨Åä·û
+					// è®°å½•é€šé…ç¬¦
 					if (bStaticMenu)
 						m_DynamicMenuWildcard[hSubMenu] = m_StaticMenuWildcard[hMenu];
 					else {
@@ -1040,7 +1040,7 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 				for (NamePathContainer::const_iterator it = namePaths.begin(); it != namePaths.end(); ++it) {
 					hSubMenu = CreatePopupMenu();
 					strWildCardPath = it->second + _T("\\*");
-					//¼ÇÂ¼¶¯Ì¬²Ëµ¥
+					//è®°å½•åŠ¨æ€èœå•
 					DoMultiModeBuildMenu(hSubMenu,strWildCardPath.c_str(),strName, vStrFilter, EEXPANDNOW,true);
 
 					if (GetMenuItemCount(hSubMenu) > 0) {
@@ -1057,10 +1057,10 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 				for (NamePathContainer::const_iterator it = namePaths.begin(); it != namePaths.end(); ++it) {
 					hSubMenu = CreatePopupMenu();
 					strWildCardPath = it->second + _T("\\*");
-					//¼ÇÂ¼¶¯Ì¬²Ëµ¥
+					//è®°å½•åŠ¨æ€èœå•
 
-					//µÚÒ»¼¶¶¯Ì¬²Ëµ¥£¬²»ĞèÒªÏú»Ù
-					AddToMap(m_StaticPath, hSubMenu, strWildCardPath);//static ±íÊ¾²»É¾³ıµÄ dynamic
+					//ç¬¬ä¸€çº§åŠ¨æ€èœå•ï¼Œä¸éœ€è¦é”€æ¯
+					AddToMap(m_StaticPath, hSubMenu, strWildCardPath);//static è¡¨ç¤ºä¸åˆ é™¤çš„ dynamic
 					m_StaticMenuWildcard[hSubMenu] = AddWildcard(strName);
 
 					AddSubMenu(hMenu, hSubMenu, it->first, it->second);
@@ -1071,24 +1071,24 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 		}
 	}
 
-	// ÒÔstrNameÎªÌõ¼ş£¬ÕÒµ±Ç°Ä¿Â¼ÖĞµÄÎÄ¼ş
+	// ä»¥strNameä¸ºæ¡ä»¶ï¼Œæ‰¾å½“å‰ç›®å½•ä¸­çš„æ–‡ä»¶
 
 	WIN32_FIND_DATA fd = {0};
 	HANDLE handle = INVALID_HANDLE_VALUE;
 	const TCHAR *f = fd.cFileName;
-	// NBUF = 1024; ¼Ì³Ğ
+	// NBUF = 1024; ç»§æ‰¿
 	TCHAR fullPath[NBUF] = {0};
 	size_t len = _tcslen(pSearch)-1;
 
 	memcpy(fullPath,pSearch, len * sizeof(TCHAR));
-	fullPath[len] = '\0';	// len : Ö÷Ä¿Â¼Â·¾¶(°üÀ¨·´Ğ±Ïß)³¤¶È
+	fullPath[len] = '\0';	// len : ä¸»ç›®å½•è·¯å¾„(åŒ…æ‹¬åæ–œçº¿)é•¿åº¦
 
 	StrStrMap namePath;
 	StrStrMap nameName;
 	for (std::vector<TSTRING>::size_type i = 0; i < vStrFilter.size(); ++i) {
 
 		if (vStrFilter[i].empty() && vStrFilter.size() > 1) {
-			continue; // Èç¹ûÓĞ¶à¸ö¹ıÂËÆ÷£¬Ìø¹ı¿Õ°×
+			continue; // å¦‚æœæœ‰å¤šä¸ªè¿‡æ»¤å™¨ï¼Œè·³è¿‡ç©ºç™½
 		} else if ( vStrFilter[i].empty() ) {
 			fullPath[len] = '*', fullPath[len+1] = '\0';
 		} else {
@@ -1096,7 +1096,7 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 		}
 
 		const TSTRING strSearch(fullPath);
-		handle = FindFirstFile(strSearch.c_str(),&fd); // ÏµÍ³»á»º´æËÑË÷Ìõ¼ş£¿fullPath¿ÉÒÔ¸Ä¶¯£¿  Ans£ºÓ¦¸ÃÊÇµÄ. ²»ÒªÃ°ÏÕ£¬ĞÂ½¨Ò»¸ö°É¡£
+		handle = FindFirstFile(strSearch.c_str(),&fd); // ç³»ç»Ÿä¼šç¼“å­˜æœç´¢æ¡ä»¶ï¼ŸfullPathå¯ä»¥æ”¹åŠ¨ï¼Ÿ  Ansï¼šåº”è¯¥æ˜¯çš„. ä¸è¦å†’é™©ï¼Œæ–°å»ºä¸€ä¸ªå§ã€‚
 		if (handle != INVALID_HANDLE_VALUE) {
 			do {
 				if((f[0] == '.' && f[1] == '\0') || (f[0] == '.' && f[1] == '.' && f[2] == '\0') )
@@ -1107,20 +1107,20 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 				if (!m_bShowHidden && (fd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN))
 					continue;
 
-				////ÎÄ¼şÃû×÷Îª²Ëµ¥ÃûÊ±£¬ÆäÖĞµÄ '&' À©Õ¹³É  '&&'
+				////æ–‡ä»¶åä½œä¸ºèœå•åæ—¶ï¼Œå…¶ä¸­çš„ '&' æ‰©å±•æˆ  '&&'
 				TSTRING strFileName(f);
 				if (IsStrEndWith(strFileName, _T(".lnk"), false))
 					strFileName.resize(strFileName.size() - 4);
 				DoubleChar(strFileName, '&');
 
-				// ÅÅĞòºöÂÔ´óĞ¡Ğ´
+				// æ’åºå¿½ç•¥å¤§å°å†™
 				TSTRING strNameLower(strFileName);
 				ToLowerCase(strNameLower);
-				// ¶à´ÎÊ¹ÓÃÍ¨Åä·û£¬·ÀÖ¹ÖØ¸´µÄ²½Öè£¬ËäÈ»ĞÂµÄ»áÌæ»»¾ÉµÄ¡£
+				// å¤šæ¬¡ä½¿ç”¨é€šé…ç¬¦ï¼Œé˜²æ­¢é‡å¤çš„æ­¥éª¤ï¼Œè™½ç„¶æ–°çš„ä¼šæ›¿æ¢æ—§çš„ã€‚
 				if (nameName.find(strNameLower) == nameName.end()) {
 					nameName[strNameLower] = strFileName;
 
-					//ÎÄ¼ş»ò×ÓÄ¿Â¼£¨²»´ø·´Ğ±Ïß£©µÄÍêÕûÂ·¾¶£¬
+					//æ–‡ä»¶æˆ–å­ç›®å½•ï¼ˆä¸å¸¦åæ–œçº¿ï¼‰çš„å®Œæ•´è·¯å¾„ï¼Œ
 					memcpy(fullPath + len,f,(1 + _tcslen(f))*sizeof(TCHAR));
 					namePath[strFileName] = fullPath;
 				}
@@ -1134,15 +1134,15 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 
 	if ( ! nameName.empty()) {
 
-		// ¶Ô¶¯Ì¬²Ëµ¥¼ÓÈë·Ö¸ô·û
+		// å¯¹åŠ¨æ€èœå•åŠ å…¥åˆ†éš”ç¬¦
 		if( EDYNAMIC == mode && nSubMenus > 0) {
 			InsertMenu(hMenu,(UINT)-1,MF_BYPOSITION | MF_OWNERDRAW | MF_SEPARATOR,0,0);
 		}
 
-		// ¹¹ÔìÅÅĞòºóµÄ²Ëµ¥ÏîÄ¿
+		// æ„é€ æ’åºåçš„èœå•é¡¹ç›®
 		EICONGETTYPE iconGetType = FILEFOLDERICON;
 		if (bNoFileIcon || EDYNAMIC == mode)
-			iconGetType = NOICON;//²»Òª´æ´¢aÍ¼±ê
+			iconGetType = NOICON;//ä¸è¦å­˜å‚¨aå›¾æ ‡
 		StrStrMap::iterator itName;
 		for (itName = nameName.begin(); itName != nameName.end(); ++itName) {
 			result += AddMenuItem(hMenu,itName->second,namePath[itName->second],iconGetType);
@@ -1153,14 +1153,14 @@ int CMenuWithIcon::DoMultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPat
 	}
 
 	if (EDYNAMIC == mode && 0 == nSubMenus && 0 == result) {
-		AddMenuItem(hMenu,m_strEmpty, _T(""));//¶¯Ì¬²Ëµ¥£¬Ìí¼Ó±êÌâ¡°¿Õ¡±
+		AddMenuItem(hMenu,m_strEmpty, _T(""));//åŠ¨æ€èœå•ï¼Œæ·»åŠ æ ‡é¢˜â€œç©ºâ€
 	}
 
 	return result;
 }
 
 
-//! ÕÒ³öÍêÈ«Æ¥Åä,¸ù¾İÃû³ÆÕÒÃüÁîºÍÍ¼±ê,³É¹¦·µ»Øid£¬Ê§°Ü·µ»Ø 0¡£
+//! æ‰¾å‡ºå®Œå…¨åŒ¹é…,æ ¹æ®åç§°æ‰¾å‘½ä»¤å’Œå›¾æ ‡,æˆåŠŸè¿”å›idï¼Œå¤±è´¥è¿”å› 0ã€‚
 unsigned int CMenuWithIcon::Find(const TSTRING & strName, TSTRING & strPath) const
 {
 	if(strName.empty() || strName.length() >= MAX_PATH)
@@ -1201,7 +1201,7 @@ namespace {
 	};
 }
 
-//! ÕÒ³ö²¿·ÖÆ¥Åä£¬¼ÓÈëµ½Ö¸¶¨×Ö·û´®ÏòÁ¿Ä©Î²£¬bNoDup = true ÒÑ´æÔÚµÄÌø¹ı¡£
+//! æ‰¾å‡ºéƒ¨åˆ†åŒ¹é…ï¼ŒåŠ å…¥åˆ°æŒ‡å®šå­—ç¬¦ä¸²å‘é‡æœ«å°¾ï¼ŒbNoDup = true å·²å­˜åœ¨çš„è·³è¿‡ã€‚
 unsigned int CMenuWithIcon::FindAll(const TSTRING& strBeginWith,std::vector<TSTRING> &vStrName, bool bAllowDup) const
 {
 	if(strBeginWith.empty() || strBeginWith.length()>=MAX_PATH)
@@ -1212,7 +1212,7 @@ unsigned int CMenuWithIcon::FindAll(const TSTRING& strBeginWith,std::vector<TSTR
 	return FindIf(sub, vStrName, bAllowDup);
 }
 
-//! ÕÒ³ö²¿·ÖÆ¥Åä£¬¼ÓÈëµ½Ö¸¶¨×Ö·û´®ÏòÁ¿Ä©Î²£¬bNoDup = true ÒÑ´æÔÚµÄÌø¹ı¡£
+//! æ‰¾å‡ºéƒ¨åˆ†åŒ¹é…ï¼ŒåŠ å…¥åˆ°æŒ‡å®šå­—ç¬¦ä¸²å‘é‡æœ«å°¾ï¼ŒbNoDup = true å·²å­˜åœ¨çš„è·³è¿‡ã€‚
 unsigned int CMenuWithIcon::FindAllBeginWith(const TSTRING& strBeginWith,std::vector<TSTRING> &vStrName, bool bAllowDup) const
 {
 	if(strBeginWith.empty() || strBeginWith.length()>=MAX_PATH)
