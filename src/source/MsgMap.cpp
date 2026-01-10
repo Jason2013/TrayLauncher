@@ -1,4 +1,4 @@
-
+﻿
 #include <shellapi.h>
 #include <shlwapi.h>
 #include <dbt.h>
