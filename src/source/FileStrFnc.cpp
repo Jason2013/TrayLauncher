@@ -1,4 +1,4 @@
-
+﻿
 #include "FileStrFnc.h"
 #include <shellapi.h>
 #include <Shlwapi.h>

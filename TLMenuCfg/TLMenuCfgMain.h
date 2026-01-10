@@ -45,6 +45,7 @@ class TLMenuCfgDialog: public wxDialog
         void OntxtTargetText(wxCommandEvent& event);
         void OntxtNameOrFilterText(wxCommandEvent& event);
         void OntxtIconText(wxCommandEvent& event);
+        void OntxtWorkDirText(wxCommandEvent& event);
         void OnbtnReloadClick(wxCommandEvent& event);
         void OnbtnDownClick(wxCommandEvent& event);
         void OnbtnDelClick(wxCommandEvent& event);
@@ -53,6 +54,7 @@ class TLMenuCfgDialog: public wxDialog
         void OnbtnApplyClick(wxCommandEvent& event);
         void OnbtnFindTargetClick(wxCommandEvent& event);
         void OnBitmapButton2Click(wxCommandEvent& event);
+        void OnbtnFindWorkDirClick(wxCommandEvent& event);
         void OnClose(wxCloseEvent& event);
         void OnTreeMenuBeginDrag(wxTreeEvent& event);
         void OnTreeMenuEndDrag(wxTreeEvent& event);
@@ -84,6 +86,9 @@ class TLMenuCfgDialog: public wxDialog
         static const long ID_TEXTCTRL3;
         static const long ID_BITMAPCOMBOBOX1;
         static const long ID_BITMAPBUTTON7;
+        static const long ID_STATICTEXT5;
+        static const long ID_TEXTCTRL4;
+        static const long ID_BITMAPBUTTON8;
         static const long ID_BUTTON3;
         static const long ID_BUTTON4;
         static const long ID_BUTTON2;
@@ -112,6 +117,9 @@ class TLMenuCfgDialog: public wxDialog
         wxStaticText* m_stcNameFilter;
         wxStaticText* m_stcTarget;
         wxTextCtrl* m_txtIcon;
+        wxStaticText* m_stcWorkDir;
+        wxTextCtrl* m_txtWorkDir;
+        wxBitmapButton* m_btnFindWorkDir;
         wxStaticText* m_stcMenu;
         wxButton* m_btnApply;
         wxButton* m_btnReload;
@@ -146,6 +154,7 @@ class TLMenuCfgDialog: public wxDialog
 		bool m_bTargetChanged;
 		bool m_bNameFilterChanged;
 		bool m_bIconChanged;
+		bool m_bWorkDirChanged;
 
 		bool m_bMenuChanged;	//!< if there is a saved change in any item.
 		CMenuData m_menuData;

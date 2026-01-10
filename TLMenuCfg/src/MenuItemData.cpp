@@ -1,8 +1,8 @@
 #include "wx_pch.h"
 #include "MenuItemData.h"
 
-MenuItemData::MenuItemData(const wxString & name, const wxString & target, const wxString & icon):
-	m_strName(name), m_strTarget(target), m_strIconPath(icon)
+MenuItemData::MenuItemData(const wxString & name, const wxString & target, const wxString & icon, const wxString & workDir):
+	m_strName(name), m_strTarget(target), m_strIconPath(icon), m_strWorkDir(workDir)
 {
 	//ctor
 }

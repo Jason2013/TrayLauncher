@@ -1,4 +1,4 @@
-#ifndef LCH_MENU_DATA_H
+﻿#ifndef LCH_MENU_DATA_H
 #define LCH_MENU_DATA_H
 
 #include <auto_handle.h>

@@ -1,4 +1,4 @@
-#ifndef LCH_FILE_STR_FNC_H
+﻿#ifndef LCH_FILE_STR_FNC_H
 #define LCH_FILE_STR_FNC_H
 
 #include <stdheaders.h>

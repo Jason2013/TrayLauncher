@@ -13,6 +13,7 @@
 #include <wx/filename.h>
 #include <wx/mimetype.h>
 #include <wx/dnd.h>
+#include <wx/dirdlg.h>
 #include "MenuItemData.h"
 #include "language.h"
 #include "SettingFile.h"
@@ -103,6 +104,9 @@ const long TLMenuCfgDialog::ID_STATICTEXT4 = wxNewId();
 const long TLMenuCfgDialog::ID_TEXTCTRL3 = wxNewId();
 const long TLMenuCfgDialog::ID_BITMAPCOMBOBOX1 = wxNewId();
 const long TLMenuCfgDialog::ID_BITMAPBUTTON7 = wxNewId();
+const long TLMenuCfgDialog::ID_STATICTEXT5 = wxNewId();
+const long TLMenuCfgDialog::ID_TEXTCTRL4 = wxNewId();
+const long TLMenuCfgDialog::ID_BITMAPBUTTON8 = wxNewId();
 const long TLMenuCfgDialog::ID_BUTTON3 = wxNewId();
 const long TLMenuCfgDialog::ID_BUTTON4 = wxNewId();
 const long TLMenuCfgDialog::ID_BUTTON2 = wxNewId();
@@ -128,7 +132,11 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	 m_indexSep(-1),
 	 m_indexTitle(-1),
 	 m_indexWildCard(-1),
-	 m_fileName(_T("TLCmd.txt"))
+	 m_fileName(_T("TLCmd.txt")),
+	 m_bTargetChanged(false),
+	 m_bNameFilterChanged(false),
+	 m_bIconChanged(false),
+	 m_bWorkDirChanged(false)
 {
 	//(*Initialize(TLMenuCfgDialog)
 	wxBoxSizer* BoxSizer4;
@@ -149,6 +157,9 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	wxBoxSizer* BoxSizer17;
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
+	wxBoxSizer* BoxSizer20;
+	wxBoxSizer* BoxSizer21;
+	wxBoxSizer* BoxSizer22;
 
 	Create(parent, wxID_ANY, _("Tray Launcher Command Editor"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(693,416));
@@ -242,6 +253,20 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer19->Add(m_btnFindIcon, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer15->Add(BoxSizer19, 1, wxEXPAND, 5);
 	BoxSizer7->Add(BoxSizer15, 0, wxALL|wxEXPAND, 5);
+	BoxSizer20 = new wxBoxSizer(wxVERTICAL);
+	BoxSizer21 = new wxBoxSizer(wxHORIZONTAL);
+	m_stcWorkDir = new wxStaticText(this, ID_STATICTEXT5, _("Working Directory"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	BoxSizer21->Add(m_stcWorkDir, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer20->Add(BoxSizer21, 0, wxEXPAND, 5);
+	BoxSizer22 = new wxBoxSizer(wxHORIZONTAL);
+	m_txtWorkDir = new wxTextCtrl(this, ID_TEXTCTRL4, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
+	m_txtWorkDir->SetMaxLength(512);
+	BoxSizer22->Add(m_txtWorkDir, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_btnFindWorkDir = new wxBitmapButton(this, ID_BITMAPBUTTON8, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_FOLDER")),wxART_BUTTON), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON8"));
+	m_btnFindWorkDir->SetDefault();
+	BoxSizer22->Add(m_btnFindWorkDir, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer20->Add(BoxSizer22, 1, wxEXPAND, 5);
+	BoxSizer7->Add(BoxSizer20, 0, wxALL|wxEXPAND, 5);
 	BoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
 	m_btnSave = new wxButton(this, ID_BUTTON3, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	BoxSizer16->Add(m_btnSave, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -279,6 +304,8 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	Connect(ID_TEXTCTRL3,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&TLMenuCfgDialog::OntxtIconText);
 	Connect(ID_BITMAPCOMBOBOX1,wxEVT_COMMAND_COMBOBOX_SELECTED,(wxObjectEventFunction)&TLMenuCfgDialog::Onm_cbIconSelected);
 	Connect(ID_BITMAPBUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnBitmapButton2Click);
+	Connect(ID_TEXTCTRL4,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&TLMenuCfgDialog::OntxtWorkDirText);
+	Connect(ID_BITMAPBUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnbtnFindWorkDirClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnbtnSaveClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnbtnReloadClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnQuit);
@@ -400,12 +427,13 @@ private:
 //! \return void
 //! Called only in this file.
 //!
-void GetMenuStrings(const CItem &mi, TSTRING &strName, TSTRING &strPath, TSTRING &strIcon)
+void GetMenuStrings(const CItem &mi, TSTRING &strName, TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkDir)
 {
 	TSTRING strSep(_T("|||"));
 	strName = mi.Name();
 	strPath = mi.Path();
 	strIcon = mi.Ex();
+	strWorkDir = mi.WorkDir();
 }
 
 const wxString ExpandEnvString(const wxString & path)
@@ -623,10 +651,10 @@ wxIcon GetFileIcon(const wxString & path, const int moreTry = 1, const int width
 void TLMenuCfgDialog::MenuDataToTree(const CItem &mi, wxTreeCtrl &tree, wxTreeItemId id)
 {
 	assert(id.IsOk());
-	TSTRING strName, strPath, strIcon;
-	GetMenuStrings(mi, strName, strPath, strIcon);
+	TSTRING strName, strPath, strIcon, strWorkDir;
+	GetMenuStrings(mi, strName, strPath, strIcon, strWorkDir);
 
-	tree.SetItemData(id, new MenuItemData(strName, strPath, strIcon));
+	tree.SetItemData(id, new MenuItemData(strName, strPath, strIcon, strWorkDir));
 	UpdateItemDisplay(tree, id);
 }
 
@@ -642,7 +670,7 @@ void TLMenuCfgDialog::MenuDataToTree(const CMenuData &mi, wxTreeCtrl &tree, wxTr
 {
 	assert(id.IsOk());
 
-	tree.SetItemData(id, new MenuItemData(mi.Name(), _T(""), mi.Icon()));
+	tree.SetItemData(id, new MenuItemData(mi.Name(), _T(""), mi.Icon(), mi.WorkDir()));
 
 	for (unsigned int i = 0; i < mi.Count(); ++i)
 	{
@@ -868,7 +896,7 @@ void TLMenuCfgDialog::OnInit(wxInitDialogEvent& event)
 	if (!m_TreeMenu->HasChildren(idRoot))
 	{
 		wxTreeItemId demoItem = m_TreeMenu->AppendItem(idRoot, _T(""));
-		m_TreeMenu->SetItemData(demoItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T("")));
+		m_TreeMenu->SetItemData(demoItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T("")));
 		UpdateItemDisplay(*m_TreeMenu, demoItem);
 	}
 
@@ -889,6 +917,7 @@ void TLMenuCfgDialog::InfoChgFlg(const bool val)
 			m_bTargetChanged = false;
 			m_bNameFilterChanged = false;
 			m_bIconChanged = false;
+			m_bWorkDirChanged = false;
 			wxFont font(m_txtTarget->GetFont());
 			font.SetWeight(wxNORMAL);
 
@@ -1249,6 +1278,13 @@ void TLMenuCfgDialog::OntxtIconText(wxCommandEvent& event)
 	SetIconPathModifiedFlag();
 }
 
+void TLMenuCfgDialog::OntxtWorkDirText(wxCommandEvent& event)
+{
+	m_bWorkDirChanged = true;
+	m_bInfoUnsaved = true;
+	InfoChgFlg(true);
+}
+
 void TLMenuCfgDialog::UpdateFlgs()
 {
 	wxTreeItemId item = m_TreeMenu->GetSelection();
@@ -1287,6 +1323,8 @@ void TLMenuCfgDialog::UpdateFlgs()
 
 	m_btnFindTarget->Enable(isItem);
 
+	m_txtWorkDir->Enable(isItem);
+	m_btnFindWorkDir->Enable(isItem);
 }
 
 void TLMenuCfgDialog::OnbtnReloadClick(wxCommandEvent& event)
@@ -1311,6 +1349,7 @@ bool TLMenuCfgDialog::ReadItemInfo()
 			m_txtTarget->ChangeValue(p->Target());
 			m_txtNameOrFilter->ChangeValue(p->Name());
 			m_txtIcon->ChangeValue(p->IconPath());
+			m_txtWorkDir->ChangeValue(p->WorkDir());
 			TryExtractIcons();
 		}
 		else
@@ -1318,6 +1357,7 @@ bool TLMenuCfgDialog::ReadItemInfo()
 			m_txtTarget->Clear();
 			m_txtNameOrFilter->Clear();
 			m_txtIcon->Clear();
+			m_txtWorkDir->Clear();
 		}
 
 		InfoChgFlg(false);
@@ -1357,6 +1397,7 @@ bool TLMenuCfgDialog::SaveItemInfo()
 				assert(!m_txtIcon->IsEnabled());
 				p->IconPath(_T(""));
 			}
+			p->WorkDir(m_txtWorkDir->GetValue().Trim(true).Trim(false));
 
 			/* removi image affects following images' indices.
 			// NOTE: Calling Remove(-1) will remove all images from list;
@@ -1393,13 +1434,15 @@ bool TLMenuCfgDialog::Move(const wxTreeItemId from, const wxTreeItemId to, const
 
 	const bool isFromSel = (from == m_TreeMenu->GetSelection());
 
-	wxString strTar, strName, strIcon;
+	wxString strTar, strName, strIcon, strWorkDir;
 
 	const bool tar = m_bTargetChanged;
 
 	const bool name = m_bNameFilterChanged;
 
 	const bool icon = m_bIconChanged;
+
+	const bool workDir = m_bWorkDirChanged;
 
 	if (isFromSel)
 	{
@@ -1408,6 +1451,8 @@ bool TLMenuCfgDialog::Move(const wxTreeItemId from, const wxTreeItemId to, const
 		if(name) { strName = m_txtNameOrFilter->GetValue(); }
 
 		if(icon) { strIcon = m_txtIcon->GetValue(); }
+
+		if(workDir) { strWorkDir = m_txtWorkDir->GetValue(); }
 	}
 
 	if (direction == e_up)
@@ -1428,6 +1473,8 @@ bool TLMenuCfgDialog::Move(const wxTreeItemId from, const wxTreeItemId to, const
 		if (name) { m_txtNameOrFilter->SetValue(strName); }
 
 		if (icon) { m_txtIcon->SetValue(strIcon); }
+
+		if (workDir) { m_txtWorkDir->SetValue(strWorkDir); }
 	}
 
 	return ret;
@@ -1500,9 +1547,9 @@ void TLMenuCfgDialog::OnbtnNewDirClick(wxCommandEvent& event)
 
 			if (subItem.IsOk())
 			{
-				m_TreeMenu->SetItemData(dir, new MenuItemData(_LNG(STR_DisplayName), _T(""), _T("")));
+				m_TreeMenu->SetItemData(dir, new MenuItemData(_LNG(STR_DisplayName), _T(""), _T(""), _T("")));
 				UpdateItemDisplay(*m_TreeMenu, dir);
-				m_TreeMenu->SetItemData(subItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T("")));
+				m_TreeMenu->SetItemData(subItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T("")));
 				UpdateItemDisplay(*m_TreeMenu, subItem);
 				m_TreeMenu->SelectItem(dir);
 				MenuChgFlg(true);
@@ -1528,7 +1575,7 @@ void TLMenuCfgDialog::OnbtnNewItemClick(wxCommandEvent& event)
 
 		if (add.IsOk())
 		{
-			m_TreeMenu->SetItemData(add, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T("")));
+			m_TreeMenu->SetItemData(add, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T("")));
 			UpdateItemDisplay(*m_TreeMenu, add);
 			m_TreeMenu->SelectItem(add);
 			MenuChgFlg(true);
@@ -1566,6 +1613,22 @@ void TLMenuCfgDialog::OnbtnFindTargetClick(wxCommandEvent& event)
 	{
 		m_txtTarget->SetValue(_T("\"") + filename + _T("\""));
 		SetNameFromTarget();
+		// 设置默认工作目录为应用程序所在目录
+		if (m_txtWorkDir->IsEmpty())
+		{
+			wxFileName fn(filename);
+			m_txtWorkDir->SetValue(fn.GetPath());
+		}
+	}
+}
+
+void TLMenuCfgDialog::OnbtnFindWorkDirClick(wxCommandEvent& event)
+{
+	wxString dir = wxDirSelector(_LNG(STR_Choose_Target));
+	if (!dir.empty())
+	{
+		m_txtWorkDir->SetValue(dir);
+		InfoChgFlg(true);
 	}
 }
 
@@ -1592,6 +1655,7 @@ void TLMenuCfgDialog::TreeToMenuData(const wxTreeCtrl &tree, const wxTreeItemId 
 	assert(p);
 	menu.Name(static_cast<const TCHAR*>(p->Name().c_str()));
 	menu.Path(static_cast<const TCHAR*>(p->IconPath().c_str()));
+	menu.WorkDir(static_cast<const TCHAR*>(p->WorkDir().c_str()));
 
 	wxTreeItemId vcookie = item;
 	wxTreeItemIdValue cookie = &vcookie;
@@ -1602,11 +1666,13 @@ void TLMenuCfgDialog::TreeToMenuData(const wxTreeCtrl &tree, const wxTreeItemId 
 		{
 			MenuItemData *p = static_cast<MenuItemData*>(tree.GetItemData(id));
 			assert(p);
-			menu.AddItem(menu.Count(), p->Name().wc_str(), p->Target().wc_str(), p->IconPath().wc_str());
+			menu.AddItem(menu.Count(), p->Name().wc_str(), p->Target().wc_str(), p->IconPath().wc_str(), p->WorkDir().wc_str());
 		}
 		else
 		{
-			menu.AddMenu(menu.Count(), _T(""), _T(""), _T(""));
+			MenuItemData *p = static_cast<MenuItemData*>(tree.GetItemData(id));
+			assert(p);
+			menu.AddMenu(menu.Count(), p->Name().wc_str(), _T(""), p->IconPath().wc_str(), p->WorkDir().wc_str());
 			assert(menu.Menu(menu.Count()-1));
 			TreeToMenuData(tree, id, *menu.Menu(menu.Count()-1));
 		}
