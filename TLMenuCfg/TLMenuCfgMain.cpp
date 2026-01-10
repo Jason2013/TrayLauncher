@@ -343,6 +343,7 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	m_stcTarget->SetLabel(_LNG(STC_Target));
 	m_stcNameFilter->SetLabel(_LNG(STC_DispName));
 	m_stcCustomizeIcon->SetLabel(_LNG(STC_IconPath));
+	m_stcWorkDir->SetLabel(_LNG(STC_WorkDir));
 
 	m_txtNameOrFilter->SetHelpText(_LNG(STR_Invalid_NameOrFilter));
 

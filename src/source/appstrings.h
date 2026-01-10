@@ -45,6 +45,7 @@
 	 DECLARE_DEF_LANG_ID(STC_DispName,						_T("Display Name:") )
 	 DECLARE_DEF_LANG_ID(STC_Filter,						_T("Filter:") )
 	 DECLARE_DEF_LANG_ID(STC_IconPath,						_T("Use a custom icon:") )
+	 DECLARE_DEF_LANG_ID(STC_WorkDir,						_T("Working Directory:") )
 
 	 DECLARE_DEF_LANG_ID(STR_MyComputer,					_T("*Computer*") )
 	 DECLARE_DEF_LANG_ID(STR_DisplayName,					_T("[Display Name]") )
