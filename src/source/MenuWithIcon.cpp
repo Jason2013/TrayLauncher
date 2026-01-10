@@ -118,9 +118,9 @@ bool CMenuWithIcon::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 	//两个可能的类型，菜单与项
 	IDTYPE iMaybeID = pDI->itemID;
 	MENUTYPE hMaybeMenu = TryGetSubMenu(pDI);
-	assert(!hMaybeMenu || hMaybeMenu == (HMENU)iMaybeID);
+	assert(!hMaybeMenu || hMaybeMenu == (HMENU)(UINT_PTR)iMaybeID);
 	if (!hMaybeMenu && (iMaybeID < m_startID || iMaybeID >= m_ID) ) {
-		hMaybeMenu = (HMENU)iMaybeID;
+		hMaybeMenu = (HMENU)(UINT_PTR)iMaybeID;
 	}
 	// 主菜单 和 子菜单
 
@@ -893,7 +893,8 @@ int CMenuWithIcon::MultiModeBuildMenu(MENUTYPE hMenu, const tString & inStrPathF
 	std::vector<TSTRING> vStrFilter;
 	GetSeparatedString(strName, '|', vStrFilter);
 	std::sort(vStrFilter.begin(), vStrFilter.end());
-	std::unique(vStrFilter.begin(), vStrFilter.end());
+	auto it = std::unique(vStrFilter.begin(), vStrFilter.end());
+	vStrFilter.erase(it, vStrFilter.end());
 	return DoMultiModeBuildMenu(hMenu, inStrPathForSearch, strName, vStrFilter,mode, bNoFileIcon);
 }
 
