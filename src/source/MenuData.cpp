@@ -16,22 +16,11 @@ bool CItem::OutPut(FILE * pFile, TCHAR pad, int nPad) const{
 		return false;
 	if (!(Name() == Empty() && Path() == Empty())) {
 		TSTRING strLine = tString(nPad, pad) + Name() + _T(" = ") + Path();
-		if (!Ex().empty()) {
-			strLine += _T("|||") + Ex();
-		}
-		if (!WorkDir().empty()) {
-			if (Ex().empty()) {
-				strLine += _T("|||");
-			}
-			strLine += _T("|||") + WorkDir();
-		}
+		// Always use fixed format: Path|||Icon|||WorkDir|||hide
+		// Use empty strings for missing fields to ensure unambiguous parsing
+		strLine += _T("|||") + Ex();  // Icon (may be empty)
+		strLine += _T("|||") + WorkDir();  // WorkDir (may be empty)
 		if (m_bHide) {
-			if (Ex().empty() && WorkDir().empty()) {
-				strLine += _T("|||");
-			}
-			if (WorkDir().empty() && !Ex().empty()) {
-				strLine += _T("|||");
-			}
 			strLine += _T("|||hide");
 		}
 		WriteStringToFile(strLine, pFile);
@@ -152,17 +141,19 @@ void SepPathIconAndWorkDir(TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkD
 
 	if (TSTRING::npos != sepPos1)
 	{
-		TSTRING strRemaining = ns_file_str_ops::StripSpaces( strPathAndExtras.substr(sepPos1 + strSep.length()) );
+		// Fixed format: Path|||Icon|||WorkDir|||hide
+		// Parse in fixed order
 		strPath = ns_file_str_ops::StripSpaces( strPathAndExtras.substr(0, sepPos1) );
+		TSTRING strRemaining = ns_file_str_ops::StripSpaces( strPathAndExtras.substr(sepPos1 + strSep.length()) );
 		
-		// Check for second separator (work directory or hide)
+		// Parse Icon (second field)
 		TSTRING::size_type sepPos2 = strRemaining.find(strSep);
 		if (TSTRING::npos != sepPos2)
 		{
 			strIcon = ns_file_str_ops::StripSpaces( strRemaining.substr(0, sepPos2) );
 			TSTRING strRemaining2 = ns_file_str_ops::StripSpaces( strRemaining.substr(sepPos2 + strSep.length()) );
 			
-			// Check for third separator (hide flag)
+			// Parse WorkDir (third field)
 			TSTRING::size_type sepPos3 = strRemaining2.find(strSep);
 			if (TSTRING::npos != sepPos3)
 			{
@@ -172,36 +163,20 @@ void SepPathIconAndWorkDir(TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkD
 			}
 			else
 			{
-				// Check if remaining is workdir or hide flag
-				if (strRemaining2 == _T("hide") || strRemaining2 == _T("1") || strRemaining2 == _T("true"))
-				{
-					strWorkDir = CItem::Empty();
-					bHide = true;
-				}
-				else
-				{
-					strWorkDir = strRemaining2;
-					bHide = false;
-				}
+				// No third separator - remaining is WorkDir (old format compatibility)
+				strWorkDir = strRemaining2;
+				bHide = false;
 			}
 		}
 		else
 		{
-			// Check if remaining is hide flag
-			if (strRemaining == _T("hide") || strRemaining == _T("1") || strRemaining == _T("true"))
-			{
-				strIcon = CItem::Empty();
-				strWorkDir = CItem::Empty();
-				bHide = true;
-			}
-			else
-			{
-				strIcon = strRemaining;
-				strWorkDir = CItem::Empty();
-				bHide = false;
-			}
+			// No second separator - remaining is Icon (old format compatibility)
+			strIcon = strRemaining;
+			strWorkDir = CItem::Empty();
+			bHide = false;
 		}
 
+		// Remove quotes from icon path if present
 		if (!strIcon.empty() && '\"' == strIcon[0]) {
 			TSTRING::size_type pos = strIcon.find('\"', 1);
 			strIcon = strIcon.substr(1, pos == TSTRING::npos ? pos : pos - 1);
@@ -209,6 +184,7 @@ void SepPathIconAndWorkDir(TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkD
 	}
 	else
 	{
+		// No separators - just path
 		strIcon = CItem::Empty();
 		strWorkDir = CItem::Empty();
 		bHide = false;
@@ -248,7 +224,9 @@ int CMenuData::LoadFile(FILE *pFile) {
 					TSTRING strIcon, strWorkDir;
 					bool bHide = false;
 					SepPathIconAndWorkDir(strPath, strIcon, strWorkDir, bHide);
-					if (AddMenu(Count(), strName, strIcon, strIcon, strWorkDir, bHide) ) {
+					// AddMenu signature: (pos, name, path, icon, workdir, hide)
+					// For submenus, path should be empty string
+					if (AddMenu(Count(), strName, _T(""), strIcon, strWorkDir, bHide) ) {
 						assert(IsMenu(Count()-1));
 						Menu(Count()-1)->LoadFile(pFile);
 					}
