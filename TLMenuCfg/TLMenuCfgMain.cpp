@@ -997,6 +997,16 @@ void TLMenuCfgDialog::UpdateItemDisplay(wxTreeCtrl &tree, wxTreeItemId item, con
 
 	tree.SetItemText(item, strDisplay);
 
+	// Set text color based on Hide status
+	if (itemData->Hide())
+	{
+		tree.SetItemTextColour(item, wxColour(128, 128, 128)); // Gray color
+	}
+	else
+	{
+		tree.SetItemTextColour(item, wxNullColour); // Use default color
+	}
+
 	const int noImage = -1;
 
 	if (tree.GetImageList() && refreshImage)
