@@ -39,6 +39,7 @@
 	 DECLARE_DEF_LANG_ID(BTN_IsSep,							_T("As Separator") )
 	 DECLARE_DEF_LANG_ID(BTN_IsTitle,						_T("As Title") )
 	 DECLARE_DEF_LANG_ID(BTN_IsWildCard,					_T("Wildcard mode") )
+	 DECLARE_DEF_LANG_ID(BTN_Hide,							_T("Hide") )
 
 	 DECLARE_DEF_LANG_ID(STC_Menu,							_T("Commands:") )
 	 DECLARE_DEF_LANG_ID(STC_Target,						_T("Target Path:") )

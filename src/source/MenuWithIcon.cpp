@@ -577,6 +577,11 @@ int CMenuWithIcon::BuildMenuFromMenuData(CMenuData * pMenu, MENUTYPE hMenu)
 {
 	int nItems(0);
 	for (unsigned int index = 0; index < pMenu->Count(); ++index) {
+		// Skip hidden items
+		if (pMenu->Item(index)->Hide()) {
+			continue;
+		}
+		
 		if (pMenu->IsMenu(index)) {
 			MENUTYPE hSubMenu = CreateMenu();
 			if (!hSubMenu)

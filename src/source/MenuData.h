@@ -18,7 +18,7 @@ protected:
 	typedef unsigned int Ui;
 public:
 	inline static CS Empty() {return _T("");}
-	explicit CItem( Prm strName, Prm strPath = Empty(), Prm strEx = Empty(), Prm strWorkDir = Empty() );
+	explicit CItem( Prm strName, Prm strPath = Empty(), Prm strEx = Empty(), Prm strWorkDir = Empty(), bool hide = false );
 
 	virtual ~CItem() {}
 
@@ -27,6 +27,8 @@ public:
 	Prm Ex() const { return Get(2);}
 	Prm WorkDir() const { return Get(3);}
 	Prm Icon() const {return Ex().length()?Ex():Path();}
+	bool Hide() const { return m_bHide; }
+	void Hide(bool val) { m_bHide = val; }
 
 	TS & Name() { return Get(0); }
 	TS & Path() { return Get(1); }
@@ -43,6 +45,7 @@ private:
 
 private:
 	std::vector<TS> m_str; // { name, path, icon, workdir }
+	bool m_bHide; // hide flag
 	//TS::value_type m_sep;// '='
 
 };
@@ -54,7 +57,7 @@ public:
 	using CItem::Name;
 	using CItem::Path;
 
-	explicit CMenuData( Prm strName, Prm strPath = Empty(), Prm strEx = Empty(), Prm strWorkDir = Empty() );
+	explicit CMenuData( Prm strName, Prm strPath = Empty(), Prm strEx = Empty(), Prm strWorkDir = Empty(), bool hide = false );
 	~CMenuData();
 	Ui Count() const { return m_sub.size(); }
 
@@ -69,9 +72,9 @@ public:
 
 	void Clear();
 
-	bool AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx = Empty(), Prm strWorkDir = Empty()) ;
+	bool AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx = Empty(), Prm strWorkDir = Empty(), bool hide = false) ;
 
-	bool AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx = Empty(), Prm strWorkDir = Empty());
+	bool AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx = Empty(), Prm strWorkDir = Empty(), bool hide = false);
 
 	bool Remove(Ui pos) ;
 

@@ -46,6 +46,7 @@ class TLMenuCfgDialog: public wxDialog
         void OntxtNameOrFilterText(wxCommandEvent& event);
         void OntxtIconText(wxCommandEvent& event);
         void OntxtWorkDirText(wxCommandEvent& event);
+        void OnflgHideClick(wxCommandEvent& event);
         void OnbtnReloadClick(wxCommandEvent& event);
         void OnbtnDownClick(wxCommandEvent& event);
         void OnbtnDelClick(wxCommandEvent& event);
@@ -81,6 +82,7 @@ class TLMenuCfgDialog: public wxDialog
         static const long ID_BITMAPBUTTON6;
         static const long ID_STATICTEXT3;
         static const long ID_CHECKBOX2;
+        static const long ID_CHECKBOX3;
         static const long ID_TEXTCTRL2;
         static const long ID_STATICTEXT4;
         static const long ID_TEXTCTRL3;
@@ -112,6 +114,7 @@ class TLMenuCfgDialog: public wxDialog
         wxTextCtrl* m_txtTarget;
         wxCheckBox* m_flgSep;
         wxCheckBox* m_flgTitle;
+        wxCheckBox* m_flgHide;
         wxBoxSizer* BoxSizer1;
         wxCheckBox* m_flgWildCard;
         wxStaticText* m_stcNameFilter;

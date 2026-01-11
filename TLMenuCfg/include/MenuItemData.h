@@ -7,7 +7,8 @@
 class MenuItemData : public wxTreeItemData
 {
 public:
-	MenuItemData(const wxString & name, const wxString & target, const wxString & icon, const wxString & workDir = wxEmptyString);
+	MenuItemData(const wxString & name, const wxString & target, const wxString & icon, const wxString & workDir = wxEmptyString, bool hide = false);
+	MenuItemData(const MenuItemData & other);
 	virtual ~MenuItemData();
 
 	const wxString Name() { return m_strName; }
@@ -22,12 +23,16 @@ public:
 	const wxString WorkDir() { return m_strWorkDir; }
 	void WorkDir(const wxString & val) { m_strWorkDir = val; }
 
+	bool Hide() const { return m_bHide; }
+	void Hide(bool val) { m_bHide = val; }
+
 protected:
 private:
 	wxString m_strName;
 	wxString m_strTarget;
 	wxString m_strIconPath;
 	wxString m_strWorkDir;
+	bool m_bHide;
 };
 
 #endif // MENUITEMDATA_H

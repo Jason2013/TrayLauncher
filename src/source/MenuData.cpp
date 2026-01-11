@@ -4,7 +4,7 @@
 
 using namespace ns_file_str_ops;
 
-CItem::CItem( Prm strName, Prm strPath, Prm strEx, Prm strWorkDir):m_str(4){
+CItem::CItem( Prm strName, Prm strPath, Prm strEx, Prm strWorkDir, bool hide):m_str(4), m_bHide(hide){
 		m_str[0] = strName;
 		m_str[1] = strPath;
 		m_str[2] = strEx;
@@ -25,6 +25,15 @@ bool CItem::OutPut(FILE * pFile, TCHAR pad, int nPad) const{
 			}
 			strLine += _T("|||") + WorkDir();
 		}
+		if (m_bHide) {
+			if (Ex().empty() && WorkDir().empty()) {
+				strLine += _T("|||");
+			}
+			if (WorkDir().empty() && !Ex().empty()) {
+				strLine += _T("|||");
+			}
+			strLine += _T("|||hide");
+		}
 		WriteStringToFile(strLine, pFile);
 	}
 	return true;
@@ -32,8 +41,8 @@ bool CItem::OutPut(FILE * pFile, TCHAR pad, int nPad) const{
 
 
 
-CMenuData::CMenuData( Prm strName, Prm strPath, Prm strEx, Prm strWorkDir)
-:CItem(strName,strPath,strEx,strWorkDir)
+CMenuData::CMenuData( Prm strName, Prm strPath, Prm strEx, Prm strWorkDir, bool hide)
+:CItem(strName,strPath,strEx,strWorkDir,hide)
 {}
 
 CMenuData::~CMenuData() { Clear();}
@@ -48,18 +57,18 @@ void CMenuData::Clear() {
 
 
 
-bool CMenuData::AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx, Prm strWorkDir) {
+bool CMenuData::AddItem (Ui pos, Prm strName, Prm strPath, Prm strEx, Prm strWorkDir, bool hide) {
 	if ( pos >= 0 && pos <= m_sub.size() ) {
-		CItem * p = new CItem(strName, strPath, strEx, strWorkDir);
+		CItem * p = new CItem(strName, strPath, strEx, strWorkDir, hide);
 		m_sub.insert(m_sub.begin() + pos, p);
 		return true;
 	}
 	return false;
 }
 
-bool CMenuData::AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx, Prm strWorkDir) {
+bool CMenuData::AddMenu(Ui pos, Prm strName, Prm strPath, Prm strEx, Prm strWorkDir, bool hide) {
 	if ( pos >= 0 && pos <= m_sub.size() ) {
-		CMenuData * p = new CMenuData(strName, strPath, strEx, strWorkDir);
+		CMenuData * p = new CMenuData(strName, strPath, strEx, strWorkDir, hide);
 		m_sub.insert(m_sub.begin() + pos, p);
 		return true;
 	}
@@ -134,28 +143,63 @@ bool CMenuData::OutPut(FILE * pFile, TCHAR pad, int nPad, int step) const {
 
 namespace {
 
-void SepPathIconAndWorkDir(TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkDir)
+void SepPathIconAndWorkDir(TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkDir, bool &bHide)
 {
 	TSTRING strSep(_T("|||"));
 	const TSTRING & strPathAndExtras = strPath;
 	TSTRING::size_type sepPos1 = strPathAndExtras.find(strSep);
+	bHide = false;
 
 	if (TSTRING::npos != sepPos1)
 	{
 		TSTRING strRemaining = ns_file_str_ops::StripSpaces( strPathAndExtras.substr(sepPos1 + strSep.length()) );
 		strPath = ns_file_str_ops::StripSpaces( strPathAndExtras.substr(0, sepPos1) );
 		
-		// Check for second separator (work directory)
+		// Check for second separator (work directory or hide)
 		TSTRING::size_type sepPos2 = strRemaining.find(strSep);
 		if (TSTRING::npos != sepPos2)
 		{
 			strIcon = ns_file_str_ops::StripSpaces( strRemaining.substr(0, sepPos2) );
-			strWorkDir = ns_file_str_ops::StripSpaces( strRemaining.substr(sepPos2 + strSep.length()) );
+			TSTRING strRemaining2 = ns_file_str_ops::StripSpaces( strRemaining.substr(sepPos2 + strSep.length()) );
+			
+			// Check for third separator (hide flag)
+			TSTRING::size_type sepPos3 = strRemaining2.find(strSep);
+			if (TSTRING::npos != sepPos3)
+			{
+				strWorkDir = ns_file_str_ops::StripSpaces( strRemaining2.substr(0, sepPos3) );
+				TSTRING strHide = ns_file_str_ops::StripSpaces( strRemaining2.substr(sepPos3 + strSep.length()) );
+				bHide = (strHide == _T("hide") || strHide == _T("1") || strHide == _T("true"));
+			}
+			else
+			{
+				// Check if remaining is workdir or hide flag
+				if (strRemaining2 == _T("hide") || strRemaining2 == _T("1") || strRemaining2 == _T("true"))
+				{
+					strWorkDir = CItem::Empty();
+					bHide = true;
+				}
+				else
+				{
+					strWorkDir = strRemaining2;
+					bHide = false;
+				}
+			}
 		}
 		else
 		{
-			strIcon = strRemaining;
-			strWorkDir = CItem::Empty();
+			// Check if remaining is hide flag
+			if (strRemaining == _T("hide") || strRemaining == _T("1") || strRemaining == _T("true"))
+			{
+				strIcon = CItem::Empty();
+				strWorkDir = CItem::Empty();
+				bHide = true;
+			}
+			else
+			{
+				strIcon = strRemaining;
+				strWorkDir = CItem::Empty();
+				bHide = false;
+			}
 		}
 
 		if (!strIcon.empty() && '\"' == strIcon[0]) {
@@ -167,6 +211,7 @@ void SepPathIconAndWorkDir(TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkD
 	{
 		strIcon = CItem::Empty();
 		strWorkDir = CItem::Empty();
+		bHide = false;
 	}
 }
 
@@ -199,10 +244,14 @@ int CMenuData::LoadFile(FILE *pFile) {
 			case '>' :
 			case '{' :
 				strName = StripSpaces(strName.substr(1));
-
-				if (AddMenu(Count(), strName, strPath ) ) {
-					assert(IsMenu(Count()-1));
-					Menu(Count()-1)->LoadFile(pFile);
+				{
+					TSTRING strIcon, strWorkDir;
+					bool bHide = false;
+					SepPathIconAndWorkDir(strPath, strIcon, strWorkDir, bHide);
+					if (AddMenu(Count(), strName, strIcon, strIcon, strWorkDir, bHide) ) {
+						assert(IsMenu(Count()-1));
+						Menu(Count()-1)->LoadFile(pFile);
+					}
 				}
 				break;
 			case '<' :
@@ -212,8 +261,9 @@ int CMenuData::LoadFile(FILE *pFile) {
 			default:
 				{
 					TSTRING strIcon, strWorkDir;
-					SepPathIconAndWorkDir(strPath, strIcon, strWorkDir);
-					nItems += AddItem(Count(), strName, strPath, strIcon, strWorkDir);
+					bool bHide = false;
+					SepPathIconAndWorkDir(strPath, strIcon, strWorkDir, bHide);
+					nItems += AddItem(Count(), strName, strPath, strIcon, strWorkDir, bHide);
 				}
 				break;
 		}

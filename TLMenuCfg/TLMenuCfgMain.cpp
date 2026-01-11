@@ -99,6 +99,7 @@ const long TLMenuCfgDialog::ID_TEXTCTRL1 = wxNewId();
 const long TLMenuCfgDialog::ID_BITMAPBUTTON6 = wxNewId();
 const long TLMenuCfgDialog::ID_STATICTEXT3 = wxNewId();
 const long TLMenuCfgDialog::ID_CHECKBOX2 = wxNewId();
+const long TLMenuCfgDialog::ID_CHECKBOX3 = wxNewId();
 const long TLMenuCfgDialog::ID_TEXTCTRL2 = wxNewId();
 const long TLMenuCfgDialog::ID_STATICTEXT4 = wxNewId();
 const long TLMenuCfgDialog::ID_TEXTCTRL3 = wxNewId();
@@ -143,6 +144,7 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	wxBoxSizer* BoxSizer6;
 	wxBoxSizer* BoxSizer15;
 	wxBoxSizer* BoxSizer19;
+	wxBoxSizer* BoxSizer23;
 	wxBoxSizer* BoxSizer5;
 	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer7;
@@ -267,6 +269,11 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer19->Add(m_btnFindIcon, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer15->Add(BoxSizer19, 1, wxEXPAND, 5);
 	BoxSizer7->Add(BoxSizer15, 0, wxALL|wxEXPAND, 5);
+	BoxSizer23 = new wxBoxSizer(wxHORIZONTAL);
+	m_flgHide = new wxCheckBox(this, ID_CHECKBOX3, _("Hide"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
+	m_flgHide->SetValue(false);
+	BoxSizer23->Add(m_flgHide, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer7->Add(BoxSizer23, 0, wxALL|wxEXPAND, 5);
 	BoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
 	m_btnSave = new wxButton(this, ID_BUTTON3, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	BoxSizer16->Add(m_btnSave, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -306,6 +313,7 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	Connect(ID_BITMAPBUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnBitmapButton2Click);
 	Connect(ID_TEXTCTRL4,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&TLMenuCfgDialog::OntxtWorkDirText);
 	Connect(ID_BITMAPBUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnbtnFindWorkDirClick);
+	Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnflgHideClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnbtnSaveClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnbtnReloadClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TLMenuCfgDialog::OnQuit);
@@ -339,6 +347,7 @@ TLMenuCfgDialog::TLMenuCfgDialog(wxWindow* parent,wxWindowID id)
 	m_flgSep->SetLabel(_LNG(BTN_IsSep));
 	m_flgTitle->SetLabel(_LNG(BTN_IsTitle));
 	m_flgWildCard->SetLabel(_LNG(BTN_IsWildCard));
+	m_flgHide->SetLabel(_LNG(BTN_Hide));
 
 	m_stcTarget->SetLabel(_LNG(STC_Target));
 	m_stcNameFilter->SetLabel(_LNG(STC_DispName));
@@ -428,13 +437,14 @@ private:
 //! \return void
 //! Called only in this file.
 //!
-void GetMenuStrings(const CItem &mi, TSTRING &strName, TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkDir)
+void GetMenuStrings(const CItem &mi, TSTRING &strName, TSTRING &strPath, TSTRING &strIcon, TSTRING &strWorkDir, bool &bHide)
 {
 	TSTRING strSep(_T("|||"));
 	strName = mi.Name();
 	strPath = mi.Path();
 	strIcon = mi.Ex();
 	strWorkDir = mi.WorkDir();
+	bHide = mi.Hide();
 }
 
 const wxString ExpandEnvString(const wxString & path)
@@ -653,9 +663,10 @@ void TLMenuCfgDialog::MenuDataToTree(const CItem &mi, wxTreeCtrl &tree, wxTreeIt
 {
 	assert(id.IsOk());
 	TSTRING strName, strPath, strIcon, strWorkDir;
-	GetMenuStrings(mi, strName, strPath, strIcon, strWorkDir);
+	bool bHide = false;
+	GetMenuStrings(mi, strName, strPath, strIcon, strWorkDir, bHide);
 
-	tree.SetItemData(id, new MenuItemData(strName, strPath, strIcon, strWorkDir));
+	tree.SetItemData(id, new MenuItemData(strName, strPath, strIcon, strWorkDir, bHide));
 	UpdateItemDisplay(tree, id);
 }
 
@@ -671,7 +682,7 @@ void TLMenuCfgDialog::MenuDataToTree(const CMenuData &mi, wxTreeCtrl &tree, wxTr
 {
 	assert(id.IsOk());
 
-	tree.SetItemData(id, new MenuItemData(mi.Name(), _T(""), mi.Icon(), mi.WorkDir()));
+	tree.SetItemData(id, new MenuItemData(mi.Name(), _T(""), mi.Icon(), mi.WorkDir(), mi.Hide()));
 
 	for (unsigned int i = 0; i < mi.Count(); ++i)
 	{
@@ -897,7 +908,7 @@ void TLMenuCfgDialog::OnInit(wxInitDialogEvent& event)
 	if (!m_TreeMenu->HasChildren(idRoot))
 	{
 		wxTreeItemId demoItem = m_TreeMenu->AppendItem(idRoot, _T(""));
-		m_TreeMenu->SetItemData(demoItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T("")));
+		m_TreeMenu->SetItemData(demoItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T(""), false));
 		UpdateItemDisplay(*m_TreeMenu, demoItem);
 	}
 
@@ -1286,6 +1297,12 @@ void TLMenuCfgDialog::OntxtWorkDirText(wxCommandEvent& event)
 	InfoChgFlg(true);
 }
 
+void TLMenuCfgDialog::OnflgHideClick(wxCommandEvent& event)
+{
+	m_bInfoUnsaved = true;
+	InfoChgFlg(true);
+}
+
 void TLMenuCfgDialog::UpdateFlgs()
 {
 	wxTreeItemId item = m_TreeMenu->GetSelection();
@@ -1351,6 +1368,7 @@ bool TLMenuCfgDialog::ReadItemInfo()
 			m_txtNameOrFilter->ChangeValue(p->Name());
 			m_txtIcon->ChangeValue(p->IconPath());
 			m_txtWorkDir->ChangeValue(p->WorkDir());
+			m_flgHide->SetValue(p->Hide());
 			TryExtractIcons();
 		}
 		else
@@ -1359,6 +1377,7 @@ bool TLMenuCfgDialog::ReadItemInfo()
 			m_txtNameOrFilter->Clear();
 			m_txtIcon->Clear();
 			m_txtWorkDir->Clear();
+			m_flgHide->SetValue(false);
 		}
 
 		InfoChgFlg(false);
@@ -1399,6 +1418,7 @@ bool TLMenuCfgDialog::SaveItemInfo()
 				p->IconPath(_T(""));
 			}
 			p->WorkDir(m_txtWorkDir->GetValue().Trim(true).Trim(false));
+			p->Hide(m_flgHide->GetValue());
 
 			/* removi image affects following images' indices.
 			// NOTE: Calling Remove(-1) will remove all images from list;
@@ -1548,9 +1568,9 @@ void TLMenuCfgDialog::OnbtnNewDirClick(wxCommandEvent& event)
 
 			if (subItem.IsOk())
 			{
-				m_TreeMenu->SetItemData(dir, new MenuItemData(_LNG(STR_DisplayName), _T(""), _T(""), _T("")));
+				m_TreeMenu->SetItemData(dir, new MenuItemData(_LNG(STR_DisplayName), _T(""), _T(""), _T(""), false));
 				UpdateItemDisplay(*m_TreeMenu, dir);
-				m_TreeMenu->SetItemData(subItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T("")));
+				m_TreeMenu->SetItemData(subItem, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T(""), false));
 				UpdateItemDisplay(*m_TreeMenu, subItem);
 				m_TreeMenu->SelectItem(dir);
 				MenuChgFlg(true);
@@ -1576,7 +1596,7 @@ void TLMenuCfgDialog::OnbtnNewItemClick(wxCommandEvent& event)
 
 		if (add.IsOk())
 		{
-			m_TreeMenu->SetItemData(add, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T("")));
+			m_TreeMenu->SetItemData(add, new MenuItemData(_LNG(STR_DisplayName), _LNG(STR_PathToTarget), _T(""), _T(""), false));
 			UpdateItemDisplay(*m_TreeMenu, add);
 			m_TreeMenu->SelectItem(add);
 			MenuChgFlg(true);
@@ -1657,6 +1677,7 @@ void TLMenuCfgDialog::TreeToMenuData(const wxTreeCtrl &tree, const wxTreeItemId 
 	menu.Name(static_cast<const TCHAR*>(p->Name().c_str()));
 	menu.Path(static_cast<const TCHAR*>(p->IconPath().c_str()));
 	menu.WorkDir(static_cast<const TCHAR*>(p->WorkDir().c_str()));
+	menu.Hide(p->Hide());
 
 	wxTreeItemId vcookie = item;
 	wxTreeItemIdValue cookie = &vcookie;
@@ -1667,13 +1688,13 @@ void TLMenuCfgDialog::TreeToMenuData(const wxTreeCtrl &tree, const wxTreeItemId 
 		{
 			MenuItemData *p = static_cast<MenuItemData*>(tree.GetItemData(id));
 			assert(p);
-			menu.AddItem(menu.Count(), p->Name().wc_str(), p->Target().wc_str(), p->IconPath().wc_str(), p->WorkDir().wc_str());
+			menu.AddItem(menu.Count(), p->Name().wc_str(), p->Target().wc_str(), p->IconPath().wc_str(), p->WorkDir().wc_str(), p->Hide());
 		}
 		else
 		{
 			MenuItemData *p = static_cast<MenuItemData*>(tree.GetItemData(id));
 			assert(p);
-			menu.AddMenu(menu.Count(), p->Name().wc_str(), _T(""), p->IconPath().wc_str(), p->WorkDir().wc_str());
+			menu.AddMenu(menu.Count(), p->Name().wc_str(), _T(""), p->IconPath().wc_str(), p->WorkDir().wc_str(), p->Hide());
 			assert(menu.Menu(menu.Count()-1));
 			TreeToMenuData(tree, id, *menu.Menu(menu.Count()-1));
 		}
