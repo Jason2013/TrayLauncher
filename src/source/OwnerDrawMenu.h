@@ -84,7 +84,7 @@ protected:
 	typedef std::map<MENUTYPE,ICONTYPE> MenuIconMap;
 	typedef MenuIconMap::const_iterator MenuIconIter;
 
-	enum {MENUSIDE = 6, MENUHEIGHT = 22, MENUICON = 16, MENUBLANK = MENUHEIGHT - MENUICON, MENUSEP = 5,MAXMENUWIDTH = 384,NBUF = 1024, SHELL_MAX_ERROR_VALUE = 32};
+	enum {MENUSIDE = 6, MENUHEIGHT = 22, MENUICON = 16, MENUBLANK = MENUHEIGHT - MENUICON, MENUSEP = 5,MAXMENUWIDTH = 384,NBUF = 1024, SHELL_MAX_ERROR_VALUE = 32, SUBMENU_ARROW_CX = 12}; // Win11 自绘子菜单箭头占用的宽度
 	IdStrMap & ItemNameMap() {return m_ItemName;};
 	MenuStrMap & MenuNameMap() {return m_MenuName;};
 
@@ -294,6 +294,10 @@ private:
 
 // @note (lichao#1#): 实现左侧边缘可调，替代MENUSIDE
 	int m_iExtraLeftSideWidth;// 左侧边缘图像宽度
+	// 命令 id 都小于已登记的子菜单句柄。能在名称表里找到时，该项是子菜单。
+	bool IsTrackedSubMenu(UINT_PTR id) const;
+	// 在菜单项右缘画子菜单小三角。仅 Windows 11 使用。
+	void DrawSubMenuArrow(const DRAWITEMSTRUCT * pDI);
 };
 
 #endif // OWNER_DRAW_MENU_H

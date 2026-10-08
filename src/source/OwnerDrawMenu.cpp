@@ -657,25 +657,83 @@ bool COwnerDrawMenu::AccordingToState(DRAWITEMSTRUCT * pDI)
 }
 
 
+// 命令 id 都小于已登记的子菜单句柄。id 能在 m_MenuName 里找到时，该项是子菜单。
+bool COwnerDrawMenu::IsTrackedSubMenu(UINT_PTR id) const
+{
+	if (!id)
+		return false;
+	IdStrIter last = m_ItemName.end();
+	if (!m_ItemName.empty() && (--last)->first >= id)
+		return false;
+	return m_MenuName.find(reinterpret_cast<MENUTYPE>(id)) != m_MenuName.end();
+}
+
 MENUTYPE COwnerDrawMenu::TryGetSubMenu(const DRAWITEMSTRUCT * pDI)
 {
-	HMENU hResult = 0;
-	if (ODT_MENU == pDI->CtlType) {
-		if (const unsigned int id = pDI->itemID) {
-			IdStrIter last = m_ItemName.end();
-			if (m_ItemName.empty() || (--last)->first < id) {
-				MenuStrMap::const_iterator it = m_MenuName.find(reinterpret_cast<MENUTYPE>((UINT_PTR)id));
-				if (it != m_MenuName.end()) {
-					assert (id >= (1 << 16));
-					hResult = it->first;
-				}
-			}
-			else {
-				//assert(false);
-			}
-		}
+	if (ODT_MENU != pDI->CtlType)
+		return 0;
+	const UINT_PTR id = pDI->itemID;
+	if (!IsTrackedSubMenu(id))
+		return 0;
+	assert (id >= (1 << 16));
+	return reinterpret_cast<MENUTYPE>(id);
+}
+
+// Windows 10 在 WM_DRAWITEM 返回后会自己补画子菜单箭头。
+// Windows 11（10.0.22000 起）对自绘项不再补画，需要程序自己画。
+// 用 RtlGetVersion 读取真实版本号，避免清单未声明受支持系统时 GetVersionEx 被兼容层改写。
+static bool SystemOmitsSubMenuArrow()
+{
+	static int omit = -1;
+	if (omit >= 0)
+		return omit != 0;
+
+	omit = 0;
+	typedef LONG (WINAPI *RtlGetVersionFn)(OSVERSIONINFOW *);
+	OSVERSIONINFOW vi;
+	ZeroMemory(&vi, sizeof(vi));
+	vi.dwOSVersionInfoSize = sizeof(vi);
+	RtlGetVersionFn fn = reinterpret_cast<RtlGetVersionFn>(
+		GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "RtlGetVersion"));
+	if (fn && fn(&vi) == 0) {
+		if (vi.dwMajorVersion > 10 ||
+			(vi.dwMajorVersion == 10 && vi.dwBuildNumber >= 22000))
+			omit = 1;
 	}
-	return hResult;
+	return omit != 0;
+}
+
+void COwnerDrawMenu::DrawSubMenuArrow(const DRAWITEMSTRUCT * pDI)
+{
+	const RECT & rc = pDI->rcItem;
+	const int arrowW = 4;
+	const int arrowH = 8;
+	const int midY = (rc.top + rc.bottom) / 2;
+	const int tipX = rc.right - 4;
+	const int baseX = tipX - arrowW;
+	POINT pt[3];
+	pt[0].x = baseX;
+	pt[0].y = midY - arrowH / 2;
+	pt[1].x = tipX;
+	pt[1].y = midY;
+	pt[2].x = baseX;
+	pt[2].y = midY + arrowH / 2;
+
+	const COLORREF color = (pDI->itemState & (ODS_GRAYED | ODS_DISABLED))
+		? m_vClrs[ClrIndex_FrGrayed]
+		: m_vClrs[ClrIndex_Fr];
+	HPEN pen = CreatePen(PS_SOLID, 1, color);
+	HBRUSH brush = CreateSolidBrush(color);
+	HGDIOBJ oldPen = SelectObject(pDI->hDC, pen);
+	HGDIOBJ oldBrush = SelectObject(pDI->hDC, brush);
+	Polygon(pDI->hDC, pt, 3);
+	SelectObject(pDI->hDC, oldPen);
+	SelectObject(pDI->hDC, oldBrush);
+	DeleteObject(pen);
+	DeleteObject(brush);
+
+	// 把箭头区域从裁剪区去掉，避免系统随后再画一个箭头叠上来。
+	ExcludeClipRect(pDI->hDC, rc.right - SUBMENU_ARROW_CX, rc.top, rc.right, rc.bottom);
 }
 
 
@@ -751,11 +809,19 @@ bool COwnerDrawMenu::DrawItem_impl(DRAWITEMSTRUCT * pDI)
 
 	const TCHAR *str = hMaybeMenu ? MenuName(hMaybeMenu) : ItemName(iMaybeID);
 
+	// Windows 11 才自己画箭头，并缩短文字矩形，避免文字盖住箭头。
+	const bool drawArrow = hMaybeMenu && SystemOmitsSubMenuArrow();
 	if(str && *str) {
 		RECT rect = pDI->rcItem;
 		rect.left += MENUICON + MENUBLANK * 3;
+		if (drawArrow)
+			rect.right -= SUBMENU_ARROW_CX;
+		if (rect.right < rect.left)
+			rect.right = rect.left;
 		DrawText(pDI->hDC,str,-1,&(rect),DT_LEFT | DT_SINGLELINE | DT_VCENTER);
 	}
+	if (drawArrow)
+		DrawSubMenuArrow(pDI);
 
 	return bDrawedIcon;
 }
@@ -799,6 +865,9 @@ int COwnerDrawMenu::MeasureItem_impl(MEASUREITEMSTRUCT *pMI)
 				pMI->itemWidth = size.cx + MENUICON + m_iExtraLeftSideWidth;
 
 				pMI->itemWidth += MENUBLANK*3;
+				// 子菜单项多留出箭头宽度，与绘制时的 SUBMENU_ARROW_CX 一致。
+				if (SystemOmitsSubMenuArrow() && IsTrackedSubMenu(pMI->itemID))
+					pMI->itemWidth += SUBMENU_ARROW_CX;
 
 				if (pMI->itemWidth > MAXMENUWIDTH)
 					pMI->itemWidth = MAXMENUWIDTH;
